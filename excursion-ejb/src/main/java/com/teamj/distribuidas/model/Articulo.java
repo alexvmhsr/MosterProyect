@@ -5,6 +5,7 @@
  */
 package com.teamj.distribuidas.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import javax.persistence.Column;
  * @author Dennys
  */
 @Entity(name = "ARTICULO")
-public class Articulo {
+public class Articulo implements Serializable {
 
     @Id
     @Column(name = "ID_ARTICULO")

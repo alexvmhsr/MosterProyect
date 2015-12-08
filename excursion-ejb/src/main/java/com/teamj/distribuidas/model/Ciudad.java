@@ -5,12 +5,11 @@
  */
 package com.teamj.distribuidas.model;
 
-
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -18,26 +17,24 @@ import javax.persistence.ManyToOne;
  *
  * @author Dennys
  */
-
-
-@Entity(name = "SITIO")
-public class Sitio implements Serializable {
+@Entity(name = "CIUDAD")
+public class Ciudad implements Serializable {
 
     @Id
-    @Column(name = "ID_SITIO", nullable = false)
+    @Column(name = "ID_CIUDAD", nullable = false)
     private Integer id;
 
-    @JoinColumn(name = "ID_CIUDAD", referencedColumnName = "ID_CIUDAD")
+    @JoinColumn(name = "ID_PROVINCIA", referencedColumnName = "ID_PROVINCIA")
     @ManyToOne(optional = false)
-    private Ciudad ciudad;
+    private Provincia provincia;
 
-    @Column(name = "NOMBRE_SITIO", nullable = false)
+    @Column(name = "NOMBRE_CIUDAD", nullable = false)
     private String nombre;
 
-    @Column(name = "DECRIPCION_SITIO")
+    @Column(name = "DECRIPCION_CIUDAD")
     private String descripcion;
 
-    public Sitio() {
+    public Ciudad() {
     }
 
     public Integer getId() {
@@ -48,12 +45,12 @@ public class Sitio implements Serializable {
         this.id = id;
     }
 
-    public Ciudad getCiudad() {
-        return ciudad;
+    public Provincia getProvincia() {
+        return provincia;
     }
 
-    public void setCiudad(Ciudad ciudad) {
-        this.ciudad = ciudad;
+    public void setProvincia(Provincia provincia) {
+        this.provincia = provincia;
     }
 
     public String getNombre() {
@@ -74,8 +71,8 @@ public class Sitio implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.id);
+        int hash = 7;
+        hash = 89 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -87,7 +84,7 @@ public class Sitio implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Sitio other = (Sitio) obj;
+        final Ciudad other = (Ciudad) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -96,7 +93,7 @@ public class Sitio implements Serializable {
 
     @Override
     public String toString() {
-        return "Sitio{" + "id=" + id + ", ciudad=" + ciudad + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
+        return "Ciudad{" + "id=" + id + ", provincia=" + provincia + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
     }
 
 }
