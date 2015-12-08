@@ -6,10 +6,13 @@
 package com.teamj.distribuidas.model;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -42,8 +45,10 @@ public class Excursion {
 
     @Column(name = "COSTO_EXCURSION")
     private BigDecimal costo;
-    
-    
+
+    @OneToMany(mappedBy = "excursion", targetEntity = UsuarioExcursion.class,
+            fetch = FetchType.EAGER)
+    private List<UsuarioExcursion> usuarioExcursiones;
 
     public Excursion() {
     }
@@ -110,6 +115,14 @@ public class Excursion {
 
     public void setCosto(BigDecimal costo) {
         this.costo = costo;
+    }
+
+    public List<UsuarioExcursion> getUsuarioExcursiones() {
+        return usuarioExcursiones;
+    }
+
+    public void setUsuarioExcursiones(List<UsuarioExcursion> usuarioExcursiones) {
+        this.usuarioExcursiones = usuarioExcursiones;
     }
 
     @Override
