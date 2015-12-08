@@ -26,21 +26,26 @@ public class Itinerario implements Serializable {
 
     @EmbeddedId
     protected ItinerarioPK itinerarioPK;
+    
     @Column(name = "FECHA_SALIDA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaSalida;
+    
     @Column(name = "FECHA_RETORNO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRetorno;
 
     @Column(name = "DESCUENTO")
     private BigDecimal descuento;
+    
     @JoinColumn(name = "ID_SITIO", referencedColumnName = "ID_SITIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Sitio sitio;
+    
     @JoinColumn(name = "ID_EXCURSION", referencedColumnName = "ID_EXCURSION", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Excursion excursion;
+    
     @JoinColumn(name = "ID_ACTIVIDAD", referencedColumnName = "ID_ACTIVIDAD", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Actividad actividad;

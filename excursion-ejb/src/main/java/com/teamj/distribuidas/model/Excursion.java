@@ -50,6 +50,18 @@ public class Excursion {
             fetch = FetchType.EAGER)
     private List<UsuarioExcursion> usuarioExcursiones;
 
+    @OneToMany(mappedBy = "excursion", targetEntity = Itinerario.class,
+            fetch = FetchType.EAGER)
+    private List<Itinerario> itinerarios;
+
+    @OneToMany(mappedBy = "excursion", targetEntity = Comentario.class,
+            fetch = FetchType.LAZY)
+    private List<Comentario> comentarios;
+    
+    @OneToMany(mappedBy = "excursion", targetEntity = Archivo.class,
+            fetch = FetchType.LAZY)
+    private List<Archivo> archivos;
+
     public Excursion() {
     }
 
@@ -124,6 +136,31 @@ public class Excursion {
     public void setUsuarioExcursiones(List<UsuarioExcursion> usuarioExcursiones) {
         this.usuarioExcursiones = usuarioExcursiones;
     }
+
+    public List<Itinerario> getItinerarios() {
+        return itinerarios;
+    }
+
+    public void setItinerarios(List<Itinerario> itinerarios) {
+        this.itinerarios = itinerarios;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public List<Archivo> getArchivos() {
+        return archivos;
+    }
+
+    public void setArchivos(List<Archivo> archivos) {
+        this.archivos = archivos;
+    }
+    
 
     @Override
     public int hashCode() {
