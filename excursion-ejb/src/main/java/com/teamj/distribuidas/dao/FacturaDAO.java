@@ -6,7 +6,7 @@
 package com.teamj.distribuidas.dao;
 
 import com.persist.common.dao.DefaultGenericDAOImple;
-import com.teamj.distribuidas.model.Actividad;
+import com.teamj.distribuidas.model.Factura;
 import java.math.BigDecimal;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -17,8 +17,8 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ActividadDAO extends DefaultGenericDAOImple<Actividad, BigDecimal> { 
-    public ActividadDAO() {
-        super(Actividad.class);
+public class FacturaDAO extends DefaultGenericDAOImple<Factura, BigDecimal> {
+    public FacturaDAO() {
+        super(Factura.class);
     }
 }
