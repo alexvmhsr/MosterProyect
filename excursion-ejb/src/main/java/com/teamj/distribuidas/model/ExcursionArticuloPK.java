@@ -4,43 +4,43 @@
  * and open the template in the editor.
  */
 package com.teamj.distribuidas.model;
+import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 /**
  *
  * @author Dennys
  */
-public class ExcursionArticuloPK {
+@Embeddable
+public class ExcursionArticuloPK implements Serializable {
     
     @Column(name = "ID_EXCURSION")
-    private BigInteger idExcursion;
+    private Integer idExcursion;
     
     @Column(name = "ID_ARTICULO")
-    private BigInteger idArticulo;
+    private Integer idArticulo;
 
     public ExcursionArticuloPK() {
     }
 
-    public ExcursionArticuloPK(BigInteger idExcursion, BigInteger idArticulo) {
-        this.idExcursion = idExcursion;
-        this.idArticulo = idArticulo;
-    }
-
-    public BigInteger getIdExcursion() {
+    public Integer getIdExcursion() {
         return idExcursion;
     }
 
-    public void setIdExcursion(BigInteger idExcursion) {
+    public void setIdExcursion(Integer idExcursion) {
         this.idExcursion = idExcursion;
     }
 
-    public BigInteger getIdArticulo() {
+    public Integer getIdArticulo() {
         return idArticulo;
     }
 
-    public void setIdArticulo(BigInteger idArticulo) {
+    public void setIdArticulo(Integer idArticulo) {
         this.idArticulo = idArticulo;
     }
+
+   
 
     @Override
     public int hashCode() {

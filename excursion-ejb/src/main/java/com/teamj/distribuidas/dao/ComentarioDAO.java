@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ComentarioDAO extends DefaultGenericDAOImple<Comentario, BigDecimal> {
+public class ComentarioDAO extends DefaultGenericDAOImple<Comentario, Integer> {
     public ComentarioDAO() {
         super(Comentario.class);
     }

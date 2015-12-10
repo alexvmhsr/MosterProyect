@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class SitioDAO extends DefaultGenericDAOImple<Sitio, BigDecimal> {
+public class SitioDAO extends DefaultGenericDAOImple<Sitio, Integer> {
  public SitioDAO() {
         super(Sitio.class);
     }   

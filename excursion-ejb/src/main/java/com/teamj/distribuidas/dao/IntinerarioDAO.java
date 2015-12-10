@@ -7,6 +7,7 @@ package com.teamj.distribuidas.dao;
 
 import com.persist.common.dao.DefaultGenericDAOImple;
 import com.teamj.distribuidas.model.Itinerario;
+import com.teamj.distribuidas.model.ItinerarioPK;
 import java.math.BigDecimal;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -17,7 +18,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class IntinerarioDAO extends DefaultGenericDAOImple<Itinerario, BigDecimal> {
+public class IntinerarioDAO extends DefaultGenericDAOImple<Itinerario, ItinerarioPK> {
     public IntinerarioDAO() {
         super(Itinerario.class);
     }

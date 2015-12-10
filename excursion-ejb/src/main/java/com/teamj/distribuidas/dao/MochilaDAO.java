@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class MochilaDAO extends DefaultGenericDAOImple<Mochila, BigDecimal> {
+public class MochilaDAO extends DefaultGenericDAOImple<Mochila, Integer> {
     public MochilaDAO() {
         super(Mochila.class);
     }

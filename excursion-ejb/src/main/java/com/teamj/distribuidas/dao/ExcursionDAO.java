@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ExcursionDAO extends DefaultGenericDAOImple<Excursion, BigDecimal> {
+public class ExcursionDAO extends DefaultGenericDAOImple<Excursion, Integer> {
     public ExcursionDAO() {
         super(Excursion.class);
     }

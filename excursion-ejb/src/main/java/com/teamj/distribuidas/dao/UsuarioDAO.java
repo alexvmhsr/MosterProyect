@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class UsuarioDAO extends DefaultGenericDAOImple<Usuario, BigDecimal> {
+public class UsuarioDAO extends DefaultGenericDAOImple<Usuario, Integer> {
     public UsuarioDAO() {
         super(Usuario.class);
     }

@@ -7,6 +7,7 @@ package com.teamj.distribuidas.dao;
 
 import com.persist.common.dao.DefaultGenericDAOImple;
 import com.teamj.distribuidas.model.ExcursionArticulo;
+import com.teamj.distribuidas.model.ExcursionArticuloPK;
 import java.math.BigDecimal;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -17,7 +18,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ExcursionArticuloDAO extends DefaultGenericDAOImple<ExcursionArticulo, BigDecimal> {
+public class ExcursionArticuloDAO extends DefaultGenericDAOImple<ExcursionArticulo, ExcursionArticuloPK> {
     public ExcursionArticuloDAO() {
         super(ExcursionArticulo.class);
     }

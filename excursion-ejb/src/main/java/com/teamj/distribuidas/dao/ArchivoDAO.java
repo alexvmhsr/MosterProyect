@@ -17,7 +17,7 @@ import javax.ejb.Stateless;
  */
 @LocalBean
 @Stateless
-public class ArchivoDAO extends DefaultGenericDAOImple<Archivo, BigDecimal> {
+public class ArchivoDAO extends DefaultGenericDAOImple<Archivo, Integer> {
     public ArchivoDAO() {
         super(Archivo.class);
     }
