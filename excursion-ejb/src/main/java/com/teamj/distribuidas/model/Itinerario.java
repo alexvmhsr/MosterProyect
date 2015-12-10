@@ -38,6 +38,9 @@ public class Itinerario implements Serializable {
     @Column(name = "DESCUENTO")
     private BigDecimal descuento;
     
+    @Column(name = "RESPONSABLE")
+    private String responsable;
+    
     @JoinColumn(name = "ID_SITIO", referencedColumnName = "ID_SITIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Sitio sitio;
@@ -50,7 +53,16 @@ public class Itinerario implements Serializable {
     @ManyToOne(optional = false)
     private Actividad actividad;
 
+    
     public Itinerario() {
+    }
+
+    public void setResponsable(String responsable) {
+        this.responsable = responsable;
+    }
+
+    public String getResponsable() {
+        return responsable;
     }
 
     public ItinerarioPK getItinerarioPK() {
@@ -133,7 +145,9 @@ public class Itinerario implements Serializable {
 
     @Override
     public String toString() {
-        return "Itinerario{" + "itinerarioPK=" + itinerarioPK + ", fechaSalida=" + fechaSalida + ", fechaRetorno=" + fechaRetorno + ", descuento=" + descuento + ", sitio=" + sitio + ", excursion=" + excursion + ", actividad=" + actividad + '}';
+        return "Itinerario{" + "itinerarioPK=" + itinerarioPK + ", fechaSalida=" + fechaSalida + ", fechaRetorno=" + fechaRetorno + ", descuento=" + descuento + ", responsable=" + responsable + ", sitio=" + sitio + ", excursion=" + excursion + ", actividad=" + actividad + '}';
     }
+
+    
 
 }

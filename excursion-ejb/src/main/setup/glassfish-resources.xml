@@ -11,4 +11,5 @@
         <property name="driverClass" value="oracle.jdbc.OracleDriver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="excursion_jdni" object-type="user" pool-name="oracle-thin_XE_excursionPool"/>
+    <jdbc-resource enabled="true" jndi-name="excursion" object-type="user" pool-name="oracle-thin_XE_excursionPool"/>
 </resources>

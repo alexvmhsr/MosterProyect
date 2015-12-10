@@ -11,6 +11,7 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -18,6 +19,9 @@ import javax.persistence.Column;
  */
 @Entity(name = "ACTIVIDAD")
 public class Actividad implements Serializable {
+    @Size(max = 200)
+    @Column(name = "ENCARGADO_ACTIVIDAD")
+    private String encargadoActividad;
 
     @Id
     @Column(name = "ID_ACTIVIDAD", nullable = false)
@@ -32,8 +36,7 @@ public class Actividad implements Serializable {
     @Column(name = "COSTO_ACTIVIDAD")
     private BigDecimal costo;
 
-    @Column(name = "ENCARGADO_ACTIVIDAD")
-    private String encargado;
+    
 
     public Actividad() {
     }
@@ -70,13 +73,7 @@ public class Actividad implements Serializable {
         this.costo = costo;
     }
 
-    public String getEncargado() {
-        return encargado;
-    }
-
-    public void setEncargado(String encargado) {
-        this.encargado = encargado;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -102,7 +99,15 @@ public class Actividad implements Serializable {
 
     @Override
     public String toString() {
-        return "Actividad{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", costo=" + costo + ", encargado=" + encargado + '}';
+        return "Actividad{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", costo=" + costo + '}';
+    }
+
+    public String getEncargadoActividad() {
+        return encargadoActividad;
+    }
+
+    public void setEncargadoActividad(String encargadoActividad) {
+        this.encargadoActividad = encargadoActividad;
     }
 
 }

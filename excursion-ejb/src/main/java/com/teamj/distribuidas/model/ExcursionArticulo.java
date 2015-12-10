@@ -24,8 +24,7 @@ public class ExcursionArticulo {
     @Column(name = "CANTIDAD", nullable = false)
     private Integer cantidad;
 
-    @Column(name = "descuento")
-    private BigDecimal descuento;
+   
 
     public ExcursionArticulo() {
     }
@@ -46,13 +45,6 @@ public class ExcursionArticulo {
         this.cantidad = cantidad;
     }
 
-    public BigDecimal getDescuento() {
-        return descuento;
-    }
-
-    public void setDescuento(BigDecimal descuento) {
-        this.descuento = descuento;
-    }
 
     @Override
     public int hashCode() {
@@ -78,7 +70,8 @@ public class ExcursionArticulo {
 
     @Override
     public String toString() {
-        return "ExcursionArticulo{" + "excursionArticuloPK=" + excursionArticuloPK + ", cantidad=" + cantidad + ", descuento=" + descuento + '}';
+        return "ExcursionArticulo{" + "excursionArticuloPK=" + excursionArticuloPK + ", cantidad=" + cantidad + '}';
     }
+
 
 }
