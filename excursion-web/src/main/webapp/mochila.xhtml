@@ -7,10 +7,18 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Excursiones-Mochila</title>
+
     </h:head>
 
     <h:body>
-        <p:dataTable var="mochila" value="#{mochilaBean.mochilas}">
+        <h1>Lista de Mochilas</h1>
+        <p:dataTable id="tabla_mochila"
+                     var="mochila" 
+                     value="#{mochilaBean.mochilas}" 
+                     selectionMode="single" 
+                     selection="#{mochilaBean.mochilaSeleccionada}" 
+                     rowKey="#{mochila.id}" 
+                     style="width: 600px;">
             <p:column headerText="Codigo">
                 <h:outputText value="#{mochila.id}" />
             </p:column>
@@ -21,7 +29,16 @@
                 <h:outputText value="#{mochila.descripcion}" />
             </p:column>
         </p:dataTable>
-
+        <p:spacer/>
+        <p:panelGrid columns="3" >
+            <p:inputText value="#{mochilaBean.nombre}"/>
+            <p:inputText value="#{mochilaBean.descripcion}" />
+            <p:commandButton value="Agregar"  >
+                <p:ajax event="click" listener="#{mochilaBean.agregarMochila()}" update=":tabla_mochila"/>
+            </p:commandButton>
+        </p:panelGrid>
+        <p:spacer/>
+        <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" update=":tabla_mochila"/>
     </h:body>
 </html>
 

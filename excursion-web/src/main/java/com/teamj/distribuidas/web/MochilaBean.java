@@ -18,14 +18,32 @@ import javax.faces.bean.ViewScoped;
  *
  * @author Dennys
  */
-
 @ViewScoped
 @ManagedBean
 public class MochilaBean {
 
     @EJB
     private MochilaServicio mochilaServicio;
-    List<Mochila> mochilas;
+    private List<Mochila> mochilas;
+    private Mochila mochilaSeleccionada;
+    private String nombre;
+    private String descripcion;
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
 
     public List<Mochila> getMochilas() {
         return mochilas;
@@ -35,9 +53,32 @@ public class MochilaBean {
         this.mochilas = mochilas;
     }
 
+    public void setMochilaSeleccionada(Mochila mochilaSeleccionada) {
+        this.mochilaSeleccionada = mochilaSeleccionada;
+    }
+
+    public Mochila getMochilaSeleccionada() {
+        return mochilaSeleccionada;
+    }
+
     @PostConstruct
     public void init() {
         mochilas = mochilaServicio.obtenerTodas();
     }
 
+    public void agregarMochila() {
+        if (nombre != null && !nombre.isEmpty() && descripcion != null && !descripcion.isEmpty()) {
+            Mochila m = new Mochila();
+            m.setNombre(nombre);
+            m.setDescripcion(descripcion);
+            mochilaServicio.insertar(m);
+        }
+    }
+
+    public void eliminarMochila() {
+        if (mochilaSeleccionada != null) {
+
+            mochilaServicio.eliminar(mochilaSeleccionada.getId());
+        }
+    }
 }

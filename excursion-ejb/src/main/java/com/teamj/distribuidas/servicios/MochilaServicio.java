@@ -19,12 +19,29 @@ import javax.ejb.Stateless;
 @LocalBean
 @Stateless
 public class MochilaServicio {
+
     @EJB
     private MochilaDAO mochilaDAO;
 
     public List<Mochila> obtenerTodas() {
-        
+
         return mochilaDAO.findAll();
+    }
+
+    public void insertar(Mochila m) {
+        try {
+            this.mochilaDAO.insert(m);
+            this.mochilaDAO.flush();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+    }
+
+    public void eliminar(Integer id) {
+        Mochila temp = this.mochilaDAO.findById(id, false);
+        if (temp != null) {
+            this.mochilaDAO.remove(temp);
+        }
     }
 
 }
