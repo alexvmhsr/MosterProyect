@@ -12,6 +12,7 @@
 
     <h:body>
         <h1>Lista de Mochilas</h1>
+        <h:form id="mochila_form">
         <p:dataTable id="tabla_mochila"
                      var="mochila" 
                      value="#{mochilaBean.mochilas}" 
@@ -31,14 +32,16 @@
         </p:dataTable>
         <p:spacer/>
         <p:panelGrid columns="3" >
-            <p:inputText value="#{mochilaBean.nombre}"/>
-            <p:inputText value="#{mochilaBean.descripcion}" />
-            <p:commandButton value="Agregar"  >
-                <p:ajax event="click" listener="#{mochilaBean.agregarMochila()}" update=":tabla_mochila"/>
-            </p:commandButton>
+            
+            <p:inputText value="#{mochilaBean.nombre}" />
+                <p:inputText value="#{mochilaBean.descripcion}" />
+                <p:commandButton value="Agregar"  >
+                    <p:ajax event="click" listener="#{mochilaBean.agregarMochila()}" process="@form" update="tabla_mochila"/>
+                </p:commandButton>
         </p:panelGrid>
         <p:spacer/>
-        <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" update=":tabla_mochila"/>
+        <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" process="@form" update="tabla_mochila"/>
+        </h:form>
     </h:body>
 </html>
 

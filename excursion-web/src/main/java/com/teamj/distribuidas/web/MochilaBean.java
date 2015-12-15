@@ -70,14 +70,15 @@ public class MochilaBean {
         if (nombre != null && !nombre.isEmpty() && descripcion != null && !descripcion.isEmpty()) {
             Mochila m = new Mochila();
             m.setNombre(nombre);
+            m.setId(null);
             m.setDescripcion(descripcion);
             mochilaServicio.insertar(m);
+            mochilas=mochilaServicio.obtenerTodas();
         }
     }
 
     public void eliminarMochila() {
         if (mochilaSeleccionada != null) {
-
             mochilaServicio.eliminar(mochilaSeleccionada.getId());
         }
     }

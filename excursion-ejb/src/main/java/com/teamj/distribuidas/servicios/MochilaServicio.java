@@ -31,7 +31,7 @@ public class MochilaServicio {
     public void insertar(Mochila m) {
         try {
             this.mochilaDAO.insert(m);
-            this.mochilaDAO.flush();
+            //this.mochilaDAO.flush();
         } catch (Exception e) {
             System.out.println("" + e);
         }
