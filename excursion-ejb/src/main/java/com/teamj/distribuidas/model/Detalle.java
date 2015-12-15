@@ -13,23 +13,19 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
 @Entity
+@Table(name = "DETALLE")
 public class Detalle implements Serializable {
 
     @Id
     @Column(name = "ID_DETALLE", nullable = false)
     private Integer id;
-
-    @Column(name = "ID_ARTICULO", nullable = false)
-    private Integer idArticulo;
-
-    @Column(name = "ID_FACTURA", nullable = false)
-    private Integer idFactura;
 
     @JoinColumn(name = "ID_FACTURA", referencedColumnName = "ID_FACTURA")
     @ManyToOne(optional = false)
@@ -54,22 +50,6 @@ public class Detalle implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getIdArticulo() {
-        return idArticulo;
-    }
-
-    public void setIdArticulo(Integer idArticulo) {
-        this.idArticulo = idArticulo;
-    }
-
-    public Integer getIdFactura() {
-        return idFactura;
-    }
-
-    public void setIdFactura(Integer idFactura) {
-        this.idFactura = idFactura;
     }
 
     public Factura getFactura() {
@@ -124,11 +104,6 @@ public class Detalle implements Serializable {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Detalle{" + "id=" + id + ", idArticulo=" + idArticulo + ", idFactura=" + idFactura + ", factura=" + factura + ", articulo=" + articulo + ", cantidad=" + cantidad + ", descuento=" + descuento + '}';
     }
 
 }

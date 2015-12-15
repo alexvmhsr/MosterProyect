@@ -4,25 +4,33 @@
  * and open the template in the editor.
  */
 package com.teamj.distribuidas.model;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Table;
+
 /**
  *
  * @author Dennys
  */
-@Entity(name = "MOCHILA")
+@Entity
+@Table(name = "MOCHILA")
 public class Mochila implements Serializable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_MOCHILA")
     private Integer id;
-    
+
     @Column(name = "NOMBRE_MOCHILA")
     private String nombre;
-    
+
     @Column(name = "DESCRIPCION_MOCHILA")
     private String descripcion;
 
@@ -76,5 +84,5 @@ public class Mochila implements Serializable {
     public String toString() {
         return "Mochila{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
     }
-    
+
 }

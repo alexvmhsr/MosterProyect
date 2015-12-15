@@ -13,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "EXCURSION")
+@Entity
+@Table(name = "EXCURSION")
 public class Excursion {
 
     @Id
@@ -57,7 +59,7 @@ public class Excursion {
     @OneToMany(mappedBy = "excursion", targetEntity = Comentario.class,
             fetch = FetchType.LAZY)
     private List<Comentario> comentarios;
-    
+
     @OneToMany(mappedBy = "excursion", targetEntity = Archivo.class,
             fetch = FetchType.LAZY)
     private List<Archivo> archivos;
@@ -160,7 +162,6 @@ public class Excursion {
     public void setArchivos(List<Archivo> archivos) {
         this.archivos = archivos;
     }
-    
 
     @Override
     public int hashCode() {

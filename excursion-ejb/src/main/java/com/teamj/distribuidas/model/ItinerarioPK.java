@@ -16,17 +16,14 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class ItinerarioPK implements Serializable {
-    
 
     @Column(name = "ID_ACTIVIDAD", nullable = false)
     private Integer idActividad;
-    
-    
-    @Column(name = "ID_EXCURSION",nullable = false)
+
+    @Column(name = "ID_EXCURSION", nullable = false)
     private Integer idExcursion;
-    
-    
-    @Column(name = "ID_SITIO",nullable = false)
+
+    @Column(name = "ID_SITIO", nullable = false)
     private Integer idSitio;
 
     public ItinerarioPK() {
@@ -91,6 +88,4 @@ public class ItinerarioPK implements Serializable {
         return "ItinerarioPK{" + "idActividad=" + idActividad + ", idExcursion=" + idExcursion + ", idSitio=" + idSitio + '}';
     }
 
-   
-    
 }

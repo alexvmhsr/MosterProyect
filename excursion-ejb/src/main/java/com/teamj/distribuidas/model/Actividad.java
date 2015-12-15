@@ -11,14 +11,17 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "ACTIVIDAD")
+@Entity
+@Table(name = "ACTIVIDAD")
 public class Actividad implements Serializable {
+
     @Size(max = 200)
     @Column(name = "ENCARGADO_ACTIVIDAD")
     private String encargadoActividad;
@@ -35,8 +38,6 @@ public class Actividad implements Serializable {
 
     @Column(name = "COSTO_ACTIVIDAD")
     private BigDecimal costo;
-
-    
 
     public Actividad() {
     }
@@ -72,8 +73,6 @@ public class Actividad implements Serializable {
     public void setCosto(BigDecimal costo) {
         this.costo = costo;
     }
-
-   
 
     @Override
     public int hashCode() {

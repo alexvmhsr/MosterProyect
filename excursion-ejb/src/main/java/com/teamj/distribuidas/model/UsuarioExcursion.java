@@ -12,26 +12,28 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "USUARIO_EXCURSION")
+@Entity
+@Table(name = "USUARIO_EXCURSION")
 public class UsuarioExcursion implements Serializable {
 
     @Id
     @Column(name = "ID_USUARIO_EXCURSION")
     private Integer id;
-    
+
     @JoinColumn(name = "ID_USUARIO", referencedColumnName = "ID_USUARIO")
     @ManyToOne(optional = false)
     private Usuario usuario;
-    
+
     @JoinColumn(name = "ID_MOCHILA", referencedColumnName = "ID_MOCHILA")
     @ManyToOne(optional = false)
     private Mochila mochila;
-    
+
     @JoinColumn(name = "ID_EXCURSION", referencedColumnName = "ID_EXCURSION")
     @ManyToOne(optional = false)
     private Excursion excursion;

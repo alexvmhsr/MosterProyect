@@ -4,37 +4,42 @@
  * and open the template in the editor.
  */
 package com.teamj.distribuidas.model;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Table;
+
 /**
  *
  * @author Dennys
  */
-@Entity(name = "USUARIO")
-public class Usuario implements Serializable{
+@Entity
+@Table(name = "USUARIO")
+public class Usuario implements Serializable {
+
     @Id
     @Column(name = "ID_USUARIO")
     private Integer id;
-    
+
     @Column(name = "NOMBRE_USUARIO")
     private String nombre;
-    
+
     @Column(name = "CORREO_USUARIO")
     private String correo;
-    
+
     @Column(name = "PASSWORD_USUARIO")
     private String password;
-    
+
     @Column(name = "TELEFONO_USUARIO")
     private String telefono;
-    
+
     @Column(name = "NOMBRE_COMPLETO")
     private String nombreCompleto;
-    
+
     @Column(name = "ACERCA_DE")
     private String acercaDe;
 
@@ -123,7 +128,5 @@ public class Usuario implements Serializable{
     public String toString() {
         return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", correo=" + correo + ", password=" + password + ", telefono=" + telefono + ", nombreCompleto=" + nombreCompleto + ", acercaDe=" + acercaDe + '}';
     }
-    
-    
-    
+
 }

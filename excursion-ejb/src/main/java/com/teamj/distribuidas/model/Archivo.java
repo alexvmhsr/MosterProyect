@@ -4,18 +4,25 @@
  * and open the template in the editor.
  */
 package com.teamj.distribuidas.model;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  *
  * @author Dennys
  */
-@Entity(name = "ARCHIVO")
-public class Archivo implements Serializable{
+@Entity
+@Table(name = "ARCHIVO")
+public class Archivo implements Serializable {
+
     @Id
     @Column(name = "ID_ARCHIVO")
     private Integer id;
@@ -23,8 +30,19 @@ public class Archivo implements Serializable{
     private String nombre;
     @Column(name = "RUTA_ARCHIVO")
     private String ruta;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "ID_EXCURSION", referencedColumnName = "ID_EXCURSION", insertable = false, updatable = false)
+    private Excursion excursion;
 
     public Archivo() {
+    }
+
+    public void setExcursion(Excursion excursion) {
+        this.excursion = excursion;
+    }
+
+    public Excursion getExcursion() {
+        return excursion;
     }
 
     public Integer getId() {
@@ -77,6 +95,5 @@ public class Archivo implements Serializable{
     public String toString() {
         return "Archivo{" + "id=" + id + ", nombre=" + nombre + ", ruta=" + ruta + '}';
     }
-    
-    
+
 }

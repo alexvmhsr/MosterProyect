@@ -14,13 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "FACTURA")
+@Entity
+@Table(name = "FACTURA")
 public class Factura {
 
     @Id
@@ -59,13 +61,13 @@ public class Factura {
 
     @Column(name = "NUMERO_AUTORIZACION")
     private String numeroAutorizacion;
-    
+
     @Column(name = "SUBTOTAL")
     private BigDecimal subtotal;
-    
+
     @Column(name = "TOTAL")
     private BigDecimal total;
-    
+
     @Column(name = "DESCUENTO")
     private BigDecimal decuento;
 

@@ -11,12 +11,14 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "ARTICULO")
+@Entity
+@Table(name = "ARTICULO")
 public class Articulo implements Serializable {
 
     @Id

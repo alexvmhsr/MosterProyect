@@ -11,11 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
+@Entity
+@Table(name = "EXCURSION_ARTICULO")
 public class ExcursionArticulo {
 
     @EmbeddedId
@@ -23,8 +26,6 @@ public class ExcursionArticulo {
 
     @Column(name = "CANTIDAD", nullable = false)
     private Integer cantidad;
-
-   
 
     public ExcursionArticulo() {
     }
@@ -44,7 +45,6 @@ public class ExcursionArticulo {
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
-
 
     @Override
     public int hashCode() {
@@ -72,6 +72,5 @@ public class ExcursionArticulo {
     public String toString() {
         return "ExcursionArticulo{" + "excursionArticuloPK=" + excursionArticuloPK + ", cantidad=" + cantidad + '}';
     }
-
 
 }

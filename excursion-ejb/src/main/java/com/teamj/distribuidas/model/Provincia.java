@@ -13,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "PROVINCIA")
+@Entity
+@Table(name = "PROVINCIA")
 public class Provincia implements Serializable {
 
     @Id
@@ -38,7 +40,6 @@ public class Provincia implements Serializable {
     public Provincia() {
     }
 
-    
     public Integer getId() {
         return id;
     }
@@ -97,5 +98,5 @@ public class Provincia implements Serializable {
     public String toString() {
         return "Provincia{" + "id=" + id + ", pais=" + pais + ", nombre=" + nombre + ", descripcion=" + descripcion + '}';
     }
-    
+
 }

@@ -14,6 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -21,39 +22,39 @@ import javax.persistence.TemporalType;
  *
  * @author Dennys
  */
-@Entity(name = "ITINERARIO")
+@Entity
+@Table(name = "ITINERARIO")
 public class Itinerario implements Serializable {
 
     @EmbeddedId
     protected ItinerarioPK itinerarioPK;
-    
+
     @Column(name = "FECHA_SALIDA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaSalida;
-    
+
     @Column(name = "FECHA_RETORNO")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaRetorno;
 
     @Column(name = "DESCUENTO")
     private BigDecimal descuento;
-    
+
     @Column(name = "RESPONSABLE")
     private String responsable;
-    
+
     @JoinColumn(name = "ID_SITIO", referencedColumnName = "ID_SITIO", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Sitio sitio;
-    
+
     @JoinColumn(name = "ID_EXCURSION", referencedColumnName = "ID_EXCURSION", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Excursion excursion;
-    
+
     @JoinColumn(name = "ID_ACTIVIDAD", referencedColumnName = "ID_ACTIVIDAD", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Actividad actividad;
 
-    
     public Itinerario() {
     }
 
@@ -147,7 +148,5 @@ public class Itinerario implements Serializable {
     public String toString() {
         return "Itinerario{" + "itinerarioPK=" + itinerarioPK + ", fechaSalida=" + fechaSalida + ", fechaRetorno=" + fechaRetorno + ", descuento=" + descuento + ", responsable=" + responsable + ", sitio=" + sitio + ", excursion=" + excursion + ", actividad=" + actividad + '}';
     }
-
-    
 
 }

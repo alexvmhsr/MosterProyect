@@ -13,12 +13,14 @@ import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "Comentario")
+@Entity
+@Table(name = "Comentario")
 public class Comentario implements Serializable {
 
     @Id

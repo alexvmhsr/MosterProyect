@@ -10,12 +10,14 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "PAIS")
+@Entity
+@Table(name = "PAIS")
 public class Pais implements Serializable {
 
     @Id

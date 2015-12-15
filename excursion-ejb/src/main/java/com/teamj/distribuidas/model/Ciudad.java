@@ -12,12 +12,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Dennys
  */
-@Entity(name = "CIUDAD")
+@Entity
+@Table(name = "CIUDAD")
 public class Ciudad implements Serializable {
 
     @Id

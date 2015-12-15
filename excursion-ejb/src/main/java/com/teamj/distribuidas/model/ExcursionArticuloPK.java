@@ -4,20 +4,22 @@
  * and open the template in the editor.
  */
 package com.teamj.distribuidas.model;
+
 import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
 /**
  *
  * @author Dennys
  */
 @Embeddable
 public class ExcursionArticuloPK implements Serializable {
-    
+
     @Column(name = "ID_EXCURSION")
     private Integer idExcursion;
-    
+
     @Column(name = "ID_ARTICULO")
     private Integer idArticulo;
 
@@ -39,8 +41,6 @@ public class ExcursionArticuloPK implements Serializable {
     public void setIdArticulo(Integer idArticulo) {
         this.idArticulo = idArticulo;
     }
-
-   
 
     @Override
     public int hashCode() {
@@ -66,5 +66,4 @@ public class ExcursionArticuloPK implements Serializable {
         return true;
     }
 
-    
 }
