@@ -7,6 +7,7 @@ package com.teamj.distribuidas.web;
 
 import com.teamj.distribuidas.model.Mochila;
 import com.teamj.distribuidas.servicios.MochilaServicio;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -20,7 +21,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ViewScoped
 @ManagedBean
-public class MochilaBean {
+public class MochilaBean implements Serializable{
 
     @EJB
     private MochilaServicio mochilaServicio;

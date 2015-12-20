@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <h:head>
+        <title>
+            <ui:insert name="title">Excursion To Go - Excursiones Colaborativas</ui:insert>
+        </title>        
+    </h:head>
+
+    <ui:include src="header.xhtml"/>
+
+    <h:body>
+            <h:form>
+                <p:growl id="growl" showDetail="true" life="3000"  />    
+
+                <ui:insert name="content" >
+                    Default Content By DQ
+                </ui:insert>
+
+            </h:form>
+    </h:body>
+
+    <ui:include src="footer.xhtml"/>
+
+</html>

@@ -25,7 +25,6 @@ import javax.persistence.Table;
 public class Mochila implements Serializable {
 
     @Id
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE,generator="MOCHILA_SEQ")
     @SequenceGenerator(name = "MOCHILA_SEQ1", sequenceName = "MOCHILA_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "MOCHILA_SEQ1")
     @Column(name = "ID_MOCHILA")

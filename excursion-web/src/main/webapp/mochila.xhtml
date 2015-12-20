@@ -1,47 +1,45 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Excursiones-Mochila</title>
+<ui:composition template="/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                >
+    <ui:define name="title">Excursion</ui:define>
+    <ui:define name="content">
+        <p:panel class="center_inline no_border" >
+            <h1>Lista de Mochilas</h1>
+            <p:dataTable id="tabla_mochila" class="center_block"
+                         var="mochila" 
+                         value="#{mochilaBean.mochilas}" 
+                         selectionMode="single" 
+                         selection="#{mochilaBean.mochilaSeleccionada}" 
+                         rowKey="#{mochila.id}" 
+                         style="width: 600px;">
+                <p:column headerText="Codigo">
+                    <h:outputText value="#{mochila.id}" />
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{mochila.nombre}" />
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{mochila.descripcion}" />
+                </p:column>
+            </p:dataTable>
+            <p:spacer/>
+            <p:panelGrid columns="3" class="center_block">
 
-    </h:head>
-
-    <h:body>
-        <h1>Lista de Mochilas</h1>
-        <h:form id="mochila_form">
-        <p:dataTable id="tabla_mochila"
-                     var="mochila" 
-                     value="#{mochilaBean.mochilas}" 
-                     selectionMode="single" 
-                     selection="#{mochilaBean.mochilaSeleccionada}" 
-                     rowKey="#{mochila.id}" 
-                     style="width: 600px;">
-            <p:column headerText="Codigo">
-                <h:outputText value="#{mochila.id}" />
-            </p:column>
-            <p:column headerText="Nombre">
-                <h:outputText value="#{mochila.nombre}" />
-            </p:column>
-            <p:column headerText="Descripcion">
-                <h:outputText value="#{mochila.descripcion}" />
-            </p:column>
-        </p:dataTable>
-        <p:spacer/>
-        <p:panelGrid columns="3" >
-            
-            <p:inputText value="#{mochilaBean.nombre}" />
+                <p:inputText value="#{mochilaBean.nombre}" />
                 <p:inputText value="#{mochilaBean.descripcion}" />
                 <p:commandButton value="Agregar"  >
                     <p:ajax event="click" listener="#{mochilaBean.agregarMochila()}" process="@form" update="tabla_mochila"/>
                 </p:commandButton>
-        </p:panelGrid>
-        <p:spacer/>
-        <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" process="@form" update="tabla_mochila"/>
-        </h:form>
-    </h:body>
-</html>
+            </p:panelGrid>
+            <p:spacer/>
+            <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" process="@form" update="tabla_mochila"/>
+        </p:panel>
+    </ui:define>
+</ui:composition>
 
