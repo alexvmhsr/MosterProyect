@@ -10,5 +10,20 @@
     <ui:define name="title">Actividades</ui:define>
     <ui:define name="content">
 
+        <p:panel header="Actividades " style="width: 300px;" styleClass="absolute-center no_border" >
+            <h:panelGrid columns="2"  cellpadding="5">
+                <h:outputLabel for="nombre" value="nombre" />
+                <p:inputText value="#{actividadBean.nombre}" 
+                             required="true" label="Nombre" requiredMessage="Introduzca el nombre de la actividad" id = "nombre"/>
+                <h:outputLabel for="descripcion" value="descripcion" />
+                <p:inputText value="#{actividadBean.descripcion}"  required="true"
+                             label="Descripcion" requiredMessage="Introduzca la descripcion de la actividad" id = "descripcion" />
+                <f:facet name="footer" class="center_block">
+                    <p:commandButton value="Crear Actividad"   actionListener="#{actividadBean.agregarActividad()}" process="@form"/>
+                </f:facet>
+            </h:panelGrid>
+        </p:panel>
+
+
     </ui:define>
 </ui:composition>

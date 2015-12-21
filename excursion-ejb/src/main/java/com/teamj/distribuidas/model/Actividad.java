@@ -11,6 +11,9 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -22,12 +25,10 @@ import javax.validation.constraints.Size;
 @Table(name = "ACTIVIDAD")
 public class Actividad implements Serializable {
 
-    @Size(max = 200)
-    @Column(name = "ENCARGADO_ACTIVIDAD")
-    private String encargadoActividad;
-
     @Id
-    @Column(name = "ID_ACTIVIDAD", nullable = false)
+    @SequenceGenerator(name = "ACTIVIDAD_SEQ1", sequenceName = "ACTIVIDAD_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ACTIVIDAD_SEQ1")
+    @Column(name = "ID_ACTIVIDAD")
     private Integer id;
 
     @Column(name = "NOMBRE_ACTIVIDAD", nullable = false)
@@ -101,12 +102,6 @@ public class Actividad implements Serializable {
         return "Actividad{" + "id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", costo=" + costo + '}';
     }
 
-    public String getEncargadoActividad() {
-        return encargadoActividad;
-    }
-
-    public void setEncargadoActividad(String encargadoActividad) {
-        this.encargadoActividad = encargadoActividad;
-    }
+    
 
 }
