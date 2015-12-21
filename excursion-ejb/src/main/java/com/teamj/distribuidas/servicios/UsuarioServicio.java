@@ -5,9 +5,7 @@
  */
 package com.teamj.distribuidas.servicios;
 
-import com.teamj.distribuidas.dao.MochilaDAO;
 import com.teamj.distribuidas.dao.UsuarioDAO;
-import com.teamj.distribuidas.model.Mochila;
 import com.teamj.distribuidas.model.Usuario;
 import java.util.List;
 import javax.ejb.EJB;
