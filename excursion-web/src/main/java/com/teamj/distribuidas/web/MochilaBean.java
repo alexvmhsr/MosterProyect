@@ -20,6 +20,7 @@ import javax.inject.Named;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.beanutils.BeanUtils;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -106,8 +107,10 @@ public class MochilaBean extends CrudBean implements Serializable {
         }
 
     }
+
     public void beginView() {
         this.reset();
+        this.mochila = null;
         this.mochila = new Mochila();
         try {
             BeanUtils.copyProperties(this.mochila, this.mochilaSelected);
@@ -123,6 +126,7 @@ public class MochilaBean extends CrudBean implements Serializable {
         if (this.isCreating()) {
             mochilaServicio.insertar(this.mochila);
             this.mochilas.add(0, mochila);
+
         } else {
             mochilaServicio.actualizar(this.mochila);
             try {
@@ -131,9 +135,10 @@ public class MochilaBean extends CrudBean implements Serializable {
                 Logger.getLogger(MochilaBean.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            
-
         }
+        RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
+        this.reset();
+        // this.mochilaSelected=null;
 
     }
 }
