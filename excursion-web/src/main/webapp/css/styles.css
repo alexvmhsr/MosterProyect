@@ -73,6 +73,22 @@ body {
     
     border: none;
 }
+.parent-element {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.element {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.absolute-center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
 /*div {
     -webkit-animation: mymove 5s 1;  Chrome, Safari, Opera 
     animation: mymove 5s 1;
