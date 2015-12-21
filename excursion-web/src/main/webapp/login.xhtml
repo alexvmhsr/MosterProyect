@@ -11,10 +11,10 @@
         <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
     </h:head>
     <h:body >
-        <p:growl id="mensajes" showDetail="true" life="2000" />
         <h:form >
+        <p:growl id="mensajes" showDetail="true" life="2000" />
             <div >
-                <p:panel header="Log in" style="width: 300px;top: 300px;" styleClass="absolute-center no_border" >
+                <p:panel header="Log in" style="width: 300px;" styleClass="absolute-center no_border" >
                     <h:panelGrid columns="2"  cellpadding="5">
                         <h:outputLabel for="username" value="Usuario:" />
                         <p:inputText value="#{loginBean.nombre}" id="username"
@@ -23,10 +23,7 @@
                         <p:password value="#{loginBean.clave}" id="password" required="true"
                                     label="password" requiredMessage="Introduzca el password de usuario" />
                         <f:facet name="footer" class="center_block">
-                            <p:commandButton value="Acceder"   action="#{loginBean.login()}" update="@form" >
-                            
-                            </p:commandButton>
-
+                            <p:commandButton value="Acceder"  actionListener="#{loginBean.login()}" update="@form" />
                         </f:facet>
                     </h:panelGrid>
                 </p:panel>

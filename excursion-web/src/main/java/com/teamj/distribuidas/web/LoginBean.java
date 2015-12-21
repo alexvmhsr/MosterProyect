@@ -19,7 +19,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 
 @ViewScoped
 @ManagedBean
@@ -56,33 +55,30 @@ public class LoginBean implements Serializable {
         this.clave = clave;
     }
 
-    public String login() {
-        RequestContext context = RequestContext.getCurrentInstance();
+    public void login() {
+
         FacesMessage msg = null;
         Usuario u = new Usuario();
         u.setNombre(nombre);
 
         Usuario loggedUser = usuarioServicio.login(u, clave);
+        try {
+            if (loggedUser != null) {
+                logeado = true;
+                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
+                //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombre);
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/faces/mochila.xhtml");
 
-        if (loggedUser != null) {
-            logeado = true;
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
-//            try {
-//            } catch (IOException ex) {
-//                System.out.println("eror no " + ex);
-//            }
-
-            //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombre);
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            return "faces/mochila";
-        } else {
-            logeado = false;
-            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
-                    "Credenciales no válidas");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
+            } else {
+                logeado = false;
+                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
+                        "Credenciales no válidas");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+            }
+        } catch (Exception e) {
         }
-        return "";
     }
 
     public void logout() {
