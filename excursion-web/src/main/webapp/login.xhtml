@@ -6,30 +6,27 @@
        xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui">
     <h:head>
-
         <meta http-equiv="refresh" conten="15"/> 
         <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
     </h:head>
     <h:body >
         <h:form >
-        <p:growl id="mensajes" showDetail="true" life="2000" />
+            <p:growl id="growl1" showDetail="true" life="2000" />
             <div >
-                <p:panel header="Log in" style="width: 300px;" styleClass="absolute-center no_border" >
+                <p:panel header="Log in" style="width: 300px;" styleClass="center_inline center_block no_border" >
                     <h:panelGrid columns="2"  cellpadding="5">
-                        <h:outputLabel for="username" value="Usuario:" />
+                        <p:outputLabel for="username" value="Usuario:" />
                         <p:inputText value="#{loginBean.nombre}" id="username"
                                      required="true" label="username" requiredMessage="Introduzca el nombre de usuario"/>
-                        <h:outputLabel for="password" value="Clave:" />
+                        <p:outputLabel for="password" value="Clave:" />
                         <p:password value="#{loginBean.clave}" id="password" required="true"
                                     label="password" requiredMessage="Introduzca el password de usuario" />
                         <f:facet name="footer" class="center_block">
-                            <p:commandButton value="Acceder"  actionListener="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Acceder" id="login_button"  actionListener="#{loginBean.login()}" update="@form" />
                         </f:facet>
                     </h:panelGrid>
                 </p:panel>
             </div>
         </h:form>
     </h:body>
-
-
 </html>

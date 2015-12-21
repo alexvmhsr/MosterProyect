@@ -36,6 +36,14 @@ public class MochilaServicio {
             System.out.println("" + e);
         }
     }
+     public void actualizar(Mochila m) {
+        try {
+            this.mochilaDAO.update(m);
+            //this.mochilaDAO.flush();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+    }
 
     public void eliminar(Integer id) {
         Mochila temp = this.mochilaDAO.findById(id, false);

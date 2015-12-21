@@ -9,15 +9,29 @@
                 >
     <ui:define name="title">Excursion</ui:define>
     <ui:define name="content">
+        <p:menubar>
+            <p:submenu label="File" icon="ui-icon-document"/>
+            <p:submenu label="New" icon="ui-icon-contact">
+                <p:menuitem value="Project" url="#" />
+                <p:menuitem value="Other" url="#" />
+            </p:submenu>
+
+        </p:menubar>
         <p:panel class="center_inline no_border" >
             <h1>Lista de Mochilas</h1>
             <p:dataTable id="tabla_mochila" class="center_block"
                          var="mochila" 
                          value="#{mochilaBean.mochilas}" 
                          selectionMode="single" 
-                         selection="#{mochilaBean.mochilaSeleccionada}" 
+                         rows="6"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         emptyMessage="No hay mochilas"
+                         selection="#{mochilaBean.mochilaSelected}" 
                          rowKey="#{mochila.id}" 
                          style="width: 600px;">
+                <p:ajax event="rowSelect"  update="@form"/>
+
                 <p:column headerText="Codigo">
                     <h:outputText value="#{mochila.id}" />
                 </p:column>
@@ -29,17 +43,47 @@
                 </p:column>
             </p:dataTable>
             <p:spacer/>
-            <p:panelGrid columns="3" class="center_block">
-
-                <p:inputText value="#{mochilaBean.nombre}" />
-                <p:inputText value="#{mochilaBean.descripcion}" />
-                <p:commandButton value="Agregar"  >
-                    <p:ajax event="click" listener="#{mochilaBean.agregarMochila()}" process="@form" update="tabla_mochila"/>
-                </p:commandButton>
+            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block">
+                <p:commandButton value="Agregar" 
+                                 update="@form agregar_dialog"
+                                 actionListener="#{mochilaBean.beginCreation()}" 
+                                 immediate="true"
+                                 process="@form"
+                                 oncomplete="PF('agregar_dialog_var').show()"/>                 
+                <p:commandButton value="Ver" 
+                                 update="@form agregar_dialog"
+                                 process="@form"
+                                 actionListener="#{mochilaBean.beginView()}" 
+                                 immediate="true" 
+                                 oncomplete="PF('agregar_dialog_var').show();" 
+                                 disabled="#{mochilaBean.mochilaSelected eq null}" />
+                <p:commandButton value="Eliminar" 
+                                 actionListener="#{mochilaBean.deleteMochila()}" 
+                                 immediate="true"  
+                                 update="tabla_mochila"  
+                                 disabled="#{mochilaBean.mochilaSelected eq null}"/>
             </p:panelGrid>
             <p:spacer/>
-            <p:commandButton onclick="#{mochilaBean.eliminarMochila()}" value="Eliminar" process="@form" update="tabla_mochila"/>
+
         </p:panel>
+        <p:dialog id="agregar_dialog" 
+                  widgetVar="agregar_dialog_var" 
+                  modal="true" 
+                  closable="#{!mochilaBean.modifying}" 
+                  resizable="false" 
+                  header="#{mochilaBean.modifying eq true ?'Modificar Mochila':'Información de Mochila'}" >
+
+            <p:panelGrid columns="2">
+                <p:outputLabel for="nombre" value="Nombre:"/>
+                <p:inputText id="nombre" value="#{mochilaBean.mochila.nombre}" required="true" readonly="#{!mochilaBean.modifying and !mochilaBean.creating}"/>
+                <p:outputLabel for="descripcion" value="Descripción:"/>
+                <p:inputText id="descripcion" value="#{mochilaBean.mochila.descripcion}" required="true" readonly="#{!mochilaBean.modifying and !mochilaBean.creating}"/>
+                <p:commandButton value="Modificar"  actionListener="#{mochilaBean.beginModification()}" rendered="#{!mochilaBean.modifying and !mochilaBean.creating}" update="@parent"/>
+                <p:commandButton value="Aceptar"  actionListener="#{mochilaBean.createOrUpdate()}" process="@form" update="@form tabla_mochila" rendered="#{mochilaBean.modifying or mochilaBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
+                <p:commandButton value="Cancelar"  actionListener="#{mochilaBean.reset()}" update="@form" rendered="#{mochilaBean.modifying or mochilaBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
+            </p:panelGrid>
+
+        </p:dialog>
     </ui:define>
 </ui:composition>
 

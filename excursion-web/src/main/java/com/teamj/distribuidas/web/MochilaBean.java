@@ -8,12 +8,18 @@ package com.teamj.distribuidas.web;
 import com.teamj.distribuidas.model.Mochila;
 import com.teamj.distribuidas.servicios.MochilaServicio;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.inject.Named;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
@@ -21,14 +27,15 @@ import javax.faces.bean.ViewScoped;
  */
 @ViewScoped
 @ManagedBean
-public class MochilaBean implements Serializable{
+public class MochilaBean extends CrudBean implements Serializable {
 
     @EJB
     private MochilaServicio mochilaServicio;
     private List<Mochila> mochilas;
-    private Mochila mochilaSeleccionada;
+    private Mochila mochilaSelected;
     private String nombre;
     private String descripcion;
+    private Mochila mochila;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -54,12 +61,20 @@ public class MochilaBean implements Serializable{
         this.mochilas = mochilas;
     }
 
-    public void setMochilaSeleccionada(Mochila mochilaSeleccionada) {
-        this.mochilaSeleccionada = mochilaSeleccionada;
+    public void setMochilaSelected(Mochila mochilaSelected) {
+        this.mochilaSelected = mochilaSelected;
     }
 
-    public Mochila getMochilaSeleccionada() {
-        return mochilaSeleccionada;
+    public Mochila getMochilaSelected() {
+        return mochilaSelected;
+    }
+
+    public Mochila getMochila() {
+        return mochila;
+    }
+
+    public void setMochila(Mochila mochila) {
+        this.mochila = mochila;
     }
 
     @PostConstruct
@@ -67,20 +82,58 @@ public class MochilaBean implements Serializable{
         mochilas = mochilaServicio.obtenerTodas();
     }
 
-    public void agregarMochila() {
-        if (nombre != null && !nombre.isEmpty() && descripcion != null && !descripcion.isEmpty()) {
-            Mochila m = new Mochila();
-            m.setNombre(nombre);
-            m.setId(null);
-            m.setDescripcion(descripcion);
-            mochilaServicio.insertar(m);
-            mochilas=mochilaServicio.obtenerTodas();
-        }
+    public void beginCreation() {
+        this.mochila = new Mochila();
+        this.beginCreate();
     }
 
-    public void eliminarMochila() {
-        if (mochilaSeleccionada != null) {
-            mochilaServicio.eliminar(mochilaSeleccionada.getId());
+    public void deleteMochila() {
+
+        mochilaServicio.eliminar(mochilaSelected.getId());
+        this.mochilas.remove(mochilaSelected);
+
+    }
+
+    public void beginModification() {
+        this.beginModify();
+        this.mochila = new Mochila();
+        try {
+            BeanUtils.copyProperties(this.mochila, this.mochilaSelected);
+
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
         }
+
+    }
+    public void beginView() {
+        this.reset();
+        this.mochila = new Mochila();
+        try {
+            BeanUtils.copyProperties(this.mochila, this.mochilaSelected);
+
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
+        }
+
+    }
+
+    public void createOrUpdate() {
+        if (this.isCreating()) {
+            mochilaServicio.insertar(this.mochila);
+            this.mochilas.add(0, mochila);
+        } else {
+            mochilaServicio.actualizar(this.mochila);
+            try {
+                BeanUtils.copyProperties(this.mochilaSelected, this.mochila);
+            } catch (IllegalAccessException | InvocationTargetException ex) {
+                Logger.getLogger(MochilaBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            
+
+        }
+
     }
 }
