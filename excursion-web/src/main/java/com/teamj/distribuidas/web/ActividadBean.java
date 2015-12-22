@@ -13,14 +13,20 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
+import javax.faces.context.FacesContext;
+import org.apache.commons.beanutils.BeanUtils;
+import org.primefaces.context.RequestContext;
+import javax.faces.application.FacesMessage;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Dennys
  */
 @ViewScoped
 @ManagedBean
-public class ActividadBean implements Serializable{
+public class ActividadBean extends CrudBean implements Serializable{
 
     @EJB
     private ActividadServicio actividadServicio;
@@ -28,7 +34,7 @@ public class ActividadBean implements Serializable{
     private Actividad actividadSeleccionada;
     private String nombre;
     private String descripcion;
-
+    private Actividad actividad;
     
 
     public List<Actividad> getActividades() {
@@ -84,6 +90,69 @@ public class ActividadBean implements Serializable{
             actividadServicio.eliminar(actividadSeleccionada.getId());
         }
     }
-    
-    
+    public void beginCreation() {
+        this.actividad = new Actividad();
+        this.beginCreate();
+    }
+    public void deleteActividad() {
+
+        actividadServicio.eliminar(actividadSeleccionada.getId());
+        this.actividades.remove(actividadSeleccionada);
+
+    }
+
+    public void beginModification() {
+        this.beginModify();
+        this.actividad = new Actividad();
+        try {
+            BeanUtils.copyProperties(this.actividad, this.actividadSeleccionada);
+
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
+        }
+
+    }
+
+    public void beginView() {
+        this.reset();
+        this.actividad = null;
+        this.actividad = new Actividad();
+        try {
+            BeanUtils.copyProperties(this.actividad, this.actividadSeleccionada);
+
+        } catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
+        }
+
+    }
+
+    public void createOrUpdate() {
+        if (this.isCreating()) {
+            actividadServicio.insertar(this.actividad);
+            this.actividades.add(0, actividad);
+
+        } else {
+            actividadServicio.actualizar(this.actividad);
+            try {
+                BeanUtils.copyProperties(this.actividadSeleccionada, this.actividad);
+            } catch (IllegalAccessException | InvocationTargetException ex) {
+                Logger.getLogger(MochilaBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
+        this.reset();
+        // this.mochilaSelected=null;
+
+    }
+
+    public Actividad getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
+    }
 }

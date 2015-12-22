@@ -10,19 +10,73 @@
     <ui:define name="title">Actividades</ui:define>
     <ui:define name="content">
 
-        <p:panel header="Actividades " style="width: 300px;" styleClass="absolute-center no_border" >
-            <h:panelGrid columns="2"  cellpadding="5">
-                <h:outputLabel for="nombre" value="nombre" />
-                <p:inputText value="#{actividadBean.nombre}" 
-                             required="true" label="Nombre" requiredMessage="Introduzca el nombre de la actividad" id = "nombre"/>
-                <h:outputLabel for="descripcion" value="descripcion" />
-                <p:inputText value="#{actividadBean.descripcion}"  required="true"
-                             label="Descripcion" requiredMessage="Introduzca la descripcion de la actividad" id = "descripcion" />
-                <f:facet name="footer" class="center_block">
-                    <p:commandButton value="Crear Actividad"   actionListener="#{actividadBean.agregarActividad()}" process="@form"/>
-                </f:facet>
-            </h:panelGrid>
+        <p:panel class="absolute-center no_border" >
+            <h1>Lista de Actividades</h1>
+            <p:dataTable id="tabla_actividad" class="center_block"
+                         var="actividad" 
+                         value="#{actividadBean.actividades}" 
+                         selectionMode="single" 
+                         rows="6"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         emptyMessage="No hay actividades"
+                         selection="#{actividadBean.actividadSeleccionada}" 
+                         rowKey="#{actividad.id}" 
+                         style="width: 600px;">
+                <p:ajax event="rowSelect"  update="@form"/>
+
+                <p:column headerText="Codigo">
+                    <h:outputText value="#{actividad.id}" />
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{actividad.nombre}" />
+                </p:column>
+                <p:column headerText="Descripcion">
+                    <h:outputText value="#{actividad.descripcion}" />
+                </p:column>
+            </p:dataTable>
+            <p:spacer/>
+            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block">
+                <p:commandButton value="Agregar" 
+                                 update="agregar_dialog"
+                                 actionListener="#{actividadBean.beginCreation()}" 
+
+
+                                 oncomplete="PF('agregar_dialog_var').show()"/>                 
+                <p:commandButton value="Ver" 
+                                 update="agregar_dialog"
+                                 actionListener="#{actividadBean.beginView()}" 
+                                 oncomplete="PF('agregar_dialog_var').show();" 
+                                 disabled="#{actividadBean.actividadSeleccionada eq null}" />
+                <p:commandButton value="Eliminar" 
+                                 actionListener="#{actividadBean.deleteActividad()}" 
+                                 immediate="true"  
+                                 update="tabla_actividad"  
+                                 disabled="#{actividadBean.actividadSeleccionada eq null}">
+                    <p:confirm header="Confirmación" message="¿Está seguro de eliminar la actividad?" icon="ui-icon-alert" />
+                </p:commandButton>
+            </p:panelGrid>
+            <p:spacer/>
         </p:panel>
+        
+        <p:dialog id="agregar_dialog" 
+                  widgetVar="agregar_dialog_var" 
+                  modal="true" 
+                  closable="#{!actividadBean.modifying}" 
+                  resizable="false" 
+                  header="#{actividadBean.modifying eq true ?'Modificar Actividad':'Información de Actividad'}" >
+
+            <p:panelGrid columns="2" >
+                <p:outputLabel for="nombre" value="Nombre:"/>
+                <p:inputText id="nombre" value="#{actividadBean.actividad.nombre}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
+                <p:outputLabel for="descripcion" value="Descripción:"/>
+                <p:inputText id="descripcion" value="#{actividadBean.actividad.descripcion}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
+                <p:commandButton value="Modificar"  actionListener="#{actividadBean.beginModification()}" rendered="#{!actividadBean.modifying and !actividadBean.creating}" update="@parent"/>
+                <p:commandButton value="Aceptar"  actionListener="#{actividadBean.createOrUpdate()}"  update="growl @parent tabla_actividad" rendered="#{actividadBean.modifying or actividadBean.creating}"/> 
+                <p:commandButton value="Cancelar" immediate="true" actionListener="#{actividadBean.reset()}" update="@form" rendered="#{actividadBean.modifying or actividadBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
+            </p:panelGrid>
+
+        </p:dialog>
 
 
     </ui:define>
