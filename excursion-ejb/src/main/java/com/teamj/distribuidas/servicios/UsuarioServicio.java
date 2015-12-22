@@ -6,6 +6,7 @@
 package com.teamj.distribuidas.servicios;
 
 import com.teamj.distribuidas.dao.UsuarioDAO;
+import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Usuario;
 import java.util.List;
 import javax.ejb.EJB;
@@ -24,12 +25,12 @@ public class UsuarioServicio {
     @EJB
     private UsuarioDAO usuarioDAO;
 
-    public boolean insertar(Usuario u) {
+    public boolean insertar(Usuario u) throws ValidationException {
         boolean flag = false;
         Usuario temp = new Usuario();
         temp.setNombre(u.getNombre());
         List<Usuario> tempList = this.usuarioDAO.find(temp);
-        if (tempList == null) {//el nombre de usuario no existe
+        if (tempList == null || tempList.isEmpty()) {//el nombre de usuario no existe
             try {
                 String codecPassword = DigestUtils.md5Hex(u.getPassword());
                 u.setPassword(codecPassword);
@@ -37,8 +38,7 @@ public class UsuarioServicio {
                 flag = true;
 
             } catch (Exception e) {
-                System.out.println("" + e);
-
+                throw new ValidationException(e, "Error al crear el nuevo usuario");
             }
         }
         return flag;

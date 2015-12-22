@@ -5,74 +5,118 @@
  */
 package com.teamj.distribuidas.web;
 
+import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Usuario;
 import com.teamj.distribuidas.servicios.UsuarioServicio;
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 @ViewScoped
 @ManagedBean
-public class LoginBean implements Serializable {
+public class LoginBean extends CrudBean implements Serializable {
 
-    private String nombre;
-    private String clave;
+    private String correoUsuario;
+    private String nombreCompletoUsuario;
+
+    private String nombreUsuarioL;
+    private String nombreUsuario;
+    private String claveUsuarioL;
+    private String claveUsuario;
+
     @EJB
     private UsuarioServicio usuarioServicio;
 
-    private boolean logeado = false;
+    @ManagedProperty(value = "#{menuBean}")
+    private MenuBean menuBean;
 
-//    @PostConstruct
-//    public void init() {
-//        this.usuarioServicio = new UsuarioServicio();
-//    }
-    public boolean estaLogeado() {
-        return logeado;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public String getCorreoUsuario() {
+        return correoUsuario;
     }
 
-    public String getClave() {
-        return clave;
+    public String getNombreCompletoUsuario() {
+        return nombreCompletoUsuario;
     }
 
-    public void setClave(String clave) {
-        this.clave = clave;
+    public void setCorreoUsuario(String correoUsuario) {
+        this.correoUsuario = correoUsuario;
+    }
+
+    public void setNombreCompletoUsuario(String nombreCompletoUsuario) {
+        this.nombreCompletoUsuario = nombreCompletoUsuario;
+    }
+
+    public void setNombreUsuarioL(String nombreUsuarioL) {
+        this.nombreUsuarioL = nombreUsuarioL;
+    }
+
+    public void setClaveUsuarioL(String claveUsuarioL) {
+        this.claveUsuarioL = claveUsuarioL;
+    }
+
+    public String getClaveUsuarioL() {
+        return claveUsuarioL;
+    }
+
+    public String getNombreUsuarioL() {
+        return nombreUsuarioL;
+    }
+
+    public String getClaveUsuario() {
+        return claveUsuario;
+    }
+
+    public void setClaveUsuario(String claveUsuario) {
+        this.claveUsuario = claveUsuario;
+    }
+
+    public void setMenuBean(MenuBean menuBean) {
+        this.menuBean = menuBean;
+    }
+
+    public MenuBean getMenuBean() {
+        return menuBean;
+    }
+
+    @PostConstruct
+    public void init() {
+        // this.usuario = new Usuario();
     }
 
     public void login() {
 
         FacesMessage msg = null;
         Usuario u = new Usuario();
-        u.setNombre(nombre);
+        u.setNombre(nombreUsuario);
 
-        Usuario loggedUser = usuarioServicio.login(u, clave);
+        Usuario loggedUser = usuarioServicio.login(u, claveUsuario);
         try {
             if (loggedUser != null) {
-                logeado = true;
+
                 FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
+                this.menuBean.login(loggedUser);
                 //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombre);
+                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombreUsuario);
                 FacesContext.getCurrentInstance().addMessage(null, msg);
                 FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/faces/mochila.xhtml");
 
             } else {
-                logeado = false;
+
                 msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
                         "Credenciales no válidas");
                 FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -85,6 +129,41 @@ public class LoginBean implements Serializable {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         session.invalidate();
-        logeado = false;
+
+    }
+
+    public void beginSignUp() {
+        this.beginCreate();
+
+    }
+
+    public void signUp() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            if (nombreCompletoUsuario != null && !nombreCompletoUsuario.isEmpty()
+                    && claveUsuarioL != null && !claveUsuarioL.isEmpty()
+                    && correoUsuario != null && !correoUsuario.isEmpty()
+                    && nombreUsuarioL != null && !nombreUsuarioL.isEmpty()) {
+                Usuario u = new Usuario();
+                u.setCorreo(correoUsuario);
+                u.setNombre(nombreUsuarioL);
+                u.setPassword(claveUsuarioL);
+                u.setNombreCompleto(nombreCompletoUsuario);
+                if (usuarioServicio.insertar(u)) {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro", "El registro se completó correctamente"));
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registro", "El nombre de usuario ya existe"));
+                }
+            } else {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registro", "Complete todos los campos para continuar"));
+            }
+        } catch (ValidationException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
+        }
+        this.nombreUsuario = this.nombreUsuarioL;
+        RequestContext.getCurrentInstance().execute("PF('signup_dialog_var').hide()");
+        this.reset();
+
     }
 }

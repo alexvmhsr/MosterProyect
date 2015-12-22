@@ -19,19 +19,19 @@ and open the template in the editor.
         </title>        
         <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
     </h:head>
-
     <ui:include src="header.xhtml"/>
-
     <h:body>
         <h:form>
-        <p:menubar>
-            <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml"/>
-            <p:submenu label="Mis Excursiones" icon="ui-icon-document"/>
-            <p:submenu label="Mi Perfil"  icon="ui-icon-contact" style="margin-right: 0px;">
-                <p:menuitem value="Project" url="#" />
-                <p:menuitem value="Other" url="#" />
-            </p:submenu>
-        </p:menubar>
+            <p:menubar>
+                <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml"/>
+                <p:menuitem value="Actividades" icon="fa fa-suitcase" url="actividad.xhtml"/>
+                <p:submenu label="Mis Excursiones" icon="fa-binoculars"/>
+                <p:submenu label="Mi Perfil"  icon="ui-icon-contact" style="margin-right: 0px;">
+                    <p:menuitem value="Project" url="#" />
+                    <p:menuitem value="Other" url="#" />
+                </p:submenu>
+                <p:menuitem value="Log out" icon="fa fa-user-times" actionListener="#{menuBean.logout()}" url="login.xhtml"/>
+            </p:menubar>
             <p:confirmDialog global="true">
                 <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />

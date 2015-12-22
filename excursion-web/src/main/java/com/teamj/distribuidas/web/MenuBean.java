@@ -5,9 +5,12 @@
  */
 package com.teamj.distribuidas.web;
 
+import com.teamj.distribuidas.model.Usuario;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -15,12 +18,31 @@ import javax.faces.bean.ViewScoped;
  */
 @SessionScoped
 @ManagedBean
-public class MenuBean {
+public class MenuBean implements Serializable {
 
     private String perfil;
     private String excursiones;
     private String mochila;
     private String comentarios;
-    
+    private Usuario user;
+
+    public Usuario getUser() {
+        return user;
+    }
+
+    public void setUser(Usuario user) {
+        this.user = user;
+    }
+
+    public void login(Usuario u) {
+        this.user = u;
+    }
+
+    public void logout() {
+        this.user = null;
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
+                .getExternalContext().getSession(false);
+        session.invalidate();
+    }
 
 }

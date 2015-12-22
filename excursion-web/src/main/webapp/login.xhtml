@@ -5,32 +5,35 @@
        xmlns:h="http://java.sun.com/jsf/html"
        xmlns:ui="http://java.sun.com/jsf/facelets"
        xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="refresh" conten="15"/> 
-        <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
-        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico"/>
-    </h:head>
-    <h:body >
-        <h:form >
-            <p:growl id="growl1" showDetail="true" life="2000"/>
-            <div >
+    <f:view contentType="text/html">
+        <h:head>
+            <meta http-equiv="refresh" conten="15"/> 
+            <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
+            <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico"/>
+        </h:head>
+        <h:body >
+            <h:form >
+                <p:growl id="growl1" showDetail="true" life="2000"/>
+
                 <p:spacer height="30px;"/>
                 <p:graphicImage style="display: block; margin-left: auto;margin-right: auto;" value="images/logo.png"   />
                 <p:spacer height="30px;"/>
-                <p:panel header="Log in" style="width: 300px;" styleClass="center_inline center_block no_border" >
+                <p:panel id="login_panel" header="Log in" style="width: 300px;" styleClass="center_inline center_block no_border" >
                     <h:panelGrid columns="2"  cellpadding="5">
                         <p:outputLabel for="username" value="Usuario:" />
-                        <p:inputText value="#{loginBean.nombre}" id="username"
-                                     required="true" label="username" requiredMessage="Introduzca el nombre de usuario"/>
+                        <p:inputText value="#{loginBean.nombreUsuario}" id="username"
+                                     required="false" label="username" requiredMessage="Introduzca el nombre de usuario"/>
                         <p:outputLabel for="password" value="Clave:" />
-                        <p:password value="#{loginBean.clave}" id="password" required="true"
+                        <p:password value="#{loginBean.claveUsuario}" id="password" required="false" 
                                     label="password" requiredMessage="Introduzca el password de usuario" />
                         <f:facet name="footer" class="center_block">
                             <p:commandButton value="Acceder" id="login_button"  style="margin: 5px;color: white; background: #009345;" actionListener="#{loginBean.login()}" update="@form" />
-                            <p:commandButton value="Registrarse" id="signup_button" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Registrarse" id="signup_button" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.beginSignUp()}" immediate="true" update="signup_dialog" oncomplete="PF('signup_dialog_var').show();" />
                         </f:facet>
                     </h:panelGrid>
-                    <div  style="background-color: #455A64;border-radius: 1em; padding: 4px;">
+
+
+                    <div  style="background-color: #455A64;border-radius: 5px; padding: 4px;">
                         <p:panelGrid  >
                             <p:graphicImage style="padding: 3px;" value="images/facebook.png"/>
                             <p:graphicImage style="padding: 3px;" value="images/twitter.png"/>
@@ -38,7 +41,26 @@
                         </p:panelGrid>
                     </div>
                 </p:panel>
-            </div>
-        </h:form>
-    </h:body>
+                <p:dialog id="signup_dialog" 
+                          widgetVar="signup_dialog_var" 
+                          modal="true" 
+                          closable="true" 
+                          resizable="false" 
+                          header="Nuevo Usuario" >
+                    <p:panelGrid columns="1"  styleClass="center_block login-form-container panel-grid-no-border">
+                        <p:inputText id="nombre_signup" maxlength="32" styleClass="login-form-input"  placeholder="Nombre de Usuario" value="#{loginBean.nombreUsuarioL}" />     
+                        <p:inputText id="correo" maxlength="32" styleClass="login-form-input"  autocomplete="true" placeholder="Correo" value="#{loginBean.correoUsuario}" />     
+                        <p:password id="password_signup" maxlength="32" styleClass="login-form-input" placeholder="Contraseña" value="#{loginBean.claveUsuarioL}"  lang="es" feedback="true"/>     
+                        <p:inputText id="nombre_completo" maxlength="200" styleClass="login-form-input" autocomplete="true" placeholder="Nombres Completos" value="#{loginBean.nombreCompletoUsuario}" />     
+                        <p:spacer/>
+                        <p:commandButton value="Registrarme" process="@form"  styleClass="login-form-input" actionListener="#{loginBean.signUp()}" update="@form"/>
+                        <p:spacer/>
+                        <f:facet name="footer" class="center_block">
+                            <p:outputLabel value="Al Registrarse acepta nuestros términos y condiciones" style="text-align: center;  color: #455A64;"/>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </f:view>
 </html>

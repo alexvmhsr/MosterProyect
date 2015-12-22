@@ -27,9 +27,10 @@ and open the template in the editor.
 }
 #header {
     height: 40px;
-    width: 100%;
-    text-align: center;
 
+    text-align: center;
+    background-repeat: repeat-x;
+    background: #CFD8DC;
     background-color: #CFD8DC;
 }
 #footer {
@@ -70,24 +71,37 @@ body {
 
 }
 .no_border{
-    
+
     border: none;
 }
+.panel-grid-no-border.ui-panelgrid>*>tr,
+.panel-grid-no-border.ui-panelgrid .ui-panelgrid-cell {
+    border: none;
+}
+.login-form-input{
+    width: 300px; 
+    padding: 10px;   
+}
+.login-form-container{
+    width: 300px; 
+
+    padding: 32px;   
+}
 .parent-element {
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
 }
 
 .element {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .absolute-center {
-  margin: auto;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
 }
 .parent {
     display: table;
