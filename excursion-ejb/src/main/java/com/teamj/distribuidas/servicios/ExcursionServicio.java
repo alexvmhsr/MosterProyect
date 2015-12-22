@@ -5,8 +5,8 @@
  */
 package com.teamj.distribuidas.servicios;
 
-import com.teamj.distribuidas.dao.ActividadDAO;
-import com.teamj.distribuidas.model.Actividad;
+import com.teamj.distribuidas.dao.ExcursionDAO;
+import com.teamj.distribuidas.model.Excursion;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -14,22 +14,31 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author Dennys
+ * @author Gaming
  */
 @LocalBean
 @Stateless
-public class ActividadServicio {
-    @EJB
-    private ActividadDAO actividadDAO;
+public class ExcursionServicio {
     
-    public List<Actividad> obtenerTodas() {
+    @EJB
+    private ExcursionDAO excursionDAO;
 
-        return actividadDAO.findAll();
+    public List<Excursion> obtenerTodas() {
+
+        return excursionDAO.findAll();
     }
 
-    public void insertar(Actividad m) {
+    public void insertar(Excursion m) {
         try {
-            this.actividadDAO.insert(m);
+            this.excursionDAO.insert(m);
+            //this.mochilaDAO.flush();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+    }
+     public void actualizar(Excursion m) {
+        try {
+            this.excursionDAO.update(m);
             //this.mochilaDAO.flush();
         } catch (Exception e) {
             System.out.println("" + e);
@@ -37,20 +46,10 @@ public class ActividadServicio {
     }
 
     public void eliminar(Integer id) {
-        Actividad temp = this.actividadDAO.findById(id, false);
+        Excursion temp = this.excursionDAO.findById(id, false);
         if (temp != null) {
-            this.actividadDAO.remove(temp);
+            this.excursionDAO.remove(temp);
         }
     }
-    public void actualizar(Actividad m) {
-        try {
-            this.actividadDAO.update(m);
-            //this.mochilaDAO.flush();
-        } catch (Exception e) {
-            System.out.println("" + e);
-        }
-    }
-
-    
     
 }

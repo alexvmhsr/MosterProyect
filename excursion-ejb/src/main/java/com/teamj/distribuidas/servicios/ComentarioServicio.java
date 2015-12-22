@@ -5,8 +5,8 @@
  */
 package com.teamj.distribuidas.servicios;
 
-import com.teamj.distribuidas.dao.ActividadDAO;
-import com.teamj.distribuidas.model.Actividad;
+import com.teamj.distribuidas.dao.ComentarioDAO;
+import com.teamj.distribuidas.model.Comentario;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -14,22 +14,29 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author Dennys
+ * @author Gaming
  */
 @LocalBean
 @Stateless
-public class ActividadServicio {
+public class ComentarioServicio {
     @EJB
-    private ActividadDAO actividadDAO;
-    
-    public List<Actividad> obtenerTodas() {
+    private ComentarioDAO comentarioDAO;
+    public List<Comentario> obtenerTodas() {
 
-        return actividadDAO.findAll();
+        return comentarioDAO.findAll();
     }
 
-    public void insertar(Actividad m) {
+    public void insertar(Comentario m) {
         try {
-            this.actividadDAO.insert(m);
+            this.comentarioDAO.insert(m);
+            //this.mochilaDAO.flush();
+        } catch (Exception e) {
+            System.out.println("" + e);
+        }
+    }
+     public void actualizar(Comentario m) {
+        try {
+            this.comentarioDAO.update(m);
             //this.mochilaDAO.flush();
         } catch (Exception e) {
             System.out.println("" + e);
@@ -37,20 +44,9 @@ public class ActividadServicio {
     }
 
     public void eliminar(Integer id) {
-        Actividad temp = this.actividadDAO.findById(id, false);
+        Comentario temp = this.comentarioDAO.findById(id, false);
         if (temp != null) {
-            this.actividadDAO.remove(temp);
+            this.comentarioDAO.remove(temp);
         }
     }
-    public void actualizar(Actividad m) {
-        try {
-            this.actividadDAO.update(m);
-            //this.mochilaDAO.flush();
-        } catch (Exception e) {
-            System.out.println("" + e);
-        }
-    }
-
-    
-    
 }
