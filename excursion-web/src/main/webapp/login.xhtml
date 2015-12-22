@@ -8,11 +8,15 @@
     <h:head>
         <meta http-equiv="refresh" conten="15"/> 
         <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico"/>
     </h:head>
     <h:body >
         <h:form >
-            <p:growl id="growl1" showDetail="true" life="2000" />
+            <p:growl id="growl1" showDetail="true" life="2000"/>
             <div >
+                <p:spacer height="30px;"/>
+                <p:graphicImage style="display: block; margin-left: auto;margin-right: auto;" value="images/logo.png"   />
+                <p:spacer height="30px;"/>
                 <p:panel header="Log in" style="width: 300px;" styleClass="center_inline center_block no_border" >
                     <h:panelGrid columns="2"  cellpadding="5">
                         <p:outputLabel for="username" value="Usuario:" />
@@ -22,9 +26,17 @@
                         <p:password value="#{loginBean.clave}" id="password" required="true"
                                     label="password" requiredMessage="Introduzca el password de usuario" />
                         <f:facet name="footer" class="center_block">
-                            <p:commandButton value="Acceder" id="login_button"  actionListener="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Acceder" id="login_button"  style="margin: 5px;color: white; background: #009345;" actionListener="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Registrarse" id="signup_button" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.login()}" update="@form" />
                         </f:facet>
                     </h:panelGrid>
+                    <div  style="background-color: #455A64;border-radius: 1em; padding: 4px;">
+                        <p:panelGrid  >
+                            <p:graphicImage style="padding: 3px;" value="images/facebook.png"/>
+                            <p:graphicImage style="padding: 3px;" value="images/twitter.png"/>
+                            <p:graphicImage style="padding: 3px;" value="images/instagram.png"/>
+                        </p:panelGrid>
+                    </div>
                 </p:panel>
             </div>
         </h:form>

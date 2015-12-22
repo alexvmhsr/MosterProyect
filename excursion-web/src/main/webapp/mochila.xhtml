@@ -51,10 +51,8 @@
 
                                  oncomplete="PF('agregar_dialog_var').show()"/>                 
                 <p:commandButton value="Ver" 
-                                 update="agregar_dialog "
-
+                                 update="agregar_dialog"
                                  actionListener="#{mochilaBean.beginView()}" 
-
                                  oncomplete="PF('agregar_dialog_var').show();" 
                                  disabled="#{mochilaBean.mochilaSelected eq null}" />
                 <p:commandButton value="Eliminar" 
@@ -82,8 +80,6 @@
                 <p:inputText id="descripcion" value="#{mochilaBean.mochila.descripcion}" required="true" readonly="#{!mochilaBean.modifying and !mochilaBean.creating}"/>
                 <p:commandButton value="Modificar"  actionListener="#{mochilaBean.beginModification()}" rendered="#{!mochilaBean.modifying and !mochilaBean.creating}" update="@parent"/>
                 <p:commandButton value="Aceptar"  actionListener="#{mochilaBean.createOrUpdate()}"  update="growl @parent tabla_mochila" rendered="#{mochilaBean.modifying or mochilaBean.creating}"/> 
-                   
-                
                 <p:commandButton value="Cancelar" immediate="true" actionListener="#{mochilaBean.reset()}" update="@form" rendered="#{mochilaBean.modifying or mochilaBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
             </p:panelGrid>
 
