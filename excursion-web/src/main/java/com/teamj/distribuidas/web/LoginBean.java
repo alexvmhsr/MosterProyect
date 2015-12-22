@@ -101,27 +101,33 @@ public class LoginBean extends CrudBean implements Serializable {
     public void login() {
 
         FacesMessage msg = null;
-        Usuario u = new Usuario();
-        u.setNombre(nombreUsuario);
+        if (nombreUsuario != null && !nombreUsuario.isEmpty() && claveUsuario != null && !claveUsuario.isEmpty()) {
 
-        Usuario loggedUser = usuarioServicio.login(u, claveUsuario);
-        try {
-            if (loggedUser != null) {
+            Usuario u = new Usuario();
+            u.setNombre(nombreUsuario);
 
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
-                this.menuBean.login(loggedUser);
-                //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-                msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombreUsuario);
-                FacesContext.getCurrentInstance().addMessage(null, msg);
-                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/faces/mochila.xhtml");
+            Usuario loggedUser = usuarioServicio.login(u, claveUsuario);
+            try {
+                if (loggedUser != null) {
 
-            } else {
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
+                    this.menuBean.login(loggedUser);
+                    //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+                    msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombreUsuario);
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/faces/mochila.xhtml");
 
-                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
-                        "Credenciales no válidas");
-                FacesContext.getCurrentInstance().addMessage(null, msg);
+                } else {
+
+                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",
+                            "Credenciales no válidas");
+                    FacesContext.getCurrentInstance().addMessage(null, msg);
+                }
+            } catch (Exception e) {
             }
-        } catch (Exception e) {
+        } else {
+            msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Llene todos los campos para continuar");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
 

@@ -5,12 +5,10 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:ui="http://java.sun.com/jsf/facelets" 
-                >
+                xmlns:ui="http://java.sun.com/jsf/facelets" >
     <ui:define name="title">Actividades</ui:define>
     <ui:define name="content">
-
-        <p:panel class="absolute-center no_border" >
+        <p:panel class="center_inline no_border" >
             <h1>Lista de Actividades</h1>
             <p:dataTable id="tabla_actividad" class="center_block"
                          var="actividad" 
@@ -24,7 +22,6 @@
                          rowKey="#{actividad.id}" 
                          style="width: 600px;">
                 <p:ajax event="rowSelect"  update="@form"/>
-
                 <p:column headerText="Codigo">
                     <h:outputText value="#{actividad.id}" />
                 </p:column>
@@ -40,8 +37,6 @@
                 <p:commandButton value="Agregar" 
                                  update="agregar_dialog"
                                  actionListener="#{actividadBean.beginCreation()}" 
-
-
                                  oncomplete="PF('agregar_dialog_var').show()"/>                 
                 <p:commandButton value="Ver" 
                                  update="agregar_dialog"
