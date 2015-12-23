@@ -18,24 +18,28 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
 import javax.faces.application.FacesMessage;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConversionException;
+
 /**
  *
  * @author Dennys
  */
 @ViewScoped
 @ManagedBean
-public class ActividadBean extends CrudBean implements Serializable{
+public class ActividadBean extends CrudBean implements Serializable {
 
     @EJB
     private ActividadServicio actividadServicio;
+
     private List<Actividad> actividades;
     private Actividad actividadSeleccionada;
     private String nombre;
     private String descripcion;
     private Actividad actividad;
-    
 
     public List<Actividad> getActividades() {
         return actividades;
@@ -68,20 +72,29 @@ public class ActividadBean extends CrudBean implements Serializable{
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
+    public Actividad getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Actividad actividad) {
+        this.actividad = actividad;
+    }
+
     @PostConstruct
     public void init() {
         actividades = actividadServicio.obtenerTodas();
+        
     }
-    
+
     public void agregarActividad() {
         //if (nombre != null && !nombre.isEmpty() && descripcion != null && !descripcion.isEmpty()) {
-            Actividad m = new Actividad();
-            m.setNombre(nombre);
-            m.setId(null);
-            m.setDescripcion(descripcion);
-            actividadServicio.insertar(m);
-            //actividades=actividadServicio.obtenerTodas();
+        Actividad m = new Actividad();
+        m.setNombre(nombre);
+        m.setId(null);
+        m.setDescripcion(descripcion);
+        actividadServicio.insertar(m);
+        //actividades=actividadServicio.obtenerTodas();
         //}
     }
 
@@ -90,10 +103,12 @@ public class ActividadBean extends CrudBean implements Serializable{
             actividadServicio.eliminar(actividadSeleccionada.getId());
         }
     }
+
     public void beginCreation() {
-        this.actividad = new Actividad();
         this.beginCreate();
+        this.actividad = new Actividad();
     }
+
     public void deleteActividad() {
 
         actividadServicio.eliminar(actividadSeleccionada.getId());
@@ -106,22 +121,21 @@ public class ActividadBean extends CrudBean implements Serializable{
         this.actividad = new Actividad();
         try {
             BeanUtils.copyProperties(this.actividad, this.actividadSeleccionada);
-
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
+        } catch (ConversionException e) {
         }
 
     }
 
     public void beginView() {
         this.reset();
-        this.actividad = null;
+
         this.actividad = new Actividad();
         try {
             BeanUtils.copyProperties(this.actividad, this.actividadSeleccionada);
-
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
         }
@@ -132,27 +146,19 @@ public class ActividadBean extends CrudBean implements Serializable{
         if (this.isCreating()) {
             actividadServicio.insertar(this.actividad);
             this.actividades.add(0, actividad);
-
         } else {
             actividadServicio.actualizar(this.actividad);
             try {
                 BeanUtils.copyProperties(this.actividadSeleccionada, this.actividad);
             } catch (IllegalAccessException | InvocationTargetException ex) {
                 Logger.getLogger(MochilaBean.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConversionException e) {
+
             }
-
+            // this.mochilaSelected=null;
         }
-        RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
+
+        RequestContext.getCurrentInstance().execute("PF('actividad_dialog_var').hide()");
         this.reset();
-        // this.mochilaSelected=null;
-
-    }
-
-    public Actividad getActividad() {
-        return actividad;
-    }
-
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
     }
 }

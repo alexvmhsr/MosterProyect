@@ -9,7 +9,7 @@
                 >
     <ui:define name="title">Excursion</ui:define>
     <ui:define name="content">
-            
+
         <p:panel class="center_inline no_border" >
             <h1>Lista de Mochilas</h1>
             <p:dataTable id="tabla_mochila" class="center_block"
@@ -24,7 +24,6 @@
                          rowKey="#{mochila.id}" 
                          style="width: 600px;">
                 <p:ajax event="rowSelect"  update="@form"/>
-
                 <p:column headerText="Codigo">
                     <h:outputText value="#{mochila.id}" />
                 </p:column>
@@ -37,7 +36,7 @@
             </p:dataTable>
             <p:spacer/>
             <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block">
-                <p:commandButton value="Agregar" 
+                <p:commandButton value="Nuevo" 
                                  update="agregar_dialog"
                                  actionListener="#{mochilaBean.beginCreation()}" 
                                  oncomplete="PF('agregar_dialog_var').show()"/>                 
@@ -73,7 +72,6 @@
                 <p:commandButton value="Aceptar"  actionListener="#{mochilaBean.createOrUpdate()}"  update="growl @parent tabla_mochila" rendered="#{mochilaBean.modifying or mochilaBean.creating}"/> 
                 <p:commandButton value="Cancelar" immediate="true" actionListener="#{mochilaBean.reset()}" update="@form" rendered="#{mochilaBean.modifying or mochilaBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
             </p:panelGrid>
-
         </p:dialog>
     </ui:define>
 </ui:composition>

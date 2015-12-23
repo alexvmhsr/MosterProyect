@@ -7,7 +7,9 @@
        xmlns:p="http://primefaces.org/ui">
     <f:view contentType="text/html">
         <h:head>
-            <meta http-equiv="refresh" conten="15"/> 
+            <f:metadata>
+                <f:viewAction action="#{sessionBean.isLoggedInForwardHome()}" />
+            </f:metadata>
             <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
             <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico"/>
         </h:head>
@@ -22,12 +24,15 @@
                     <h:panelGrid columns="2"  cellpadding="5">
                         <p:outputLabel for="username" value="Usuario:" />
                         <p:inputText value="#{loginBean.nombreUsuario}" id="username"
-                                     required="false" label="username" requiredMessage="Introduzca el nombre de usuario"/>
+                                     required="false" label="username" requiredMessage="Introduzca el nombre de usuario">
+                            <f:validateLength minimum="3" />
+                        </p:inputText>
                         <p:outputLabel for="password" value="Password:" />
                         <p:password value="#{loginBean.claveUsuario}" id="password" required="false" 
-                                    label="password" requiredMessage="Introduzca el password de usuario" />
+                                    label="password" requiredMessage="Introduzca el password de usuario" >
+                            <f:validateLength minimum="3" /></p:password>
                         <f:facet name="footer" class="center_block">
-                            <p:commandButton value="Acceder" id="login_button"  style="margin: 5px;color: white; background: #009345;" actionListener="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Acceder" id="login_button"  style="margin: 5px;color: white; background: #009345;" action="#{loginBean.login()}" update="@form" />
                             <p:commandButton value="Registrarse" id="signup_button" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.beginSignUp()}" immediate="true" update="signup_dialog" oncomplete="PF('signup_dialog_var').show();" />
                         </f:facet>
                     </h:panelGrid>

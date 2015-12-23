@@ -34,8 +34,8 @@ public class LoginBean extends CrudBean implements Serializable {
     @EJB
     private UsuarioServicio usuarioServicio;
 
-    @ManagedProperty(value = "#{menuBean}")
-    private MenuBean menuBean;
+    @ManagedProperty(value = "#{sessionBean}")
+    private SessionBean sessionBean;
 
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -85,12 +85,12 @@ public class LoginBean extends CrudBean implements Serializable {
         this.claveUsuario = claveUsuario;
     }
 
-    public void setMenuBean(MenuBean menuBean) {
-        this.menuBean = menuBean;
+    public void setSessionBean(SessionBean sessionBean) {
+        this.sessionBean = sessionBean;
     }
 
-    public MenuBean getMenuBean() {
-        return menuBean;
+    public SessionBean getSessionBean() {
+        return sessionBean;
     }
 
     @PostConstruct
@@ -98,7 +98,7 @@ public class LoginBean extends CrudBean implements Serializable {
         // this.usuario = new Usuario();
     }
 
-    public void login() {
+    public String login() {
 
         FacesMessage msg = null;
         if (nombreUsuario != null && !nombreUsuario.isEmpty() && claveUsuario != null && !claveUsuario.isEmpty()) {
@@ -111,11 +111,11 @@ public class LoginBean extends CrudBean implements Serializable {
                 if (loggedUser != null) {
 
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", loggedUser);
-                    this.menuBean.login(loggedUser);
-                    //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
                     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombreUsuario);
                     FacesContext.getCurrentInstance().addMessage(null, msg);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/faces/mochila.xhtml");
+                    return this.sessionBean.login(loggedUser);
+                    //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+                    //FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/mochila.xhtml");
 
                 } else {
 
@@ -128,7 +128,9 @@ public class LoginBean extends CrudBean implements Serializable {
         } else {
             msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Llene todos los campos para continuar");
             FacesContext.getCurrentInstance().addMessage(null, msg);
+
         }
+        return null;
     }
 
     public void logout() {

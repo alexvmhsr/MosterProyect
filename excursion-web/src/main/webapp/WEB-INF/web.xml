@@ -19,18 +19,54 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>/faces/*</url-pattern>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            30
+            3
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/login.xhtml</welcome-file>
+        <welcome-file>redirect.xhtml</welcome-file>
     </welcome-file-list>
+    <!-- login filter -->
+    <filter>
+        <filter-name>login</filter-name>
+        <filter-class>com.teamj.distribuidas.security.SessionFilter</filter-class>
+    </filter>
+    <!-- set the login filter to secure all the pages in the /secured/* path 
+    of the application -->
+    <filter-mapping>
+        <filter-name>login</filter-name>
+        <url-pattern>/user/*</url-pattern>
+    </filter-mapping>
+
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/faces/login.xhtml</location>
+        <location>/login.xhtml</location>
     </error-page>
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>  
+        <extension>otf</extension>  
+        <mime-type>font/opentype</mime-type>  
+    </mime-mapping>      
+    <mime-mapping>  
+        <extension>ttf</extension>  
+        <mime-type>application/x-font-ttf</mime-type>  
+    </mime-mapping>      
+    <mime-mapping>  
+        <extension>woff</extension>  
+        <mime-type>application/x-font-woff</mime-type>  
+    </mime-mapping>
+    <mime-mapping>  
+        <extension>woff2</extension>  
+        <mime-type>application/x-font-woff2</mime-type>  
+    </mime-mapping>
+    <mime-mapping>  
+        <extension>svg</extension>  
+        <mime-type>image/svg+xml</mime-type>  
+    </mime-mapping>
 </web-app>

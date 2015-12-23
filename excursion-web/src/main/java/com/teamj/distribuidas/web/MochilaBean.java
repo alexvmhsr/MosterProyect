@@ -32,6 +32,7 @@ public class MochilaBean extends CrudBean implements Serializable {
 
     @EJB
     private MochilaServicio mochilaServicio;
+    
     private List<Mochila> mochilas;
     private Mochila mochilaSelected;
     private String nombre;
