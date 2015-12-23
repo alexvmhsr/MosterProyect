@@ -35,7 +35,7 @@
                 </p:column>
             </p:dataTable>
             <p:spacer/>
-            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block">
+            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                 <p:commandButton value="Nuevo" 
                                  update="agregar_dialog"
                                  actionListener="#{mochilaBean.beginCreation()}" 
@@ -63,7 +63,7 @@
                   resizable="false" 
                   header="#{mochilaBean.modifying eq true ?'Modificar Mochila':'Información de Mochila'}" >
 
-            <p:panelGrid columns="2" >
+            <p:panelGrid columns="2" styleClass="panel-grid-no-border" >
                 <p:outputLabel for="nombre" value="Nombre:"/>
                 <p:inputText id="nombre" value="#{mochilaBean.mochila.nombre}" required="true" readonly="#{!mochilaBean.modifying and !mochilaBean.creating}"/>
                 <p:outputLabel for="descripcion" value="Descripción:"/>

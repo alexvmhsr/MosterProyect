@@ -23,15 +23,19 @@ and open the template in the editor.
     <ui:include src="header.xhtml"/>
     <h:body>
         <h:form>
-            <p:menubar>
+            <p:menubar styleClass="background-primary-color" >
+                <p:menuitem value="Home" icon="fa fa-home" url="home.xhtml"/>
+                
                 <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml"/>
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
-                <p:submenu label="Mis Excursiones" icon="fa-binoculars"/>
-                <p:submenu label="Mi Perfil"  icon="ui-icon-contact" style="margin-right: 0px;">
+                <p:menuitem value="Excursiones" icon="fa fa-binoculars"/>
+                <p:menuitem value="Comentarios" icon="fa fa-comments"/>
+                <p:menuitem value="Mi carrito" icon="fa fa-shopping-cart" url="mochila.xhtml"/>
+                <p:submenu label="Mi Perfil"  icon="fa fa-user" style="margin-right: 0px;">
                     <p:menuitem value="Project" url="#" />
                     <p:menuitem value="Other" url="#" />
                 </p:submenu>
-                <p:menuitem value="Log out" icon="fa fa-user-times" actionListener="#{sessionBean.logout()}" url="login.xhtml"/>
+                <p:menuitem value="Log out" icon="fa fa-sign-out" action="#{sessionBean.logout()}" />
             </p:menubar>
             <p:confirmDialog global="true">
                 <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

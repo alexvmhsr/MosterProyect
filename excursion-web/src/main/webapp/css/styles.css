@@ -115,6 +115,12 @@ body {
     /* optional, just for the demo */
     background: red;	
 }
+.background-primary-color{
+    background: #009345;
+}
+.background-secondary-color{
+     background: #0071BB;
+}
 /*div {
     -webkit-animation: mymove 5s 1;  Chrome, Safari, Opera 
     animation: mymove 5s 1;

@@ -32,8 +32,8 @@
                                     label="password" requiredMessage="Introduzca el password de usuario" >
                             <f:validateLength minimum="3" /></p:password>
                         <f:facet name="footer" class="center_block">
-                            <p:commandButton value="Acceder" id="login_button"  style="margin: 5px;color: white; background: #009345;" action="#{loginBean.login()}" update="@form" />
-                            <p:commandButton value="Registrarse" id="signup_button" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.beginSignUp()}" immediate="true" update="signup_dialog" oncomplete="PF('signup_dialog_var').show();" />
+                            <p:commandButton value="Acceder" id="login_button" icon="fa fa-sign-in" style="margin: 5px;color: white; background: #009345;" action="#{loginBean.login()}" update="@form" />
+                            <p:commandButton value="Registrarse" id="signup_button" icon="fa fa-angellist" style="margin: 5px;color: white; background: #0071BB; " actionListener="#{loginBean.beginSignUp()}" immediate="true" update="signup_dialog" oncomplete="PF('signup_dialog_var').show();" />
                         </f:facet>
                     </h:panelGrid>
 
@@ -58,7 +58,7 @@
                         <p:password id="password_signup" maxlength="32" styleClass="login-form-input" placeholder="Contraseña" value="#{loginBean.claveUsuarioL}"  lang="es" feedback="true"/>     
                         <p:inputText id="nombre_completo" maxlength="200" styleClass="login-form-input" autocomplete="true" placeholder="Nombres Completos" value="#{loginBean.nombreCompletoUsuario}" />     
                         <p:spacer/>
-                        <p:commandButton value="Registrarme" process="@form"  styleClass="login-form-input" actionListener="#{loginBean.signUp()}" update="@form"/>
+                        <p:commandButton value="Registrarme" icon="fa fa-check" process="@form"  styleClass="login-form-input" actionListener="#{loginBean.signUp()}" update="@form"/>
                         <p:spacer/>
                         <f:facet name="footer" class="center_block">
                             <p:outputLabel value="Al Registrarse acepta nuestros términos y condiciones" style="text-align: center;  color: #455A64;"/>

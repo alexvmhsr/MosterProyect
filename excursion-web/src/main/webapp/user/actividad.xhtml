@@ -33,7 +33,7 @@
                 </p:column>
             </p:dataTable>
             <p:spacer/>
-            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block">
+            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                 <p:commandButton value="Nuevo" 
                                  update="actividad_dialog"
                                  actionListener="#{actividadBean.beginCreation()}" 
@@ -59,7 +59,7 @@
                   closable="true" 
                   resizable="false" 
                   header="#{actividadBean.modifying eq true ?'Modificar Actividad':'Información de Actividad'}" >
-            <p:panelGrid columns="2" >
+            <p:panelGrid columns="2" styleClass="panel-grid-no-border">
                 <p:outputLabel for="nombre_actividad" value="Nombre:"/>
                 <p:inputText id="nombre_actividad" value="#{actividadBean.actividad.nombre}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
                 <p:outputLabel for="descripcion_actividad" value="Descripción:"/>
