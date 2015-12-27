@@ -17,8 +17,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Dennys
  */
-@SessionScoped
 @ManagedBean
+@SessionScoped
 public class SessionBean implements Serializable {
 
     public static final String HOME_PAGE_REDIRECT = "/user/home.xhtml?faces-redirect=true";
@@ -39,11 +39,8 @@ public class SessionBean implements Serializable {
     }
 
     public String logout() {
-        this.user = null;
         // invalidate the session
-        FacesContext.getCurrentInstance().getExternalContext()
-                .invalidateSession();
-
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return LOGOUT_PAGE_REDIRECT;
     }
 
@@ -56,5 +53,15 @@ public class SessionBean implements Serializable {
             return HOME_PAGE_REDIRECT;
         }
         return null;
+    }
+/**
+ * 
+ * @return si es el usuario administrador del sistema
+ */
+    public boolean isAdmin() {
+        if (user != null) {
+            return user.getNombre().equals("admin");
+        }
+        return false;
     }
 }

@@ -28,7 +28,7 @@ and open the template in the editor.
 #header {
     height: 40px;
 
-    text-align: center;
+    text-align: left;
     background-repeat: repeat-x;
     background: #CFD8DC;
     background-color: #CFD8DC;
@@ -40,7 +40,11 @@ and open the template in the editor.
     bottom: 0;
     padding: 5px;
     text-align: center;
-    width: 98%;
+    width: 99.3%;
+    left: 0px;
+    right:  0px;
+    
+
 }
 body {
     height: 100%;
@@ -117,9 +121,30 @@ body {
 }
 .background-primary-color{
     background: #009345;
+    /*background-color: lightblue;*/
 }
 .background-secondary-color{
-     background: #0071BB;
+    background: #0071BB;
+}
+.centeredMenuBar.ui-menubar {
+    /*text-align: center;*/
+    margin-left: -8px;
+    margin-right:  -8px;
+    margin-top: -10px;
+    height: 50px;
+
+    border-radius: 0;
+    /*background: #0071BB;*/
+
+}
+
+.centeredMenuBar .ui-menu-list {
+    /*display: inline-block;*/
+    margin-left: auto;
+    margin-top: 10px;
+    width: 1000px;
+
+    margin-right:  auto;
 }
 /*div {
     -webkit-animation: mymove 5s 1;  Chrome, Safari, Opera 

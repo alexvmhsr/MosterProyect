@@ -20,13 +20,13 @@ and open the template in the editor.
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <link href="#{facesContext.externalContext.requestContextPath}/css/styles.css" rel="stylesheet"/>
     </h:head>
-    <ui:include src="header.xhtml"/>
+    <!--ui:include src="header.xhtml"/-->
     <h:body>
         <h:form>
-            <p:menubar styleClass="background-primary-color" >
-                <p:menuitem value="Home" icon="fa fa-home" url="home.xhtml"/>
-                
-                <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml"/>
+            <p:menubar  styleClass="centeredMenuBar" >
+                 
+                <p:menuitem value="Home"  icon="fa fa-home" url="home.xhtml"/>              
+                <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml" rendered="#{sessionBean.isAdmin()}"/>
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
                 <p:menuitem value="Excursiones" icon="fa fa-binoculars"/>
                 <p:menuitem value="Comentarios" icon="fa fa-comments"/>
@@ -35,16 +35,21 @@ and open the template in the editor.
                     <p:menuitem value="Project" url="#" />
                     <p:menuitem value="Other" url="#" />
                 </p:submenu>
-                <p:menuitem value="Log out" icon="fa fa-sign-out" action="#{sessionBean.logout()}" />
+                <f:facet name="options"> 
+                    
+                    <p:commandButton type="button" value="Logout" action="#{sessionBean.logout()}" icon="fa fa-sign-out" />
+                </f:facet>
             </p:menubar>
             <p:confirmDialog global="true">
                 <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
             <p:growl id="growl" showDetail="true" life="3000"  />    
+            <div style="width: 1000px; margin-top: 20px;margin-left: auto;margin-right: auto;">
             <ui:insert name="content" >
                 Default Content By DQ
             </ui:insert>
+                </div>
         </h:form>
     </h:body>
 

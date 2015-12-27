@@ -43,7 +43,7 @@
 
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
-        <location>/login.xhtml</location>
+        <location>/redirect.xhtml</location>
     </error-page>
     <mime-mapping>
         <extension>eot</extension>
