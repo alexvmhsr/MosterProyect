@@ -12,6 +12,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -41,6 +42,7 @@ public class SessionBean implements Serializable {
     public String logout() {
         // invalidate the session
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        
         return LOGOUT_PAGE_REDIRECT;
     }
 

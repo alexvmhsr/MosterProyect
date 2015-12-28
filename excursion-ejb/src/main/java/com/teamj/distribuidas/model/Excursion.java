@@ -5,15 +5,21 @@
  */
 package com.teamj.distribuidas.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -21,9 +27,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "EXCURSION")
-public class Excursion {
+public class Excursion implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "EXCURSION_SEQ1", sequenceName = "EXCURSION_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "EXCURSION_SEQ1")
     @Column(name = "ID_EXCURSION")
     private Integer id;
 
@@ -47,6 +55,24 @@ public class Excursion {
 
     @Column(name = "COSTO_EXCURSION")
     private BigDecimal costo;
+
+    @Column(name = "FECHA_LIMITE_EXCURSION")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaLimite;
+
+    @Column(name = "FECHA_SALIDA_EXCURSION")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaSalida;
+
+    @Column(name = "FECHA_RETORNO_EXCURSION")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date fechaRetorno;
+
+    @Column(name = "MIN_ASISTENTES_EXCURSION")
+    private Integer minAsistentes;
+
+    @Column(name = "MAX_ASISTENTES_EXCURSION")
+    private Integer maxAsistentes;
 
     @OneToMany(mappedBy = "excursion", targetEntity = UsuarioExcursion.class,
             fetch = FetchType.EAGER)
@@ -129,6 +155,46 @@ public class Excursion {
 
     public void setCosto(BigDecimal costo) {
         this.costo = costo;
+    }
+
+    public void setMinAsistentes(Integer minAsistentes) {
+        this.minAsistentes = minAsistentes;
+    }
+
+    public void setMaxAsistentes(Integer maxAsistentes) {
+        this.maxAsistentes = maxAsistentes;
+    }
+
+    public Integer getMinAsistentes() {
+        return minAsistentes;
+    }
+
+    public Integer getMaxAsistentes() {
+        return maxAsistentes;
+    }
+
+    public void setFechaLimite(Date fechaLimite) {
+        this.fechaLimite = fechaLimite;
+    }
+
+    public Date getFechaLimite() {
+        return fechaLimite;
+    }
+
+    public void setFechaSalida(Date fechaSalida) {
+        this.fechaSalida = fechaSalida;
+    }
+
+    public void setFechaRetorno(Date fechaRetorno) {
+        this.fechaRetorno = fechaRetorno;
+    }
+
+    public Date getFechaSalida() {
+        return fechaSalida;
+    }
+
+    public Date getFechaRetorno() {
+        return fechaRetorno;
     }
 
     public List<UsuarioExcursion> getUsuarioExcursiones() {

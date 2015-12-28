@@ -12,8 +12,9 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -23,9 +24,11 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "FACTURA")
-public class Factura {
+public class Factura implements Serializable{
 
     @Id
+    @SequenceGenerator(name = "FACTURA_SEQ1", sequenceName = "FACTURA_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "FACTURA_SEQ1")
     @Column(name = "ID_FACTURA")
     private Integer id;
 

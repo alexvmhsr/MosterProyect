@@ -35,22 +35,28 @@ and open the template in the editor.
 }
 #footer {
     background-color: #455A64;
-    height: 30px;
-    position: absolute;
+    height: 60px;
+    
     bottom: 0;
     padding: 5px;
     text-align: center;
-    width: 99.3%;
+    width: 99%;
     left: 0px;
     right:  0px;
     
 
 }
+/*html, body {
+    margin: 0;
+    padding: 0;
+}*/
 body {
     height: 100%;
-    margin-bottom: 30px;
+    margin: 0;
+    padding: 0;
     font-family:  Verdana, Geneva, sans-serif;
     font-size: small;
+    
 }
 .centered_content {
     display: flex;
@@ -128,9 +134,7 @@ body {
 }
 .centeredMenuBar.ui-menubar {
     /*text-align: center;*/
-    margin-left: -8px;
-    margin-right:  -8px;
-    margin-top: -10px;
+    
     height: 50px;
 
     border-radius: 0;
@@ -140,11 +144,11 @@ body {
 
 .centeredMenuBar .ui-menu-list {
     /*display: inline-block;*/
-    margin-left: auto;
-    margin-top: 10px;
     width: 1000px;
-
+    margin-left: auto;
     margin-right:  auto;
+    margin-top: 10px;
+
 }
 /*div {
     -webkit-animation: mymove 5s 1;  Chrome, Safari, Opera 

@@ -11,6 +11,9 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -22,6 +25,8 @@ import javax.persistence.Table;
 public class Articulo implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "ARTICULO_SEQ1", sequenceName = "ARTICULO_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "ARTICULO_SEQ1")
     @Column(name = "ID_ARTICULO")
     private Integer id;
 
@@ -33,6 +38,9 @@ public class Articulo implements Serializable {
 
     @Column(name = "PRECIO_ARTICULO")
     private BigDecimal precio;
+
+    @Column(name = "STOCK")
+    private Integer stock;
 
     public Articulo() {
     }
@@ -67,6 +75,14 @@ public class Articulo implements Serializable {
 
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Integer getStock() {
+        return stock;
     }
 
     @Override

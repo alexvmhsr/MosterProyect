@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                >
+    <ui:define name="title">Excursion</ui:define>
+    <ui:define name="content">
+
+        <p:panel class="center_inline no_border" >
+            <h1>Mis excursiones</h1>
+            <p:dataTable id="tabla_excursion" class="center_block"
+                         var="excursion" 
+                         value="#{excursionBean.excursions}" 
+                         selectionMode="single" 
+                         rows="6"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         emptyMessage="No hay excursions"
+                         selection="#{excursionBean.excursionSelected}" 
+                         rowKey="#{excursion.id}" 
+                         style="width: 600px;">
+                <p:ajax event="rowSelect"  update="@form"/>
+                <p:column headerText="Codigo">
+                    <h:outputText value="#{excursion.id}" />
+                </p:column>
+                <p:column headerText="Nombre">
+                    <h:outputText value="#{excursion.nombre}" />
+                </p:column>
+                <p:column headerText="Objetivo">
+                    <h:outputText value="#{excursion.objetivo}" />
+                </p:column>
+                <p:column headerText="Fecha Salida">
+                    <h:outputText value="#{excursion.fechaSalida}" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Fecha Retorno">
+                    <h:outputText value="#{excursion.fechaRetorno}" >
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Costo">
+                    <h:outputText value="#{excursion.costo}" >
+                        <f:convertNumber currencySymbol="$" type="currency" />
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+            <p:spacer/>
+            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                <p:commandButton value="Nuevo" 
+                                 update="agregar_dialog"
+                                 actionListener="#{excursionBean.beginCreation()}" 
+                                 oncomplete="PF('agregar_dialog_var').show()"/>                 
+                <p:commandButton value="Ver" 
+                                 update="agregar_dialog"
+                                 actionListener="#{excursionBean.beginView()}" 
+                                 oncomplete="PF('agregar_dialog_var').show();" 
+                                 disabled="#{excursionBean.excursionSelected eq null}" />
+                <p:commandButton value="Eliminar" 
+                                 actionListener="#{excursionBean.deleteExcursion()}" 
+                                 immediate="true"  
+                                 update="tabla_excursion"  
+                                 disabled="#{excursionBean.excursionSelected eq null}">
+                    <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
+                </p:commandButton>
+            </p:panelGrid>
+            <p:spacer/>
+
+        </p:panel>
+        <p:dialog id="agregar_dialog" 
+                  widgetVar="agregar_dialog_var" 
+                  modal="true" 
+                  closable="#{!excursionBean.modifying}" 
+                  resizable="false" 
+                  header="#{excursionBean.modifying eq true ?'Modificar Excursion':'Información de Excursion'}" >
+
+            <p:panelGrid columns="2" styleClass="panel-grid-no-border" >
+                <p:outputLabel for="nombre" value="Nombre:"/>
+                <p:inputText id="nombre" value="#{excursionBean.excursion.nombre}" required="true" readonly="#{!excursionBean.modifying and !excursionBean.creating}"/>
+                <p:outputLabel for="objetivo" value="Objetivo:"/>
+                <p:inputText id="objetivo" value="#{excursionBean.excursion.objetivo}" required="true" readonly="#{!excursionBean.modifying and !excursionBean.creating}"/>
+                <p:commandButton value="Modificar"  actionListener="#{excursionBean.beginModification()}" rendered="#{!excursionBean.modifying and !excursionBean.creating}" update="@parent"/>
+                <p:commandButton value="Aceptar"  actionListener="#{excursionBean.createOrUpdate()}"  update="growl @parent tabla_excursion" rendered="#{excursionBean.modifying or excursionBean.creating}"/> 
+                <p:commandButton value="Cancelar" immediate="true" actionListener="#{excursionBean.reset()}" update="@form" rendered="#{excursionBean.modifying or excursionBean.creating}" oncomplete="PF('agregar_dialog_var').hide();"/>
+            </p:panelGrid>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+
