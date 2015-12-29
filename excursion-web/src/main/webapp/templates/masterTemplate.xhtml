@@ -14,6 +14,34 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui"
       >
     <h:head>
+        <script type="text/javascript">
+            PrimeFaces.locales['es'] = {
+                closeText: 'Cerrar',
+                prevText: 'Anterior',
+                nextText: 'Siguiente',
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                weekHeader: 'Semana',
+                firstDay: 1,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: '',
+                timeOnlyTitle: 'Sólo hora',
+                timeText: 'Tiempo',
+                hourText: 'Hora',
+                minuteText: 'Minuto',
+                secondText: 'Segundo',
+                currentText: 'Fecha actual',
+                ampm: false,
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                allDayText: 'Todo el día'
+            };
+        </script>
         <title>
             <ui:insert name="title">Excursion To Go - Excursiones Colaborativas</ui:insert>
         </title>        
@@ -24,7 +52,7 @@ and open the template in the editor.
     <h:body>
         <h:form>
             <p:menubar  styleClass="centeredMenuBar" >
-                 
+
                 <p:menuitem value="Home"  icon="fa fa-home" url="home.xhtml"/>              
                 <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml" rendered="#{sessionBean.isAdmin()}"/>
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
@@ -35,9 +63,9 @@ and open the template in the editor.
                     <p:menuitem value="Project" url="#" />
                     <p:menuitem value="Other" url="#" />
                 </p:submenu>
-                
+
                 <f:facet name="options"> 
-                    
+
                     <p:commandButton value="Logout" action="#{sessionBean.logout()}" icon="fa fa-sign-out" />
                 </f:facet>
             </p:menubar>
@@ -47,10 +75,10 @@ and open the template in the editor.
             </p:confirmDialog>
             <p:growl id="growl" showDetail="true" life="3000"  />    
             <div style="width: 1000px;height: 600px; margin-top: 20px;margin-left: auto;margin-right: auto;">
-            <ui:insert name="content" >
-                Default Content By DQ
-            </ui:insert>
-                </div>
+                <ui:insert name="content" >
+                    Default Content By DQ
+                </ui:insert>
+            </div>
         </h:form>
     </h:body>
 

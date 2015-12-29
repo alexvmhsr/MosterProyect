@@ -56,6 +56,8 @@ body {
     padding: 0;
     font-family:  Verdana, Geneva, sans-serif;
     font-size: small;
+    background-image: url("../images/brickwall.png");
+    background-repeat: repeat;
     
 }
 .centered_content {

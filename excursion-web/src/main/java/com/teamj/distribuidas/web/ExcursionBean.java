@@ -10,6 +10,8 @@ import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +34,7 @@ public class ExcursionBean extends CrudBean implements Serializable {
 
     @EJB
     private ExcursionServicio excursionServicio;
-    
+
     private List<Excursion> excursions;
     private Excursion excursionSelected;
     private String nombre;
@@ -82,6 +84,8 @@ public class ExcursionBean extends CrudBean implements Serializable {
     @PostConstruct
     public void init() {
         excursions = excursionServicio.obtenerTodas();
+                this.excursion = new Excursion();
+
     }
 
     public void beginCreation() {
@@ -141,6 +145,10 @@ public class ExcursionBean extends CrudBean implements Serializable {
         this.reset();
         // this.excursionSelected=null;
 
+    }
+
+    public String todayDate() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
     }
 
 }
