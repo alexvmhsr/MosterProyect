@@ -6,8 +6,8 @@
 package com.teamj.distribuidas.web;
 
 import com.teamj.distribuidas.model.Excursion;
-import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
+import com.teamj.distribuidas.web.util.MessageUtil;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -20,9 +20,13 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -84,7 +88,7 @@ public class ExcursionBean extends CrudBean implements Serializable {
     @PostConstruct
     public void init() {
         excursions = excursionServicio.obtenerTodas();
-                this.excursion = new Excursion();
+        this.excursion = new Excursion();
 
     }
 
@@ -128,21 +132,22 @@ public class ExcursionBean extends CrudBean implements Serializable {
     }
 
     public void createOrUpdate() {
-        if (this.isCreating()) {
-            excursionServicio.insertar(this.excursion);
-            this.excursions.add(0, excursion);
+        if (validateFields()) {
+            if (this.isCreating()) {
+                excursionServicio.insertar(this.excursion);
+                this.excursions.add(0, excursion);
+            } else {
+                excursionServicio.actualizar(this.excursion);
+                try {
+                    BeanUtils.copyProperties(this.excursionSelected, this.excursion);
+                } catch (IllegalAccessException | InvocationTargetException ex) {
+                    Logger.getLogger(ExcursionBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-        } else {
-            excursionServicio.actualizar(this.excursion);
-            try {
-                BeanUtils.copyProperties(this.excursionSelected, this.excursion);
-            } catch (IllegalAccessException | InvocationTargetException ex) {
-                Logger.getLogger(ExcursionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
+            this.reset();
         }
-        RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
-        this.reset();
         // this.excursionSelected=null;
 
     }
@@ -151,4 +156,34 @@ public class ExcursionBean extends CrudBean implements Serializable {
         return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
     }
 
+    public boolean validateFields() {
+        if (this.excursion.getFechaLimite() != null && this.excursion.getFechaRetorno() != null && this.excursion.getFechaSalida() != null) {
+            if (!(this.excursion.getFechaLimite().before(this.excursion.getFechaSalida())
+                    && this.excursion.getFechaSalida().before(this.excursion.getFechaRetorno()))) {
+                // MessageUtil.showMessage("Las fechas no son consecuentes en el tiempo", 
+                //       "La fecha límite debe ser menor a la fecha fecha de salida, y la de salida menor a la de retorno",
+                //     FacesMessage.SEVERITY_ERROR);
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Las fechas no son consecuentes en el tiempo", "La fecha límite debe ser menor a la fecha fecha de salida, y la de salida menor a la de retorno"));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void validateDates() {
+        if (this.excursion != null) {
+
+            if (this.excursion.getFechaLimite() != null && this.excursion.getFechaRetorno() != null && this.excursion.getFechaSalida() != null) {
+                if (!(this.excursion.getFechaLimite().before(this.excursion.getFechaSalida())
+                        && this.excursion.getFechaRetorno().before(this.excursion.getFechaSalida()))) {
+                    // MessageUtil.showMessage("Las fechas no son consecuentes en el tiempo", 
+                    //       "La fecha límite debe ser menor a la fecha fecha de salida, y la de salida menor a la de retorno",
+                    //     FacesMessage.SEVERITY_ERROR);
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Las fechas no son consecuentes en el tiempo", "La fecha límite debe ser menor a la fecha fecha de salida, y la de salida menor a la de retorno"));
+                }
+            }
+        }
+    }
 }

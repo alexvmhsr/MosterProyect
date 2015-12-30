@@ -10,104 +10,111 @@
                 >
     <ui:define name="title">Excursion</ui:define>
     <ui:define name="content">
+        <h:form id="main_form" >   
+            <p:panel class="center_inline no_border" >
+                <h1>Mis excursiones</h1>
+                <p:dataTable id="tabla_excursion" class="center_block"
+                             var="excursion" 
+                             value="#{excursionBean.excursions}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay excursiones"
+                             selection="#{excursionBean.excursionSelected}" 
+                             rowKey="#{excursion.id}" 
+                             style="width: 800px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{excursion.nombre}" />
+                    </p:column>
+                    <p:column headerText="Destino">
+                        <h:outputText value="#{excursion.destino}" />
+                    </p:column>
+                    <p:column headerText="Fecha Salida">
+                        <h:outputText value="#{excursion.fechaSalida}" >
+                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Retorno">
+                        <h:outputText value="#{excursion.fechaRetorno}" >
+                            <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Costo">
+                        <h:outputText value="#{excursion.costo}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <p:spacer/>
+                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Nuevo"                               
+                                     update="agregar_dialog"
+                                     actionListener="#{excursionBean.beginCreation()}" 
+                                     oncomplete="PF('agregar_dialog_var').show()"/>                 
+                    <p:commandButton value="Modificar" 
+                                     update="agregar_dialog"
+                                     actionListener="#{excursionBean.beginModification()}" 
+                                     oncomplete="PF('agregar_dialog_var').show();" 
+                                     disabled="#{excursionBean.excursionSelected eq null}" />
+                    <p:commandButton value="Eliminar" 
+                                     actionListener="#{excursionBean.deleteExcursion()}" 
+                                     immediate="true"  
+                                     update="tabla_excursion"  
+                                     disabled="#{excursionBean.excursionSelected eq null}">
+                        <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:spacer/>
 
-        <p:panel class="center_inline no_border" >
-            <h1>Mis excursiones</h1>
-            <p:dataTable id="tabla_excursion" class="center_block"
-                         var="excursion" 
-                         value="#{excursionBean.excursions}" 
-                         selectionMode="single" 
-                         rows="6"
-                         paginator="true"
-                         paginatorPosition="bottom"
-                         emptyMessage="No hay excursiones"
-                         selection="#{excursionBean.excursionSelected}" 
-                         rowKey="#{excursion.id}" 
-                         style="width: 800px;">
-                <p:ajax event="rowSelect"  update="@form"/>
-                <p:column headerText="Nombre">
-                    <h:outputText value="#{excursion.nombre}" />
-                </p:column>
-                <p:column headerText="Destino">
-                    <h:outputText value="#{excursion.destino}" />
-                </p:column>
-                <p:column headerText="Fecha Salida">
-                    <h:outputText value="#{excursion.fechaSalida}" >
-                        <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Fecha Retorno">
-                    <h:outputText value="#{excursion.fechaRetorno}" >
-                        <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
-                    </h:outputText>
-                </p:column>
-                <p:column headerText="Costo">
-                    <h:outputText value="#{excursion.costo}" >
-                        <f:convertNumber currencySymbol="$" type="currency" />
-                    </h:outputText>
-                </p:column>
-            </p:dataTable>
-            <p:spacer/>
-            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                <p:commandButton value="Nuevo" 
-                                 immediate="true"
-                                 update="agregar_dialog"
-                                 actionListener="#{excursionBean.beginCreation()}" 
-                                 oncomplete="PF('agregar_dialog_var').show()"/>                 
-                <p:commandButton value="Modificar" 
-                                 update="agregar_dialog"
-                                 actionListener="#{excursionBean.beginModification()}" 
-                                 oncomplete="PF('agregar_dialog_var').show();" 
-                                 disabled="#{excursionBean.excursionSelected eq null}" />
-                <p:commandButton value="Eliminar" 
-                                 actionListener="#{excursionBean.deleteExcursion()}" 
-                                 immediate="true"  
-                                 update="tabla_excursion"  
-                                 disabled="#{excursionBean.excursionSelected eq null}">
-                    <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
-                </p:commandButton>
-            </p:panelGrid>
-            <p:spacer/>
-
-        </p:panel>
+            </p:panel>
+        </h:form>
         <p:dialog id="agregar_dialog" 
                   widgetVar="agregar_dialog_var" 
                   modal="true"  
                   resizable="false" 
                   header="#{excursionBean.modifying eq true ?'Modificar Excursion':'Nueva Excursion'}" >
-            <p:panelGrid columns="1" styleClass="panel-grid-no-border">
-                <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
-                    <p:outputLabel for="nombre" value="Nombre:"/>
-                    <p:inputText id="nombre" maxlength="200" value="#{excursionBean.excursion.nombre}" required="true" />
-                    <p:outputLabel for="destino" value="Destino:"/>
-                    <p:inputText id="destino" maxlength="100" value="#{excursionBean.excursion.destino}" required="true" />
-                    <p:outputLabel for="costo" value="Costo:"/>
-                    <pe:inputNumber id="costo" value="#{excursionBean.excursion.costo}" symbol="$ " minValue="0.00" maxValue="1000001.00" decimalSeparator="," thousandSeparator="." />  
-                    <p:outputLabel for="fecha_lim" value="Fecha Límite:"/>
-                    <p:calendar id="fecha_lim" value="#{excursionBean.excursion.fechaLimite}" locale="es" timeControlType="select" pages="3" mask="true" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" />
-                    <p:outputLabel for="fecha_salida" value="Fecha Salida:"/>
-                    <p:calendar id="fecha_salida" value="#{excursionBean.excursion.fechaSalida}" locale="es"  pages="3" mask="true" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" />
-                    <p:outputLabel for="fecha_retorno" value="Fecha Retorno:"/>
-                    <p:calendar id="fecha_retorno" value="#{excursionBean.excursion.fechaRetorno}" locale="es" pages="3" mask="true" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" />
-                    <p:outputLabel for="min_asistentes" value="Asistentes (mín):"/>
-                    <pe:inputNumber id="min_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.minAsistentes}" required="true" >
-                    </pe:inputNumber>
-                    <p:outputLabel for="max_asistentes" value="Asistentes (max):"/>
-                    <pe:inputNumber  id="max_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.maxAsistentes}" required="true">
-                        <f:validateLongRange minimum="2" maximum="1000000"/>
-                    </pe:inputNumber>
-                    <p:outputLabel for="objetivo" value="Objetivo:"/>
-                    <p:inputTextarea id="objetivo" rows="5" cols="30" value="#{excursionBean.excursion.objetivo}"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
-                    <p:outputLabel for="riesgos" value="Riesgos:"/>
-                    <p:inputTextarea id="riesgos" rows="5" cols="30"  maxlength="300" counterTemplate="{0} caracteres restantes." autoResize="false" />
-                    <p:outputLabel for="observaciones" value="Observaciones:"/>
-                    <p:inputTextarea id="observaciones" rows="5" cols="30"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+            <h:form id="dialog_form">
+                <p:panelGrid columns="1" styleClass="panel-grid-no-border">
+                    <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
+                        <p:outputLabel for="nombre" value="Nombre:"/>
+                        <p:inputText id="nombre" maxlength="200" value="#{excursionBean.excursion.nombre}" required="true" >
+                            <f:validateLength minimum="8" maximum="200" />
+                        </p:inputText>
+                        <p:outputLabel for="destino" value="Destino:"/>
+                        <p:inputText id="destino" maxlength="100" value="#{excursionBean.excursion.destino}" required="true" />
+                        <p:outputLabel for="fecha_lim" value="Fecha Límite:"/>
+                        <p:calendar id="fecha_lim"  value="#{excursionBean.excursion.fechaLimite}" locale="es" timeControlType="select" pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" required="true">
+                        </p:calendar>
+                        <p:outputLabel for="costo" value="Costo:"/>
+                        <pe:inputNumber id="costo" value="#{excursionBean.excursion.costo}" symbol="$ " minValue="0.00" maxValue="1000001.00" decimalSeparator="," thousandSeparator="." />  
+                        <p:outputLabel for="fecha_salida" value="Fecha Salida:"/>
+                        <p:calendar id="fecha_salida" value="#{excursionBean.excursion.fechaSalida}" locale="es"  pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" required="true" >
+                        </p:calendar>
+                        <p:outputLabel for="min_asistentes" value="Asistentes (mín):"/>
+                        <pe:inputNumber id="min_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.minAsistentes}" required="true" >
+                        </pe:inputNumber>
+                        <p:outputLabel for="fecha_retorno" value="Fecha Retorno:"/>
+                        <p:calendar id="fecha_retorno"  value="#{excursionBean.excursion.fechaRetorno}" locale="es" pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" required="true" >
+                        </p:calendar>
+                        <p:outputLabel for="max_asistentes" value="Asistentes (max):"/>
+                        <pe:inputNumber  id="max_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.maxAsistentes}" required="true">
+                            <f:validateLongRange minimum="2" maximum="1000000"/>
+                        </pe:inputNumber>
+                        <p:outputLabel for="objetivo" value="Objetivo:"/>
+                        <p:inputTextarea id="objetivo" rows="5" cols="30" value="#{excursionBean.excursion.objetivo}"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:outputLabel for="riesgos" value="Riesgos:"/>
+                        <p:inputTextarea id="riesgos" rows="5" cols="30"  maxlength="300" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:outputLabel for="observaciones" value="Observaciones:"/>
+                        <p:inputTextarea id="observaciones" rows="5" cols="30"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
+                        <p:commandButton value="Aceptar"  actionListener="#{excursionBean.createOrUpdate()}"  update="@form :main_form" /> 
+                        <p:commandButton value="Cancelar" immediate="true" actionListener="#{excursionBean.reset()}" update="@form"  oncomplete="PF('agregar_dialog_var').hide();"/>
+                    </p:panelGrid>
                 </p:panelGrid>
-                <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
-                    <p:commandButton value="Aceptar"  actionListener="#{excursionBean.createOrUpdate()}"  update="growl @parent tabla_excursion" /> 
-                    <p:commandButton value="Cancelar" immediate="true" actionListener="#{excursionBean.reset()}" update="@form"  oncomplete="PF('agregar_dialog_var').hide();"/>
-                </p:panelGrid>
-            </p:panelGrid>
+            </h:form>
         </p:dialog>
     </ui:define>
 </ui:composition>

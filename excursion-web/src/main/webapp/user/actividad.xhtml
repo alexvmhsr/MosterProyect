@@ -8,66 +8,70 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" >
     <ui:define name="title">Actividades</ui:define>
     <ui:define name="content">
-        <p:panel class="center_inline no_border" >
-            <h1>Lista de Actividades</h1>
-            <p:dataTable id="tabla_actividad" class="center_block"
-                         var="actividad" 
-                         value="#{actividadBean.actividades}" 
-                         selectionMode="single" 
-                         rows="6"
-                         paginator="true"
-                         paginatorPosition="bottom"
-                         emptyMessage="No hay actividades"
-                         selection="#{actividadBean.actividadSeleccionada}" 
-                         rowKey="#{actividad.id}" 
-                         style="width: 600px;">
-                <p:ajax event="rowSelect"  update="@form"/>
-                <p:column headerText="Codigo">
-                    <h:outputText value="#{actividad.id}" />
-                </p:column>
-                <p:column headerText="Nombre">
-                    <h:outputText value="#{actividad.nombre}" />
-                </p:column>
-                <p:column headerText="Descripcion">
-                    <h:outputText value="#{actividad.descripcion}" />
-                </p:column>
-            </p:dataTable>
-            <p:spacer/>
-            <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                <p:commandButton value="Nuevo" 
-                                 update="actividad_dialog"
-                                 actionListener="#{actividadBean.beginCreation()}" 
-                                 oncomplete="PF('actividad_dialog_var').show()"/>                 
-                <p:commandButton value="Ver" 
-                                 update="actividad_dialog"
-                                 actionListener="#{actividadBean.beginView()}" 
-                                 oncomplete="PF('actividad_dialog_var').show();" 
-                                 disabled="#{actividadBean.actividadSeleccionada eq null}" />
-                <p:commandButton value="Eliminar" 
-                                 actionListener="#{actividadBean.deleteActividad()}" 
-                                 immediate="true"  
-                                 update="tabla_actividad" 
-                                 disabled="#{actividadBean.actividadSeleccionada eq null}">
-                    <p:confirm header="Confirmación" message="¿Está seguro de eliminar la actividad?" icon="ui-icon-alert" />
-                </p:commandButton>
-            </p:panelGrid>
-            <p:spacer/>
-        </p:panel>
+        <h:form >
+            <p:panel class="center_inline no_border" >
+                <h1>Lista de Actividades</h1>
+                <p:dataTable id="tabla_actividad" class="center_block"
+                             var="actividad" 
+                             value="#{actividadBean.actividades}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay actividades"
+                             selection="#{actividadBean.actividadSeleccionada}" 
+                             rowKey="#{actividad.id}" 
+                             style="width: 600px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:column headerText="Codigo">
+                        <h:outputText value="#{actividad.id}" />
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{actividad.nombre}" />
+                    </p:column>
+                    <p:column headerText="Descripcion">
+                        <h:outputText value="#{actividad.descripcion}" />
+                    </p:column>
+                </p:dataTable>
+                <p:spacer/>
+                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Nuevo" 
+                                     update="actividad_dialog"
+                                     actionListener="#{actividadBean.beginCreation()}" 
+                                     oncomplete="PF('actividad_dialog_var').show()"/>                 
+                    <p:commandButton value="Ver" 
+                                     update="actividad_dialog"
+                                     actionListener="#{actividadBean.beginView()}" 
+                                     oncomplete="PF('actividad_dialog_var').show();" 
+                                     disabled="#{actividadBean.actividadSeleccionada eq null}" />
+                    <p:commandButton value="Eliminar" 
+                                     actionListener="#{actividadBean.deleteActividad()}" 
+                                     immediate="true"  
+                                     update="tabla_actividad" 
+                                     disabled="#{actividadBean.actividadSeleccionada eq null}">
+                        <p:confirm header="Confirmación" message="¿Está seguro de eliminar la actividad?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:spacer/>
+            </p:panel>
+        </h:form>
         <p:dialog id="actividad_dialog" 
                   widgetVar="actividad_dialog_var" 
                   modal="true" 
                   closable="true" 
                   resizable="false" 
                   header="#{actividadBean.modifying eq true ?'Modificar Actividad':'Información de Actividad'}" >
-            <p:panelGrid columns="2" styleClass="panel-grid-no-border">
-                <p:outputLabel for="nombre_actividad" value="Nombre:"/>
-                <p:inputText id="nombre_actividad" value="#{actividadBean.actividad.nombre}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
-                <p:outputLabel for="descripcion_actividad" value="Descripción:"/>
-                <p:inputText id="descripcion_actividad" value="#{actividadBean.actividad.descripcion}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
-                <p:commandButton value="Modificar"  actionListener="#{actividadBean.beginModification()}" rendered="#{!actividadBean.modifying and !actividadBean.creating}" update="@parent"/>
-                <p:commandButton value="Aceptar"  actionListener="#{actividadBean.createOrUpdate()}"  update="growl @parent tabla_actividad" rendered="#{actividadBean.modifying or actividadBean.creating}"/> 
-                <p:commandButton value="Cancelar" immediate="true" actionListener="#{actividadBean.reset()}" update="@form" rendered="#{actividadBean.modifying or actividadBean.creating}" oncomplete="PF('actividad_dialog_var').hide();"/>
-            </p:panelGrid>
+            <h:form id="dialog_form">
+                <p:panelGrid columns="2" styleClass="panel-grid-no-border">
+                    <p:outputLabel for="nombre_actividad" value="Nombre:"/>
+                    <p:inputText id="nombre_actividad" value="#{actividadBean.actividad.nombre}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
+                    <p:outputLabel for="descripcion_actividad" value="Descripción:"/>
+                    <p:inputText id="descripcion_actividad" value="#{actividadBean.actividad.descripcion}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
+                    <p:commandButton value="Modificar"  actionListener="#{actividadBean.beginModification()}" rendered="#{!actividadBean.modifying and !actividadBean.creating}" update="@parent"/>
+                    <p:commandButton value="Aceptar"  actionListener="#{actividadBean.createOrUpdate()}"  update="growl @parent tabla_actividad" rendered="#{actividadBean.modifying or actividadBean.creating}"/> 
+                    <p:commandButton value="Cancelar" immediate="true" actionListener="#{actividadBean.reset()}" update="@form" rendered="#{actividadBean.modifying or actividadBean.creating}" oncomplete="PF('actividad_dialog_var').hide();"/>
+                </p:panelGrid>
+            </h:form>
         </p:dialog>
     </ui:define>
 </ui:composition>
