@@ -107,11 +107,12 @@ and open the template in the editor.
             <p:menubar  styleClass="centeredMenuBar" >
 
                 <p:menuitem value="Home"  icon="fa fa-home" url="home.xhtml"/>              
-                <p:menuitem value="Mochila" icon="fa fa-suitcase" url="mochila.xhtml" rendered="#{sessionBean.isAdmin()}"/>
+                <p:menuitem value="Roles" icon="fa fa-suitcase" url="mochila.xhtml" rendered="#{sessionBean.isAdmin()}"/>
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
                 <p:menuitem value="Excursiones" icon="fa fa-binoculars" url="excursion.xhtml"/>
                 <p:menuitem value="Comentarios" icon="fa fa-comments"/>
-                <p:menuitem value="Mi carrito" icon="fa fa-shopping-cart" url="mochila.xhtml"/>
+                <p:menuitem value="Reportes" icon="fa fa-area-chart" /> 
+                <p:menuitem value="Mi Mochila" icon="fa fa-shopping-cart" />
                 <p:submenu label="Mi Perfil"  icon="fa fa-user">
                     <p:menuitem value="Project" url="#" />
                     <p:menuitem value="Other" url="#" />
@@ -128,7 +129,7 @@ and open the template in the editor.
             </p:confirmDialog>
             <p:growl id="messages" showDetail="true" life="3000" autoUpdate="true" />    
         </h:form>
-        <div style="width: 1000px;height: 600px; margin-top: 20px;margin-left: auto;margin-right: auto;">
+        <div class="main_content" >
             <ui:insert name="content" >
                 Default Content By DQ
             </ui:insert>
