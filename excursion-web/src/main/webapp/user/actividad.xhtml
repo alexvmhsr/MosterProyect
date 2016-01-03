@@ -5,12 +5,13 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:ui="http://java.sun.com/jsf/facelets" >
     <ui:define name="title">Actividades</ui:define>
     <ui:define name="content">
-        <h:form >
+        <h:form id="main_form">
             <p:panel class="center_inline no_border" >
-                <h1>Lista de Actividades</h1>
+                <h1>Actividades</h1>
                 <p:dataTable id="tabla_actividad" class="center_block"
                              var="actividad" 
                              value="#{actividadBean.actividades}" 
@@ -23,14 +24,17 @@
                              rowKey="#{actividad.id}" 
                              style="width: 600px;">
                     <p:ajax event="rowSelect"  update="@form"/>
-                    <p:column headerText="Codigo">
-                        <h:outputText value="#{actividad.id}" />
-                    </p:column>
+                    
                     <p:column headerText="Nombre">
                         <h:outputText value="#{actividad.nombre}" />
                     </p:column>
                     <p:column headerText="Descripcion">
                         <h:outputText value="#{actividad.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Costo">
+                        <h:outputText value="#{actividad.costo}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
                     </p:column>
                 </p:dataTable>
                 <p:spacer/>
@@ -39,9 +43,9 @@
                                      update="actividad_dialog"
                                      actionListener="#{actividadBean.beginCreation()}" 
                                      oncomplete="PF('actividad_dialog_var').show()"/>                 
-                    <p:commandButton value="Ver" 
+                    <p:commandButton value="Modificar" 
                                      update="actividad_dialog"
-                                     actionListener="#{actividadBean.beginView()}" 
+                                     actionListener="#{actividadBean.beginModification()}" 
                                      oncomplete="PF('actividad_dialog_var').show();" 
                                      disabled="#{actividadBean.actividadSeleccionada eq null}" />
                     <p:commandButton value="Eliminar" 
@@ -64,12 +68,15 @@
             <h:form id="dialog_form">
                 <p:panelGrid columns="2" styleClass="panel-grid-no-border">
                     <p:outputLabel for="nombre_actividad" value="Nombre:"/>
-                    <p:inputText id="nombre_actividad" value="#{actividadBean.actividad.nombre}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
+                    <p:inputText id="nombre_actividad" maxlength="32" title="Mínimo 6 caracteres" value="#{actividadBean.actividad.nombre}" required="true" requiredMessage="Ingrese un nombre válido">
+                        <f:validateLength minimum="6" maximum="32"/>
+                    </p:inputText>
                     <p:outputLabel for="descripcion_actividad" value="Descripción:"/>
-                    <p:inputText id="descripcion_actividad" value="#{actividadBean.actividad.descripcion}" required="true" readonly="#{!actividadBean.modifying and !actividadBean.creating}"/>
-                    <p:commandButton value="Modificar"  actionListener="#{actividadBean.beginModification()}" rendered="#{!actividadBean.modifying and !actividadBean.creating}" update="@parent"/>
-                    <p:commandButton value="Aceptar"  actionListener="#{actividadBean.createOrUpdate()}"  update="growl @parent tabla_actividad" rendered="#{actividadBean.modifying or actividadBean.creating}"/> 
-                    <p:commandButton value="Cancelar" immediate="true" actionListener="#{actividadBean.reset()}" update="@form" rendered="#{actividadBean.modifying or actividadBean.creating}" oncomplete="PF('actividad_dialog_var').hide();"/>
+                    <p:inputTextarea id="descripcion_actividad" rows="5" cols="30" maxlength="256"  value="#{actividadBean.actividad.descripcion}"   />
+                    <p:outputLabel for="costo_actividad" value="Costo:"/>
+                    <pe:inputNumber id="costo_actividad" value="#{actividadBean.actividad.costo}" symbol="$ " minValue="0.00" maxValue="1000001.00" decimalSeparator="," thousandSeparator="." />  
+                    <p:commandButton value="Aceptar"  actionListener="#{actividadBean.createOrUpdate()}"  update="@form :main_form" /> 
+                    <p:commandButton value="Cancelar" immediate="true" actionListener="#{actividadBean.reset()}" update="@form"  oncomplete="PF('actividad_dialog_var').hide();"/>
                 </p:panelGrid>
             </h:form>
         </p:dialog>

@@ -30,23 +30,26 @@ public class Usuario implements Serializable {
     @Column(name = "ID_USUARIO")
     private Integer id;
 
-    @Column(name = "NOMBRE_USUARIO")
+    @Column(name = "NOMBRE_USUARIO",nullable = false)
     private String nombre;
 
-    @Column(name = "CORREO_USUARIO")
+    @Column(name = "CORREO_USUARIO",nullable = false)
     private String correo;
 
-    @Column(name = "PASSWORD_USUARIO")
+    @Column(name = "PASSWORD_USUARIO",nullable = false)
     private String password;
 
     @Column(name = "TELEFONO_USUARIO")
     private String telefono;
 
-    @Column(name = "NOMBRES_COMPLETOS")
+    @Column(name = "NOMBRES_COMPLETOS",nullable = false)
     private String nombreCompleto;
 
     @Column(name = "ACERCA_DE")
     private String acercaDe;
+    
+    @Column(name = "ACTIVO",nullable = false)
+    private String activo;
 
     public Usuario() {
     }
@@ -107,6 +110,15 @@ public class Usuario implements Serializable {
         this.acercaDe = acercaDe;
     }
 
+    public void setActivo(String activo) {
+        this.activo = activo;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+        
     @Override
     public int hashCode() {
         int hash = 7;

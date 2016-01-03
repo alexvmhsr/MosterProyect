@@ -65,9 +65,7 @@
             <h:form id="dialog_form" >
                 <p:panelGrid columns="2" styleClass="panel-grid-no-border" >
                     <p:outputLabel for="nombre" value="Nombre:"/>
-                    <p:inputText id="nombre" maxlength="40" value="#{mochilaBean.mochila.nombre}" required="true" requiredMessage="Ingrese un nombre válido" >
-                        <f:validateLength minimum="6" maximum="40" />
-                    </p:inputText>
+                    <p:inputText id="nombre" maxlength="40" value="#{mochilaBean.mochila.nombre}" required="true" requiredMessage="Ingrese un nombre válido" />
                     <p:outputLabel for="descripcion" value="Descripción:"/>
                     <p:inputText id="descripcion" maxlength="64" value="#{mochilaBean.mochila.descripcion}" required="true" requiredMessage="Ingrese una descripción válida">
                         <f:validateLength minimum="6" maximum="64" />  

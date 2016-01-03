@@ -142,7 +142,10 @@ public class LoginBean extends CrudBean implements Serializable {
 
     public void beginSignUp() {
         this.beginCreate();
-
+        nombreCompletoUsuario = "";
+        claveUsuarioL = "";
+        correoUsuario = "";
+        nombreUsuarioL = "";
     }
 
     public void signUp() {
