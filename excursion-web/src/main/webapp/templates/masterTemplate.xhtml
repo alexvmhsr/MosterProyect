@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 
-<html lang="en"
+<html lang="es"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
@@ -110,8 +110,8 @@ and open the template in the editor.
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
                 <p:menuitem value="Excursiones" icon="fa fa-binoculars" url="excursion.xhtml"/>
                 <p:menuitem value="Comentarios" icon="fa fa-comments"/>
-                <p:menuitem value="Artículos" icon="fa fa-pencil" url="articulo.xhtml"/>
-                <p:menuitem value="Reportes" icon="fa fa-area-chart" url="reporte.xhtml"/> 
+                <p:menuitem value="Artículos" icon="fa fa-pencil" url="articulo.xhtml" rendered="#{sessionBean.isAdmin()}"/>
+                <p:menuitem value="Reportes" icon="fa fa-area-chart" url="reporte.xhtml" rendered="#{sessionBean.isAdmin()}"/> 
                 <p:menuitem value="Mi Mochila" icon="fa fa-shopping-cart" />
                 <p:menuitem value="Mi Perfil"  icon="fa fa-user" url="profile.xhtml" />
                 <f:facet name="options"> 

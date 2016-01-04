@@ -12,7 +12,7 @@
     <ui:define name="content">
         <h:form id="main_form" >   
             <p:panel class="center_inline no_border" >
-                <h1>Mis excursiones</h1>
+                <h1>Mis Excursiones</h1>
                 <p:dataTable id="tabla_excursion" class="center_block"
                              var="excursion" 
                              value="#{excursionBean.excursions}" 
@@ -24,7 +24,7 @@
                              selection="#{excursionBean.excursionSelected}" 
                              rowKey="#{excursion.id}" 
                              style="width: 800px;">
-                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:ajax event="rowSelect"   update="@form"/>
                     <p:column headerText="Nombre">
                         <h:outputText value="#{excursion.nombre}" />
                     </p:column>
@@ -35,6 +35,7 @@
                         <h:outputText value="#{excursion.fechaSalida}" >
                             <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
                         </h:outputText>
+                        
                     </p:column>
                     <p:column headerText="Fecha Retorno">
                         <h:outputText value="#{excursion.fechaRetorno}" >
@@ -68,17 +69,50 @@
                                      disabled="#{excursionBean.excursionSelected eq null}">
                         <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
                     </p:commandButton>
-                    <p:commandButton value="Artículos" 
+                    <p:commandButton value="Detalles" 
                                      disabled="#{excursionBean.excursionSelected eq null}"/>
 
                 </p:panelGrid>
-                <p:spacer/>
-
             </p:panel>
+            <p:spacer/>
+            <p:panelGrid id="details" columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                <p:panel header="Participantes">
+                </p:panel>
+                <p:panel header="Artículos">
+                    <p:dataTable id="tabla_articulo" class="center_block"
+                             var="excursionarticulo" 
+                             value="#{excursionBean.excursionArticulos}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay articuloes"
+                             selection="#{excursionBean.excursionSelected}" 
+                             rowKey="#{articulo.id}" 
+                             style="width: 800px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{excursionarticulo.articulo.nombre}" />
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{excursionarticulo.articulo.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{excursionarticulo.articulo.precio}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{excursionarticulo.cantidad}" />
+                    </p:column>
+                </p:dataTable>
+                </p:panel>
+            </p:panelGrid>
         </h:form>
         <p:dialog id="agregar_dialog" 
                   widgetVar="agregar_dialog_var" 
                   modal="true"  
+                  draggable="true"
                   resizable="false" 
                   header="#{excursionBean.modifying eq true ?'Modificar Excursión':'Nueva Excursión'}" >
             <h:form id="dialog_form">

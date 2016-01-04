@@ -5,9 +5,10 @@
  */
 package com.teamj.distribuidas.web;
 
+import com.teamj.distribuidas.model.Articulo;
 import com.teamj.distribuidas.model.Excursion;
+import com.teamj.distribuidas.model.ExcursionArticulo;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
-import com.teamj.distribuidas.web.util.MessageUtil;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -20,13 +21,9 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -44,6 +41,9 @@ public class ExcursionBean extends CrudBean implements Serializable {
     private String nombre;
     private String descripcion;
     private Excursion excursion;
+
+    private List<ExcursionArticulo> excursionArticulos;
+    private ExcursionArticulo excursionArticuloSelected;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -85,10 +85,19 @@ public class ExcursionBean extends CrudBean implements Serializable {
         this.excursion = excursion;
     }
 
+    public List<ExcursionArticulo> getExcursionArticulos() {
+        return excursionArticulos;
+    }
+
+    public void setExcursionArticulos(List<ExcursionArticulo> excursionArticulos) {
+        this.excursionArticulos = excursionArticulos;
+    }
+
     @PostConstruct
     public void init() {
         excursions = excursionServicio.obtenerTodas();
         this.excursion = new Excursion();
+        
 
     }
 
@@ -185,5 +194,9 @@ public class ExcursionBean extends CrudBean implements Serializable {
                 }
             }
         }
+    }
+
+    public void loadExcursionSelectedData() {
+     //   this.excursionArticulos = this.excursionServicio.obtenerArticulos(excursionSelected);
     }
 }
