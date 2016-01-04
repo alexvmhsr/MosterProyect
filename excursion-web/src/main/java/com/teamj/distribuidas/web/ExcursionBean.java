@@ -5,13 +5,19 @@
  */
 package com.teamj.distribuidas.web;
 
+import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Articulo;
 import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.model.ExcursionArticulo;
+import com.teamj.distribuidas.model.ExcursionArticuloPK;
+import com.teamj.distribuidas.model.UsuarioExcursion;
+import com.teamj.distribuidas.servicios.ArticuloServicio;
+import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -20,10 +26,12 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -36,6 +44,15 @@ public class ExcursionBean extends CrudBean implements Serializable {
     @EJB
     private ExcursionServicio excursionServicio;
 
+    @EJB
+    private ArticuloServicio articuloServicio;
+
+    @EJB
+    private ExcursionArticuloServicio excursionArticuloServicio;
+
+    @ManagedProperty(value = "#{sessionBean}")
+    private SessionBean sessionBean;
+
     private List<Excursion> excursions;
     private Excursion excursionSelected;
     private String nombre;
@@ -44,6 +61,14 @@ public class ExcursionBean extends CrudBean implements Serializable {
 
     private List<ExcursionArticulo> excursionArticulos;
     private ExcursionArticulo excursionArticuloSelected;
+    private ExcursionArticulo excursionArticulo;
+    private Articulo articulo;
+    private List<Articulo> articulos;
+    private Articulo articuloSelected;
+    private Integer cantidad;
+
+    private List<UsuarioExcursion> participantes;
+    private UsuarioExcursion participanteSeleccionado;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -93,11 +118,95 @@ public class ExcursionBean extends CrudBean implements Serializable {
         this.excursionArticulos = excursionArticulos;
     }
 
+    public ExcursionArticulo getExcursionArticuloSelected() {
+        return excursionArticuloSelected;
+    }
+
+    public void setExcursionArticuloSelected(ExcursionArticulo excursionArticuloSelected) {
+        this.excursionArticuloSelected = excursionArticuloSelected;
+    }
+
+    public void setExcursionArticulo(ExcursionArticulo excursionArticulo) {
+        this.excursionArticulo = excursionArticulo;
+    }
+
+    public ExcursionArticulo getExcursionArticulo() {
+        return excursionArticulo;
+    }
+
+    public void setArticulo(Articulo articulo) {
+        this.articulo = articulo;
+    }
+
+    public Articulo getArticulo() {
+        return articulo;
+    }
+
+    public void setArticulos(List<Articulo> articulos) {
+        this.articulos = articulos;
+    }
+
+    public List<Articulo> getArticulos() {
+        return articulos;
+    }
+
+    public void setArticuloSelected(Articulo articuloSelected) {
+        this.articuloSelected = articuloSelected;
+    }
+
+    public Articulo getArticuloSelected() {
+        return articuloSelected;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setExcursionArticuloServicio(ExcursionArticuloServicio excursionArticuloServicio) {
+        this.excursionArticuloServicio = excursionArticuloServicio;
+    }
+
+    public ExcursionArticuloServicio getExcursionArticuloServicio() {
+        return excursionArticuloServicio;
+    }
+
+    public SessionBean getSessionBean() {
+        return sessionBean;
+    }
+
+    public void setSessionBean(SessionBean sessionBean) {
+        this.sessionBean = sessionBean;
+    }
+
+    public void setParticipantes(List<UsuarioExcursion> participantes) {
+        this.participantes = participantes;
+    }
+
+    public void setParticipanteSeleccionado(UsuarioExcursion participanteSeleccionado) {
+        this.participanteSeleccionado = participanteSeleccionado;
+    }
+
+    public UsuarioExcursion getParticipanteSeleccionado() {
+        return participanteSeleccionado;
+    }
+
+    public List<UsuarioExcursion> getParticipantes() {
+        return participantes;
+    }
+
     @PostConstruct
     public void init() {
         excursions = excursionServicio.obtenerTodas();
         this.excursion = new Excursion();
-        
+        this.cantidad = 1;
+        this.articulo = new Articulo();
+        this.articulos = articuloServicio.obtenerTodas();
+        this.excursionArticulos = new ArrayList<>();
+        this.participantes = new ArrayList<>();
 
     }
 
@@ -133,7 +242,7 @@ public class ExcursionBean extends CrudBean implements Serializable {
         try {
             BeanUtils.copyProperties(this.excursion, this.excursionSelected);
 
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
         }
@@ -141,10 +250,12 @@ public class ExcursionBean extends CrudBean implements Serializable {
     }
 
     public void createOrUpdate() {
+        FacesContext context = FacesContext.getCurrentInstance();
         if (validateFields()) {
             if (this.isCreating()) {
-                excursionServicio.insertar(this.excursion);
+                excursionServicio.insertar(this.excursion, this.sessionBean.getUser());
                 this.excursions.add(0, excursion);
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La excursión ha sido creada correctamente"));
             } else {
                 excursionServicio.actualizar(this.excursion);
                 try {
@@ -196,7 +307,51 @@ public class ExcursionBean extends CrudBean implements Serializable {
         }
     }
 
-    public void loadExcursionSelectedData() {
-     //   this.excursionArticulos = this.excursionServicio.obtenerArticulos(excursionSelected);
+    public void loadExcursionSelectedData(SelectEvent event) {
+        // this.excursionArticulos = this.excursionSelected.getExcursionArticulos();
+        this.excursionArticulos = ((Excursion) event.getObject()).getExcursionArticulos();
+        this.participantes = ((Excursion) event.getObject()).getUsuarioExcursiones();
+        // FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+    public void beginExcursionArticuloCreation() {
+        this.excursionArticulo = new ExcursionArticulo();
+        ExcursionArticuloPK excursionArticuloPK = new ExcursionArticuloPK();
+        excursionArticuloPK.setIdExcursion(this.excursionSelected.getId());
+
+        this.excursionArticulo.setExcursionArticuloPK(excursionArticuloPK);
+        //this.excursionArticulo.setExcursion(excursionSelected);
+        this.articulo = new Articulo();
+        this.beginCreate();
+    }
+
+    public void createOrUpdateArticuloExcursion() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            if (this.isCreating()) {
+                this.excursionArticulo.getExcursionArticuloPK().setIdArticulo(articuloSelected.getId());
+                this.excursionArticulo.setCantidad(this.cantidad);
+                this.excursionArticuloServicio.insertar(this.excursionArticulo);
+                this.excursionArticulo.setArticulo(articuloSelected);
+                this.excursionArticulo.setExcursion(excursionSelected);
+                this.excursionArticulos.add(0, excursionArticulo);
+                this.cantidad = 1;
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido correctamente agregado"));
+            }
+        } catch (ValidationException e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+        }
+        RequestContext.getCurrentInstance().execute("PF('exc_art_dialog_var').hide()");
+        this.reset();
+
+    }
+
+    public void deleteArticuloDeExcursion() {
+        this.excursionArticuloServicio.eliminar(excursionArticuloSelected.getExcursionArticuloPK());
+        this.excursionArticulos.remove(excursionArticuloSelected);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido eliminado correctamente "));
+
+    }
+
 }

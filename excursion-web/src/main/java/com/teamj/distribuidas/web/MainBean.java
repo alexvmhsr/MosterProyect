@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import org.apache.commons.beanutils.BeanUtilsBean;
 
 /**

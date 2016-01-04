@@ -5,17 +5,20 @@
  */
 package com.teamj.distribuidas.servicios;
 
-import com.teamj.distribuidas.dao.ArticuloDAO;
-import com.teamj.distribuidas.dao.ExcursionArticuloDAO;
 import com.teamj.distribuidas.dao.ExcursionDAO;
-import com.teamj.distribuidas.model.Articulo;
+import com.teamj.distribuidas.dao.MochilaDAO;
+import com.teamj.distribuidas.dao.UsuarioExcursionDAO;
+import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Excursion;
-import com.teamj.distribuidas.model.ExcursionArticulo;
-import com.teamj.distribuidas.model.ExcursionArticuloPK;
+import com.teamj.distribuidas.model.Mochila;
+import com.teamj.distribuidas.model.Usuario;
+import com.teamj.distribuidas.model.UsuarioExcursion;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
+import javax.ejb.SessionBean;
 import javax.ejb.Stateless;
+import javax.faces.bean.ManagedProperty;
 
 /**
  *
@@ -27,21 +30,35 @@ public class ExcursionServicio {
 
     @EJB
     private ExcursionDAO excursionDAO;
-    
+
     @EJB
-    private ExcursionArticuloDAO excursionArticuloDAO;
+    private MochilaDAO mochilaDAO;
+
+    @EJB
+    private UsuarioExcursionDAO usuarioExcursionDAO;
 
     public List<Excursion> obtenerTodas() {
 
         return excursionDAO.findAll();
     }
 
-    public void insertar(Excursion m) {
+    public void insertar(Excursion e, Usuario u) throws ValidationException {
+        Mochila m = new Mochila();
+        m.setNombre("Creador");
         try {
-            this.excursionDAO.insert(m);
+            List<Mochila> tempMochilas = this.mochilaDAO.find(m);
+            if (tempMochilas != null && tempMochilas.size() == 1) {
+                this.excursionDAO.insert(e);
+                UsuarioExcursion usuarioExcursion = new UsuarioExcursion();
+                usuarioExcursion.setMochila(tempMochilas.get(0));
+                usuarioExcursion.setUsuario(u);
+                usuarioExcursion.setExcursion(e);
+                this.usuarioExcursionDAO.insert(usuarioExcursion);
+
+            }
             //this.mochilaDAO.flush();
-        } catch (Exception e) {
-            System.out.println("" + e);
+        } catch (Exception ex) {
+            throw new ValidationException(ex, "Error al crear Excursión");
         }
     }
 
@@ -61,5 +78,12 @@ public class ExcursionServicio {
         }
     }
 
-    
+    public void participar(Excursion e, Usuario u, Mochila m) throws ValidationException {
+        try {
+            this.excursionDAO.insert(e);
+            //this.mochilaDAO.flush();
+        } catch (Exception ex) {
+            throw new ValidationException(ex, "Error al crear Excursión");
+        }
+    }
 }

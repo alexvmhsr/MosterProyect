@@ -12,7 +12,7 @@
     <ui:define name="content">
         <h:form id="main_form" >   
             <p:panel class="center_inline no_border" >
-                <h1>Excursiones</h1>
+                <h1>Mis Excursiones</h1>
                 <p:dataTable id="tabla_excursion" class="center_block"
                              var="excursion" 
                              value="#{excursionBean.excursions}" 
@@ -73,26 +73,6 @@
             <p:spacer/>
             <p:panelGrid id="details" rendered="#{excursionBean.excursionSelected ne null}" columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                 <p:panel header="Participantes">
-                    <p:dataTable id="tabla_participante" class="center_inline"
-                                 var="participante" 
-                                 value="#{excursionBean.participantes}" 
-                                 selectionMode="single" 
-                                 rows="6"
-                                 paginator="true"
-                                 paginatorPosition="bottom"
-                                 emptyMessage="No hay participantes asociados a la excursión"
-                                 selection="#{excursionBean.participanteSeleccionado}" 
-                                 rowKey="#{participante.id}" 
-                                 style="width: 380px;">
-                        <p:ajax event="rowSelect"  update="@form"/>
-                        <p:column headerText="Nombre">
-                            <h:outputText value="#{participante.usuario.nombre}" />
-                        </p:column>
-                        <p:column headerText="Rol">
-                            <h:outputText value="#{participante.mochila.nombre}" />
-                        </p:column>
-                    </p:dataTable>
-                    <p:spacer/>
                 </p:panel>
                 <p:panel header="Artículos">
                     <p:dataTable id="tabla_articulo" class="center_inline"
@@ -102,7 +82,7 @@
                                  rows="6"
                                  paginator="true"
                                  paginatorPosition="bottom"
-                                 emptyMessage="No hay artículos asociados a la excursión"
+                                 emptyMessage="No hay articuloes"
                                  selection="#{excursionBean.excursionArticuloSelected}" 
                                  rowKey="#{excursionarticulo.excursionArticuloPK}" 
                                  style="width: 500px;">
@@ -135,8 +115,7 @@
                                          actionListener="#{excursionBean.deleteArticuloDeExcursion()}" 
                                          immediate="true">
                             <p:confirm header="Confirmación" message="¿Está seguro de eliminar el artículo de la excursion?" icon="ui-icon-alert" />
-                        </p:commandButton>           
-                    </p:panelGrid>      
+                        </p:commandButton>           </p:panelGrid>      
                 </p:panel>
             </p:panelGrid>
         </h:form>
