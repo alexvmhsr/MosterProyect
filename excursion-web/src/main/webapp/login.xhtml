@@ -4,6 +4,8 @@
        xmlns:f="http://java.sun.com/jsf/core"
        xmlns:h="http://java.sun.com/jsf/html"
        xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:pe="http://primefaces.org/ui/extensions"
+
        xmlns:p="http://primefaces.org/ui">
     <f:view contentType="text/html">
         <h:head>
@@ -14,8 +16,8 @@
             <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/images/favicon.ico"/>
         </h:head>
         <h:body >
-            <h:form >
-                <p:growl id="growl1" showDetail="true" life="2000"/>
+            <h:form id="main_form">
+                <p:growl id="growl1" showDetail="true" />
                 <p:spacer height="30px;"/>
                 <p:graphicImage style="display: block; margin-left: auto;margin-right: auto;" value="images/logo.png"   />
                 <p:spacer height="30px;"/>
@@ -23,12 +25,12 @@
                     <h:panelGrid columns="2"  cellpadding="5">
                         <p:outputLabel for="username" value="Usuario:" />
                         <p:inputText value="#{loginBean.nombreUsuario}" id="username"
-                                     required="false" label="username" requiredMessage="Introduzca el nombre de usuario">
+                                     required="true" label="username" requiredMessage="Introduzca el nombre de usuario">
                             <f:validateLength minimum="3" />
                         </p:inputText>
                         <p:outputLabel for="password" value="Password:" />
-                        <p:password value="#{loginBean.claveUsuario}" id="password" required="false" 
-                                    label="password" requiredMessage="Introduzca el password de usuario" >
+                        <p:password value="#{loginBean.claveUsuario}" id="password" required="true" 
+                                    label="password" requiredMessage="Introduzca la contraseña de usuario" >
                             <f:validateLength minimum="3" /></p:password>
                         <f:facet name="footer" class="center_block">
                             <p:commandButton value="Acceder" id="login_button" icon="fa fa-sign-in" style="margin: 5px;color: white; background: #009345;" action="#{loginBean.login()}" update="@form" />
@@ -45,26 +47,34 @@
                         </p:panelGrid>
                     </div>
                 </p:panel>
-                <p:dialog id="signup_dialog" 
-                          widgetVar="signup_dialog_var" 
-                          modal="true" 
-                          closable="true" 
-                          resizable="false" 
-                          header="Nuevo Usuario" >
+            </h:form>
+            <p:dialog id="signup_dialog" 
+                      widgetVar="signup_dialog_var" 
+                      modal="true" 
+                      closable="true" 
+                      resizable="false" 
+                      header="Nuevo Usuario" >
+                <h:form id="register_form">
                     <p:panelGrid columns="1"  styleClass="center_block login-form-container panel-grid-no-border">
-                        <p:inputText id="nombre_signup" maxlength="32" styleClass="login-form-input"  placeholder="Nombre de Usuario" value="#{loginBean.nombreUsuarioL}" />     
-                        <p:inputText id="correo" maxlength="32" styleClass="login-form-input"  autocomplete="true" placeholder="Correo" value="#{loginBean.correoUsuario}" />     
+                        <p:inputText id="nombre_signup" title="Solo caracteres alfanuméricos" maxlength="32" styleClass="login-form-input"  placeholder="Nombre de Usuario" value="#{loginBean.nombreUsuarioL}" >
+                            <pe:keyFilter regEx="/[a-z0-9_]/i"/> 
+                        </p:inputText>     
+                        <p:inputText id="correo" maxlength="32" styleClass="login-form-input"  autocomplete="true" placeholder="Correo" value="#{loginBean.correoUsuario}" >
+                            <pe:keyFilter regEx="/[a-z0-9_\.\-@]/i"/> 
+                        </p:inputText>     
                         <p:password id="password_signup" maxlength="32" styleClass="login-form-input" placeholder="Contraseña" value="#{loginBean.claveUsuarioL}"  lang="es" feedback="true"/>     
-                        <p:inputText id="nombre_completo" maxlength="200" styleClass="login-form-input" autocomplete="true" placeholder="Nombres Completos" value="#{loginBean.nombreCompletoUsuario}" />     
+                        <p:inputText id="nombre_completo" maxlength="200" styleClass="login-form-input" autocomplete="true" placeholder="Nombres Completos" value="#{loginBean.nombreCompletoUsuario}" >
+                            <pe:keyFilter regEx="/[a-z_\s]/i"/> 
+                        </p:inputText>     
                         <p:spacer/>
-                        <p:commandButton value="Registrarme" icon="fa fa-check" process="@form"  styleClass="login-form-input" actionListener="#{loginBean.signUp()}" update="@form"/>
+                        <p:commandButton value="Registrarme" icon="fa fa-check" process="@form"  styleClass="login-form-input" actionListener="#{loginBean.signUp()}" update=":main_form"/>
                         <p:spacer/>
                         <f:facet name="footer" class="center_block">
                             <p:outputLabel value="Al Registrarse acepta nuestros términos y condiciones" style="text-align: center;  color: #455A64;"/>
                         </f:facet>
                     </p:panelGrid>
-                </p:dialog>
-            </h:form>
+                </h:form>
+            </p:dialog>
         </h:body>
     </f:view>
 </html>

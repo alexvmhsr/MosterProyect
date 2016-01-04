@@ -49,22 +49,28 @@
                 </p:dataTable>
                 <p:spacer/>
                 <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                    <p:commandButton value="Nuevo"                               
+                    <p:commandButton value="Nuevo"  
+                                     icon="fa fa-plus"
                                      update="agregar_dialog"
                                      actionListener="#{excursionBean.beginCreation()}" 
                                      oncomplete="PF('agregar_dialog_var').show()"/>                 
                     <p:commandButton value="Modificar" 
+                                     icon="fa fa-edit"
                                      update="agregar_dialog"
                                      actionListener="#{excursionBean.beginModification()}" 
                                      oncomplete="PF('agregar_dialog_var').show();" 
                                      disabled="#{excursionBean.excursionSelected eq null}" />
                     <p:commandButton value="Eliminar" 
                                      actionListener="#{excursionBean.deleteExcursion()}" 
-                                     immediate="true"  
+                                     immediate="true" 
+                                     icon="fa fa-remove"
                                      update="tabla_excursion"  
                                      disabled="#{excursionBean.excursionSelected eq null}">
                         <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
                     </p:commandButton>
+                    <p:commandButton value="Artículos" 
+                                     disabled="#{excursionBean.excursionSelected eq null}"/>
+
                 </p:panelGrid>
                 <p:spacer/>
 
@@ -74,7 +80,7 @@
                   widgetVar="agregar_dialog_var" 
                   modal="true"  
                   resizable="false" 
-                  header="#{excursionBean.modifying eq true ?'Modificar Excursion':'Nueva Excursion'}" >
+                  header="#{excursionBean.modifying eq true ?'Modificar Excursión':'Nueva Excursión'}" >
             <h:form id="dialog_form">
                 <p:panelGrid columns="1" styleClass="panel-grid-no-border">
                     <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
@@ -103,11 +109,15 @@
                             <f:validateLongRange minimum="2" maximum="1000000"/>
                         </pe:inputNumber>
                         <p:outputLabel for="objetivo" value="Objetivo:"/>
-                        <p:inputTextarea id="objetivo" rows="5" cols="30" value="#{excursionBean.excursion.objetivo}"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:inputTextarea id="objetivo" rows="5" cols="30" 
+                                         value="#{excursionBean.excursion.objetivo}"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
                         <p:outputLabel for="riesgos" value="Riesgos:"/>
-                        <p:inputTextarea id="riesgos" rows="5" cols="30"  maxlength="300" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:inputTextarea id="riesgos" rows="5" cols="30" 
+                                         value="#{excursionBean.excursion.riesgos}" maxlength="300" counterTemplate="{0} caracteres restantes." autoResize="false" />
                         <p:outputLabel for="observaciones" value="Observaciones:"/>
-                        <p:inputTextarea id="observaciones" rows="5" cols="30"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:inputTextarea id="observaciones" rows="5" cols="30"
+                                         value="#{excursionBean.excursion.observaciones}"
+                                         maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
                     </p:panelGrid>
                     <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
                         <p:commandButton value="Aceptar"  actionListener="#{excursionBean.createOrUpdate()}"  update="@form :main_form" /> 

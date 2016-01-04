@@ -66,4 +66,14 @@ public class SessionBean implements Serializable {
         }
         return false;
     }
+/**
+ * 
+ * @return si es el usuario administrador es proveedor
+ */
+    public boolean isProvider() {
+        if (user != null) {
+            return user.getActivo().equals("P");
+        }
+        return false;
+    }
 }
