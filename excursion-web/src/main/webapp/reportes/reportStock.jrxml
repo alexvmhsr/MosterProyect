@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd104f33-e91c-4bc7-8b65-6a9cc684c12a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="3f227f90-55fe-4f97-9a44-070edde38157"/>
+	<queryString>
+		<![CDATA[select id_articulo, nombre_articulo, stock
+from articulo
+where stock < 6]]>
+	</queryString>
+	<field name="ID_ARTICULO" class="java.math.BigDecimal"/>
+	<field name="NOMBRE_ARTICULO" class="java.lang.String"/>
+	<field name="STOCK" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="199" y="22" width="128" height="20" uuid="c3424fa4-6b59-436b-a039-fd264c6ccd68"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Stock]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="99" y="6" width="100" height="20" uuid="48b49d51-cadb-46f4-bf89-7658d82b2702"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="37" y="6" width="51" height="20" uuid="cd843f34-30c3-4b1f-8463-f59cd9fa1b7f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="37" y="2" width="100" height="20" uuid="bc99053d-f410-4cfe-bc05-8ba1819f2830"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="245" y="2" width="100" height="20" uuid="1baa3962-51ef-4877-82e8-dcadc6b0984d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="2" width="100" height="20" uuid="f8a199a2-a7b4-4b96-8d8b-abd8b4ea20cd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[STOCK]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="37" y="7" width="100" height="20" uuid="4fcb8779-afa2-4fa9-b3ae-a44a570f624a"/>
+				<textFieldExpression><![CDATA[$F{ID_ARTICULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="7" width="100" height="20" uuid="aadd99c0-b9a9-4fdf-b01e-3637e1219919"/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="7" width="100" height="20" uuid="8768f916-84a4-4964-8982-2bd592f1d7b9"/>
+				<textFieldExpression><![CDATA[$F{STOCK}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
