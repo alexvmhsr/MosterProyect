@@ -5,9 +5,6 @@
  */
 package com.teamj.distribuidas.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -16,10 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import java.sql.*;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 /**
  *
@@ -36,7 +30,6 @@ public class ReporteBean implements Serializable {
     {
         try
         {
-            
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
             System.out.println("Conexion realizada");
             FacesContext context = FacesContext.getCurrentInstance();
@@ -53,7 +46,6 @@ public class ReporteBean implements Serializable {
             response.setContentType("application/pdf");
             System.out.println("Formato PDf");
             JasperPrint jp = JasperFillManager.fillReport(path, null, conn);
-            
             System.out.println("Ruta");
             JasperExportManager.exportReportToPdfStream(jp, response.getOutputStream());
             System.out.println("exporrtando");

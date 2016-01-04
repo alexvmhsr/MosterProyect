@@ -63,10 +63,18 @@ public class UsuarioServicio {
 
     public boolean actualizar(Usuario u) throws ValidationException {
         boolean flag = false;
-
         try {
-
-            this.usuarioDAO.update(u);
+            Usuario userToUpdate = this.usuarioDAO.findById(u.getId(), false);
+            if (userToUpdate != null) {
+                userToUpdate.setAcercaDe(u.getAcercaDe());
+                userToUpdate.setActivo(u.getActivo());
+                userToUpdate.setNombre(u.getNombre());
+                userToUpdate.setNombreCompleto(u.getNombreCompleto());
+                userToUpdate.setTelefono(u.getTelefono());
+                //el passoword no voy a tomar en cuenta
+                userToUpdate.setCorreo(u.getCorreo());
+                this.usuarioDAO.update(userToUpdate);
+            }
             flag = true;
 
         } catch (Exception e) {
@@ -78,7 +86,6 @@ public class UsuarioServicio {
 
     public boolean cambiarContraseña(Usuario u, String oldP, String newP, String reNewP) throws ValidationException {
         boolean flag = false;
-
         try {
             if (DigestUtils.md5Hex(oldP).equals(u.getPassword()) && newP.equals(reNewP)) {
                 u.setPassword(DigestUtils.md5Hex(newP));
@@ -88,7 +95,6 @@ public class UsuarioServicio {
         } catch (Exception e) {
             throw new ValidationException(e, "Error  al actualizar el usuario");
         }
-
         return flag;
     }
 

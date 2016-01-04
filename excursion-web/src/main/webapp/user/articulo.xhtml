@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                >
+    <ui:define name="title">Articulo</ui:define>
+    <ui:define name="content">
+        <h:form id="main_form" >   
+            <p:panel class="center_inline no_border" >
+                <h1>Artículos de Excursión</h1>
+                <p:dataTable id="tabla_articulo" class="center_block"
+                             var="articulo" 
+                             value="#{articuloBean.articulos}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay articuloes"
+                             selection="#{articuloBean.articuloSelected}" 
+                             rowKey="#{articulo.id}" 
+                             style="width: 800px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{articulo.nombre}" />
+                    </p:column>
+                    <p:column headerText="Descripción">
+                        <h:outputText value="#{articulo.descripcion}" />
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{articulo.precio}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Stock">
+                        <h:outputText value="#{articulo.stock}" />
+                    </p:column>
+                </p:dataTable>
+                <p:spacer/>
+                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Nuevo"  
+                                     icon="fa fa-plus"
+                                     update="articulo_dialog"
+                                     actionListener="#{articuloBean.beginCreation()}"
+                                     oncomplete="PF('articulo_dialog_var').show()"/>                 
+                    <p:commandButton value="Modificar" 
+                                     icon="fa fa-edit"
+                                     update="articulo_dialog"
+                                     actionListener="#{articuloBean.beginModification()}" 
+                                     oncomplete="PF('articulo_dialog_var').show()" 
+                                     disabled="#{articuloBean.articuloSelected eq null}" />
+                    <p:commandButton value="Eliminar" 
+                                     actionListener="#{articuloBean.deleteArticulo()}" 
+                                     immediate="true" 
+                                     icon="fa fa-remove"
+                                     update="tabla_articulo"  
+                                     disabled="#{articuloBean.articuloSelected eq null}">
+                        <p:confirm header="Confirmación" message="¿Está seguro de eliminar la articulo?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:panelGrid>
+                <p:spacer/>
+            </p:panel>
+        </h:form>
+        <p:dialog id="articulo_dialog" 
+                  widgetVar="articulo_dialog_var" 
+                  modal="true"  
+                  resizable="false" 
+                  header="#{articuloBean.modifying eq true ?'Modificar Artículo':'Nuevo Artículo'}" >
+            <h:form id="dialog_form">
+                <p:panelGrid columns="1" styleClass="panel-grid-no-border">
+                    <p:panelGrid columns="2" styleClass="panel-grid-no-border" >
+                        <p:outputLabel for="nombre" value="Nombre:"/>
+                        <p:inputText id="nombre" maxlength="32" 
+                                     value="#{articuloBean.articulo.nombre}" 
+                                     requiredMessage="Ingrese un artículo" 
+                                     required="true" >
+                        </p:inputText>
+                        <p:outputLabel for="desc" value="Descripción:"/>
+                        <p:inputTextarea id="desc" rows="6" cols="30" 
+                                         value="#{articuloBean.articulo.descripcion}" 
+                                         maxlength="256" 
+                                         counter="contador" 
+                                         counterTemplate="{0} caracteres restantes." 
+                                         autoResize="false" />
+                        <p:spacer />
+                        <p:outputLabel id="contador" />
+
+                        <p:outputLabel for="costo" value="Precio:"/>
+                        <pe:inputNumber id="costo" value="#{articuloBean.articulo.precio}" 
+                                        symbol="$ " 
+                                        minValue="0.00" 
+                                        maxValue="1000001.00" 
+                                        decimalSeparator="," 
+                                        thousandSeparator="." 
+                                        required="true" 
+                                        requiredMessage="Ingrese el costo" />  
+                        <p:outputLabel for="stock" value="Stock:"/>
+                        <pe:inputNumber id="stock"
+                                        minValue="0" 
+                                        maxValue="100000001" 
+                                        value="#{articuloBean.articulo.stock}" 
+                                        required="true"
+                                        requiredMessage="Ingrese el stock del artículo">
+                        </pe:inputNumber>
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
+                        <p:commandButton value="Aceptar"  actionListener="#{articuloBean.createOrUpdate()}"  update=":main_form" /> 
+                        <p:commandButton value="Cancelar" immediate="true" actionListener="#{articuloBean.reset()}" update="@form"  oncomplete="PF('articulo_dialog_var').hide();"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+

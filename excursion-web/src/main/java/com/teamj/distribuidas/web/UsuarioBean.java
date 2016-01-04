@@ -10,7 +10,6 @@ import com.teamj.distribuidas.model.Usuario;
 import com.teamj.distribuidas.servicios.UsuarioServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -110,12 +109,13 @@ public class UsuarioBean extends CrudBean implements Serializable {
     }
 
     public void update() {
+        FacesContext context = FacesContext.getCurrentInstance();
         try {
             usuarioServicio.actualizar(this.usuario);
             BeanUtils.copyProperties(sessionBean.getUser(), this.usuario);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La información del usuario se ha actualizado correctamente"));
 
         } catch (ValidationException | IllegalAccessException | InvocationTargetException e) {
-            FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error no controlado", e.getMessage()));
         }
         RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
