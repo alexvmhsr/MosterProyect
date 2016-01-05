@@ -16,9 +16,12 @@ import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,9 +32,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import org.apache.commons.beanutils.BeanUtils;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.event.ToggleSelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -39,7 +47,7 @@ import org.primefaces.event.SelectEvent;
  */
 @ManagedBean
 @SessionScoped
-public class ExcursionBean extends CrudBean implements Serializable {
+public class ExcursionUserBean extends CrudBean implements Serializable {
 
     @EJB
     private ExcursionServicio excursionServicio;
@@ -60,7 +68,7 @@ public class ExcursionBean extends CrudBean implements Serializable {
     private Excursion excursion;
 
     private List<ExcursionArticulo> excursionArticulos;
-    private ExcursionArticulo excursionArticuloSelected;
+    private List<ExcursionArticulo> excursionArticulosSelected;
     private ExcursionArticulo excursionArticulo;
     private Articulo articulo;
     private List<Articulo> articulos;
@@ -69,6 +77,9 @@ public class ExcursionBean extends CrudBean implements Serializable {
 
     private List<UsuarioExcursion> participantes;
     private UsuarioExcursion participanteSeleccionado;
+
+    private BigDecimal subtotal;
+    private Integer totalArticulos;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -118,12 +129,12 @@ public class ExcursionBean extends CrudBean implements Serializable {
         this.excursionArticulos = excursionArticulos;
     }
 
-    public ExcursionArticulo getExcursionArticuloSelected() {
-        return excursionArticuloSelected;
+    public List<ExcursionArticulo> getExcursionArticulosSelected() {
+        return excursionArticulosSelected;
     }
 
-    public void setExcursionArticuloSelected(ExcursionArticulo excursionArticuloSelected) {
-        this.excursionArticuloSelected = excursionArticuloSelected;
+    public void setExcursionArticulosSelected(List<ExcursionArticulo> excursionArticulosSelected) {
+        this.excursionArticulosSelected = excursionArticulosSelected;
     }
 
     public void setExcursionArticulo(ExcursionArticulo excursionArticulo) {
@@ -198,15 +209,34 @@ public class ExcursionBean extends CrudBean implements Serializable {
         return participantes;
     }
 
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public void setTotalArticulos(Integer totalArticulos) {
+        this.totalArticulos = totalArticulos;
+    }
+
+    public Integer getTotalArticulos() {
+        return totalArticulos;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
     @PostConstruct
     public void init() {
         excursions = excursionServicio.obtenerTodas();
         this.excursion = new Excursion();
         this.cantidad = 1;
+        this.subtotal = new BigDecimal(0);
+        this.totalArticulos = 0;
         this.articulo = new Articulo();
         this.articulos = articuloServicio.obtenerTodas();
         this.excursionArticulos = new ArrayList<>();
         this.participantes = new ArrayList<>();
+        this.excursionSelected = new Excursion();
 
     }
 
@@ -261,7 +291,7 @@ public class ExcursionBean extends CrudBean implements Serializable {
                 try {
                     BeanUtils.copyProperties(this.excursionSelected, this.excursion);
                 } catch (IllegalAccessException | InvocationTargetException ex) {
-                    Logger.getLogger(ExcursionBean.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ExcursionUserBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -311,7 +341,17 @@ public class ExcursionBean extends CrudBean implements Serializable {
         // this.excursionArticulos = this.excursionSelected.getExcursionArticulos();
         this.excursionArticulos = ((Excursion) event.getObject()).getExcursionArticulos();
         this.participantes = ((Excursion) event.getObject()).getUsuarioExcursiones();
-        // FacesContext.getCurrentInstance().addMessage(null, msg);
+        try {
+            BeanUtils.copyProperties(this.excursion, this.excursionSelected);
+            // FacesContext.getCurrentInstance().addMessage(null, msg);
+        } catch (IllegalAccessException | InvocationTargetException ex) {
+            Logger.getLogger(ExcursionUserBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.totalArticulos = 0;
+        this.subtotal = new BigDecimal(BigInteger.ZERO);
+        if (this.excursionArticulosSelected != null) {
+            this.excursionArticulosSelected.clear();
+        }
     }
 
     public void beginExcursionArticuloCreation() {
@@ -346,11 +386,52 @@ public class ExcursionBean extends CrudBean implements Serializable {
 
     }
 
-    public void deleteArticuloDeExcursion() {
-        this.excursionArticuloServicio.eliminar(excursionArticuloSelected.getExcursionArticuloPK());
-        this.excursionArticulos.remove(excursionArticuloSelected);
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido eliminado correctamente "));
+    public String duracion(Date salida, Date retorno) {
+        int days = Days.daysBetween(new LocalDate(salida), new LocalDate(retorno)).getDays();
+        return String.valueOf(days);
+    }
+
+    public void unselectDisabledRow(UnselectEvent e) {
+        this.subtotal = new BigDecimal(BigInteger.ZERO);
+        this.totalArticulos = 0;
+        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
+
+            this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
+            this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+
+        }
+
+    }
+
+    public void selectDisabledRow(SelectEvent e) {
+        this.subtotal = new BigDecimal(BigInteger.ZERO);
+        this.totalArticulos = 0;
+        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
+            if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
+                this.excursionArticulosSelected.remove(i);
+
+            } else {
+                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
+                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+            }
+
+        }
+
+    }
+
+    public void unselectDisabledRow(ToggleSelectEvent e) {
+        this.subtotal = new BigDecimal(BigInteger.ZERO);
+        this.totalArticulos = 0;
+        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
+            if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
+                this.excursionArticulosSelected.remove(i);
+
+            } else {
+                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
+                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+            }
+
+        }
 
     }
 

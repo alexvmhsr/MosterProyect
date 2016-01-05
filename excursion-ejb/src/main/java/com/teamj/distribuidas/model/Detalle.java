@@ -11,8 +11,11 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +27,8 @@ import javax.persistence.Table;
 public class Detalle implements Serializable {
 
     @Id
+    @SequenceGenerator(name = "DETALLE_SEQ1", sequenceName = "DETALLE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "DETALLE_SEQ1")
     @Column(name = "ID_DETALLE", nullable = false)
     private Integer id;
 

@@ -12,7 +12,7 @@
     <ui:define name="content">
         <h:form id="main_form" >   
             <p:panel class="center_inline no_border" >
-                <h1>Mis excursiones</h1>
+                <h1>Excursiones</h1>
                 <p:dataTable id="tabla_excursion" class="center_block"
                              var="excursion" 
                              value="#{excursionBean.excursions}" 
@@ -24,7 +24,7 @@
                              selection="#{excursionBean.excursionSelected}" 
                              rowKey="#{excursion.id}" 
                              style="width: 800px;">
-                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:ajax event="rowSelect"  listener="#{excursionBean.loadExcursionSelectedData}"  update=":main_form"/>
                     <p:column headerText="Nombre">
                         <h:outputText value="#{excursion.nombre}" />
                     </p:column>
@@ -68,17 +68,82 @@
                                      disabled="#{excursionBean.excursionSelected eq null}">
                         <p:confirm header="Confirmación" message="¿Está seguro de eliminar la excursion?" icon="ui-icon-alert" />
                     </p:commandButton>
-                    <p:commandButton value="Artículos" 
-                                     disabled="#{excursionBean.excursionSelected eq null}"/>
-
                 </p:panelGrid>
-                <p:spacer/>
-
             </p:panel>
+            <p:spacer/>
+            <p:panelGrid id="details" rendered="#{excursionBean.excursionSelected ne null}" columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                <p:panel header="Participantes">
+                    <p:dataTable id="tabla_participante" class="center_inline"
+                                 var="participante" 
+                                 value="#{excursionBean.participantes}" 
+                                 selectionMode="single" 
+                                 rows="6"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 emptyMessage="No hay participantes asociados a la excursión"
+                                 selection="#{excursionBean.participanteSeleccionado}" 
+                                 rowKey="#{participante.id}" 
+                                 style="width: 380px;">
+                        <p:ajax event="rowSelect"  update="@form"/>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{participante.usuario.nombre}" />
+                        </p:column>
+                        <p:column headerText="Rol">
+                            <h:outputText value="#{participante.mochila.nombre}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:spacer/>
+                </p:panel>
+                <p:panel header="Artículos">
+                    <p:dataTable id="tabla_articulo" class="center_inline"
+                                 var="excursionarticulo" 
+                                 value="#{excursionBean.excursionArticulos}" 
+                                 selectionMode="single" 
+                                 rows="6"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 emptyMessage="No hay artículos asociados a la excursión"
+                                 selection="#{excursionBean.excursionArticuloSelected}" 
+                                 rowKey="#{excursionarticulo.excursionArticuloPK}" 
+                                 style="width: 500px;">
+                        <p:ajax event="rowSelect"  update="@form"/>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{excursionarticulo.articulo.nombre}" />
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{excursionarticulo.articulo.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{excursionarticulo.articulo.precio}" >
+                                <f:convertNumber currencySymbol="$" type="currency" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Cantidad">
+                            <h:outputText value="#{excursionarticulo.cantidad}" />
+                        </p:column>
+                    </p:dataTable>
+                    <p:spacer/>
+                    <p:panelGrid  columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                        <p:commandButton value="Nuevo"  
+                                         icon="fa fa-plus"
+                                         update="exc_art_dialog"
+                                         actionListener="#{excursionBean.beginExcursionArticuloCreation()}" 
+                                         oncomplete="PF('exc_art_dialog_var').show()"/>                 
+                        <p:commandButton value="Eliminar"  
+                                         icon="fa fa-remove"
+                                         update="@form"
+                                         actionListener="#{excursionBean.deleteArticuloDeExcursion()}" 
+                                         immediate="true">
+                            <p:confirm header="Confirmación" message="¿Está seguro de eliminar el artículo de la excursion?" icon="ui-icon-alert" />
+                        </p:commandButton>           
+                    </p:panelGrid>      
+                </p:panel>
+            </p:panelGrid>
         </h:form>
         <p:dialog id="agregar_dialog" 
                   widgetVar="agregar_dialog_var" 
                   modal="true"  
+                  draggable="true"
                   resizable="false" 
                   header="#{excursionBean.modifying eq true ?'Modificar Excursión':'Nueva Excursión'}" >
             <h:form id="dialog_form">
@@ -86,7 +151,7 @@
                     <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
                         <p:outputLabel for="nombre" value="Nombre:"/>
                         <p:inputText id="nombre" maxlength="200" value="#{excursionBean.excursion.nombre}" required="true" >
-                            <f:validateLength minimum="8" maximum="200" />
+                            <f:validateLength minimum="6" maximum="200" />
                         </p:inputText>
                         <p:outputLabel for="destino" value="Destino:"/>
                         <p:inputText id="destino" maxlength="100" value="#{excursionBean.excursion.destino}" required="true" />
@@ -106,7 +171,7 @@
                         </p:calendar>
                         <p:outputLabel for="max_asistentes" value="Asistentes (max):"/>
                         <pe:inputNumber  id="max_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.maxAsistentes}" required="true">
-                            <f:validateLongRange minimum="2" maximum="1000000"/>
+
                         </pe:inputNumber>
                         <p:outputLabel for="objetivo" value="Objetivo:"/>
                         <p:inputTextarea id="objetivo" rows="5" cols="30" 
@@ -122,6 +187,56 @@
                     <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
                         <p:commandButton value="Aceptar"  actionListener="#{excursionBean.createOrUpdate()}"  update="@form :main_form" /> 
                         <p:commandButton value="Cancelar" immediate="true" actionListener="#{excursionBean.reset()}" update="@form"  oncomplete="PF('agregar_dialog_var').hide();"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        <p:dialog id="exc_art_dialog" 
+                  widgetVar="exc_art_dialog_var" 
+                  modal="true"  
+                  draggable="true"
+                  resizable="false" 
+                  header="#{excursionBean.modifying eq true ?'Modificar Artículo de Escursión':'Nuevo Artículo de Escursión'}" >
+            <h:form id="exc_art_form">
+                <p:panelGrid columns="1" styleClass="panel-grid-no-border">
+                    <p:dataTable id="tabla_articulo" class="center_block"
+                                 var="articulo" 
+                                 value="#{excursionBean.articulos}" 
+                                 selectionMode="single" 
+                                 rows="5"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 emptyMessage="No hay articulos"
+                                 selection="#{excursionBean.articuloSelected}" 
+                                 rowKey="#{articulo.id}" 
+                                 style="width: 500px;">
+                        <p:ajax event="rowSelect"  update="@form"/>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{articulo.nombre}" />
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{articulo.descripcion}" />
+                        </p:column>
+                        <p:column headerText="Precio">
+                            <h:outputText value="#{articulo.precio}" >
+                                <f:convertNumber currencySymbol="$" type="currency" />
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                    <p:spacer/>
+                    <p:panelGrid columns="3" styleClass="panel-grid-no-border center_block">
+                        <p:outputLabel for="cantidad" value="Cantidad:"/>
+                        <pe:inputNumber id="cantidad" 
+                                        value="#{excursionBean.cantidad}" 
+                                        minValue="0" 
+                                        maxValue="100000"
+                                        required="true"
+                                        disabled="#{excursionBean.articuloSelected eq null}"
+                                        requiredMessage="Ingrese la cantidad"/>
+                        <p:commandButton value="Aceptar" 
+                                         disabled="#{excursionBean.articuloSelected eq null}" 
+                                         actionListener="#{excursionBean.createOrUpdateArticuloExcursion()}"  
+                                         update="@form :main_form" /> 
                     </p:panelGrid>
                 </p:panelGrid>
             </h:form>

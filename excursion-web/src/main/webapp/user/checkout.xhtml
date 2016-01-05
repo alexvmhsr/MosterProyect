@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                >
+    <ui:define name="title">Articulo</ui:define>
+    <ui:define name="content">
+        <h:form id="main_form" >   
+            <p:panel class="center_inline no_border" >
+                <h1>Mis articuloes</h1>
+                <p:dataTable id="tabla_articulo" class="center_block"
+                             var="articulo" 
+                             value="#{articuloBean.articulos}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay articuloes"
+                             selection="#{articuloBean.articuloSelected}" 
+                             rowKey="#{articulo.id}" 
+                             style="width: 800px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{articulo.nombre}" />
+                    </p:column>
+                    <p:column headerText="Destino">
+                        <h:outputText value="#{articulo.destino}" />
+                    </p:column>
+                    <p:column headerText="Fecha Salida">
+                        <h:outputText value="#{articulo.fechaSalida}" >
+                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Retorno">
+                        <h:outputText value="#{articulo.fechaRetorno}" >
+                            <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Costo">
+                        <h:outputText value="#{articulo.costo}" >
+                            <f:convertNumber currencySymbol="$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <p:spacer/>
+                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Nuevo"  
+                                     icon="fa fa-plus"
+                                     update="agregar_dialog"
+                                     actionListener="#{articuloBean.beginCreation()}" 
+                                     oncomplete="PF('agregar_dialog_var').show()"/>                 
+                    <p:commandButton value="Modificar" 
+                                     icon="fa fa-edit"
+                                     update="agregar_dialog"
+                                     actionListener="#{articuloBean.beginModification()}" 
+                                     oncomplete="PF('agregar_dialog_var').show();" 
+                                     disabled="#{articuloBean.articuloSelected eq null}" />
+                    <p:commandButton value="Eliminar" 
+                                     actionListener="#{articuloBean.deleteArticulo()}" 
+                                     immediate="true" 
+                                     icon="fa fa-remove"
+                                     update="tabla_articulo"  
+                                     disabled="#{articuloBean.articuloSelected eq null}">
+                        <p:confirm header="Confirmación" message="¿Está seguro de eliminar la articulo?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                    <p:commandButton value="Artículos" 
+                                     disabled="#{articuloBean.articuloSelected eq null}"/>
+
+                </p:panelGrid>
+                <p:spacer/>
+
+            </p:panel>
+        </h:form>
+        <p:dialog id="agregar_dialog" 
+                  widgetVar="agregar_dialog_var" 
+                  modal="true"  
+                  resizable="false" 
+                  header="#{articuloBean.modifying eq true ?'Modificar Excursión':'Nueva Excursión'}" >
+            <h:form id="dialog_form">
+                <p:panelGrid columns="1" styleClass="panel-grid-no-border">
+                    <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
+                        <p:outputLabel for="nombre" value="Nombre:"/>
+                        <p:inputText id="nombre" maxlength="200" value="#{articuloBean.articulo.nombre}" required="true" >
+                            <f:validateLength minimum="8" maximum="200" />
+                        </p:inputText>
+                        <p:outputLabel for="destino" value="Destino:"/>
+                        <p:inputText id="destino" maxlength="100" value="#{articuloBean.articulo.destino}" required="true" />
+                        <p:outputLabel for="fecha_lim" value="Fecha Límite:"/>
+                        <p:calendar id="fecha_lim"  value="#{articuloBean.articulo.fechaLimite}" locale="es" timeControlType="select" pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{articuloBean.todayDate()}" required="true">
+                        </p:calendar>
+                        <p:outputLabel for="costo" value="Costo:"/>
+                        <pe:inputNumber id="costo" value="#{articuloBean.articulo.costo}" symbol="$ " minValue="0.00" maxValue="1000001.00" decimalSeparator="," thousandSeparator="." />  
+                        <p:outputLabel for="fecha_salida" value="Fecha Salida:"/>
+                        <p:calendar id="fecha_salida" value="#{articuloBean.articulo.fechaSalida}" locale="es"  pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{articuloBean.todayDate()}" required="true" >
+                        </p:calendar>
+                        <p:outputLabel for="min_asistentes" value="Asistentes (mín):"/>
+                        <pe:inputNumber id="min_asistentes" minValue="2" maxValue="1000001" value="#{articuloBean.articulo.minAsistentes}" required="true" >
+                        </pe:inputNumber>
+                        <p:outputLabel for="fecha_retorno" value="Fecha Retorno:"/>
+                        <p:calendar id="fecha_retorno"  value="#{articuloBean.articulo.fechaRetorno}" locale="es" pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{articuloBean.todayDate()}" required="true" >
+                        </p:calendar>
+                        <p:outputLabel for="max_asistentes" value="Asistentes (max):"/>
+                        <pe:inputNumber  id="max_asistentes" minValue="2" maxValue="1000001" value="#{articuloBean.articulo.maxAsistentes}" required="true">
+                            <f:validateLongRange minimum="2" maximum="1000000"/>
+                        </pe:inputNumber>
+                        <p:outputLabel for="objetivo" value="Objetivo:"/>
+                        <p:inputTextarea id="objetivo" rows="5" cols="30" 
+                                         value="#{articuloBean.articulo.objetivo}"  maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:outputLabel for="riesgos" value="Riesgos:"/>
+                        <p:inputTextarea id="riesgos" rows="5" cols="30" 
+                                         value="#{articuloBean.articulo.riesgos}" maxlength="300" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                        <p:outputLabel for="observaciones" value="Observaciones:"/>
+                        <p:inputTextarea id="observaciones" rows="5" cols="30"
+                                         value="#{articuloBean.articulo.observaciones}"
+                                         maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
+                    </p:panelGrid>
+                    <p:panelGrid columns="2" styleClass="panel-grid-no-border center_block">
+                        <p:commandButton value="Aceptar"  actionListener="#{articuloBean.createOrUpdate()}"  update="@form :main_form" /> 
+                        <p:commandButton value="Cancelar" immediate="true" actionListener="#{articuloBean.reset()}" update="@form"  oncomplete="PF('agregar_dialog_var').hide();"/>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+

@@ -90,6 +90,10 @@ public class Excursion implements Serializable {
             fetch = FetchType.LAZY)
     private List<Archivo> archivos;
 
+    @OneToMany(mappedBy = "excursion", targetEntity = ExcursionArticulo.class,
+            fetch = FetchType.EAGER)
+    private List<ExcursionArticulo> excursionArticulos;
+
     public Excursion() {
     }
 
@@ -227,6 +231,14 @@ public class Excursion implements Serializable {
 
     public void setArchivos(List<Archivo> archivos) {
         this.archivos = archivos;
+    }
+
+    public List<ExcursionArticulo> getExcursionArticulos() {
+        return excursionArticulos;
+    }
+
+    public void setExcursionArticulos(List<ExcursionArticulo> excursionArticulos) {
+        this.excursionArticulos = excursionArticulos;
     }
 
     @Override

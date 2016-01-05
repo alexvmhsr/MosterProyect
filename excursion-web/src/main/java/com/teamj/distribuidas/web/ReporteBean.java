@@ -5,9 +5,6 @@
  */
 package com.teamj.distribuidas.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -16,8 +13,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,7 +35,6 @@ public class ReporteBean implements Serializable {
     {
         try
         {
-            
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
             System.out.println("Conexion realizada");
             FacesContext context = FacesContext.getCurrentInstance();
