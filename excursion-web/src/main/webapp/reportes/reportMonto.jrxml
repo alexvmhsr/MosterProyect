@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2c4b80a5-dbe3-44a2-8342-1e9506f2d73d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select (sum(ar.PRECIO_ARTICULO)*d.CANTIDAD_DETALLE), TO_CHAR(f.FECHA_EMISION, 'dd/mm/yyyy')   
+from factura f, detalle d, articulo ar 
+where d.ID_FACTURA = f.ID_FACTURA and  d.ID_ARTICULO = ar.ID_ARTICULO and fecha_emision between sysdate-7 and sysdate
+group by f.FECHA_EMISION, ar.PRECIO_ARTICULO, d.CANTIDAD_DETALLE ]]>
+	</queryString>
+	<field name="(SUM(AR.PRECIO_ARTICULO)*D.CANTIDAD_DETALLE)" class="java.math.BigDecimal"/>
+	<field name="TO_CHAR(F.FECHA_EMISION,&apos;DD/MM/YYYY&apos;)" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="169" y="28" width="244" height="20" uuid="a801f6e5-3687-4f23-91e2-e36fdc4ced94"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte Montos Diarios Semanal]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="7" y="9" width="51" height="20" uuid="1bb18789-c805-4e76-8e95-b6286dff7527"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="69" y="9" width="100" height="20" uuid="887445c1-410f-4fb7-9f0b-2491411119dd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="326" y="2" width="100" height="20" uuid="fbb48272-ccfd-4800-b85b-3795dad1fdde"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO VENDIDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="2" width="100" height="20" uuid="c77f402e-00f0-4d08-a017-4bc62af31850"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="326" y="10" width="100" height="20" uuid="9a11ec4b-669f-4105-9f7e-824e377cd9b4"/>
+				<textFieldExpression><![CDATA[$F{(SUM(AR.PRECIO_ARTICULO)*D.CANTIDAD_DETALLE)}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="10" width="100" height="20" uuid="26387a19-eb08-4e5d-ba6f-8068055615bf"/>
+				<textFieldExpression><![CDATA[$F{TO_CHAR(F.FECHA_EMISION,'DD/MM/YYYY')}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
