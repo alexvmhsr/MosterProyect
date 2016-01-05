@@ -114,9 +114,7 @@ public class LoginBean extends CrudBean implements Serializable {
                     msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Bienvenido", nombreUsuario);
                     FacesContext.getCurrentInstance().addMessage(null, msg);
                     return this.sessionBean.login(loggedUser);
-                    //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-                    //FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/mochila.xhtml");
-
+                   
                 } else {
 
                     msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Error",

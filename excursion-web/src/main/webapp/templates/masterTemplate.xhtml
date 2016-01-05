@@ -108,7 +108,7 @@ and open the template in the editor.
                 <p:menuitem value="Home"  icon="fa fa-home" url="home.xhtml"/>              
                 <p:menuitem value="Roles" icon="fa fa-suitcase" url="mochila.xhtml" rendered="#{sessionBean.isAdmin()}"/>
                 <p:menuitem value="Actividades" icon="fa fa-flag" url="actividad.xhtml"/>
-                <p:menuitem value="Excursiones" icon="fa fa-binoculars" url="excursion.xhtml"/>
+                <p:menuitem value="Excursiones" icon="fa fa-binoculars" url="#{sessionBean.isAdmin() eq true ?'excursion.xhtml':'excursion_user.xhtml'}"/>
                 <p:menuitem value="Comentarios" icon="fa fa-comments"/>
                 <p:menuitem value="Artículos" icon="fa fa-pencil" url="articulo.xhtml" rendered="#{sessionBean.isAdmin()}"/>
                 <p:menuitem value="Reportes" icon="fa fa-area-chart" url="reporte.xhtml" rendered="#{sessionBean.isAdmin()}"/> 
