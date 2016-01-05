@@ -29,8 +29,9 @@ import net.sf.jasperreports.engine.JasperExportManager;
 public class ReporteBean implements Serializable {
     
     
-    
-    
+    private Date fechaAntes;
+    private Date fechaDespues;
+    private int idFactura;
     public void generarReporteStock()
     {
         try
@@ -98,7 +99,7 @@ public class ReporteBean implements Serializable {
         }
     }
     
-    public void generarReporteTop5(Date dateA, Date dateD)
+    public void generarReporteTop5()
     {
         try
         {
@@ -108,11 +109,7 @@ public class ReporteBean implements Serializable {
             Map parametros = new HashMap();
 //            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 //            java.util.Date dateA = df.parse("25/12/2015");
-//            java.util.Date dateD = df.parse("01/01/2016");
-            System.out.println("fecha antes " + dateA.toString());
-            System.out.println("fecha despues " +dateD.toString());
-            parametros.put("fechaAntes", dateA);          
-            parametros.put("fechaDespues",dateD);
+//            java.util.Date dateD = df.parse("01/01/2016");            
             FacesContext context = FacesContext.getCurrentInstance();
             System.out.println("Dentro del try");
             ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
@@ -138,5 +135,31 @@ public class ReporteBean implements Serializable {
         {
             System.out.println(a.toString());
         }
+    }
+    
+    
+
+    public Date getFechaAntes() {
+        return fechaAntes;
+    }
+
+    public void setFechaAntes(Date fechaAntes) {
+        this.fechaAntes = fechaAntes;
+    }
+
+    public Date getFechaDespues() {
+        return fechaDespues;
+    }
+
+    public void setFechaDespues(Date fechaDespues) {
+        this.fechaDespues = fechaDespues;
+    }
+
+    public int getIdFactura() {
+        return idFactura;
+    }
+
+    public void setIdFactura(int idFactura) {
+        this.idFactura = idFactura;
     }
 }

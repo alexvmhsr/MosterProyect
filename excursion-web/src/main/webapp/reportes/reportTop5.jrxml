@@ -3,18 +3,11 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<parameter name="fechaAntes" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
-	<parameter name="fechaDespues" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<queryString>
 		<![CDATA[select ar.NOMBRE_ARTICULO, count(d.ID_ARTICULO) from articulo ar, detalle d, factura f
-where f.id_factura = d.ID_FACTURA and ar.ID_ARTICULO = d.ID_ARTICULO and f.FECHA_EMISION between TO_DATE($P{fechaAntes},'dd/mm/yyyy') and TO_DATE($P{fechaDespues},'dd/mm/yyyy')
+where f.id_factura = d.ID_FACTURA and ar.ID_ARTICULO = d.ID_ARTICULO and f.FECHA_EMISION between TO_DATE('01-01-2015','dd/mm/yyyy') and TO_DATE('31-12-2015','dd/mm/yyyy')
 group by ar.NOMBRE_ARTICULO, d.ID_ARTICULO
-order by 2 desc
-]]>
+order by 2 desc]]>
 	</queryString>
 	<field name="NOMBRE_ARTICULO" class="java.lang.String"/>
 	<field name="COUNT(D.ID_ARTICULO)" class="java.math.BigDecimal"/>
@@ -22,10 +15,33 @@ order by 2 desc
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="204" y="24" width="128" height="20" uuid="4326d9f7-c1a1-4789-8855-d31055d909fb"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Stock]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="81" y="15" width="100" height="20" uuid="38aafa67-4754-4c66-864c-ad25bab41711"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="15" width="51" height="20" uuid="24170efd-ebd4-48eb-9c34-1f5949d0d31c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="61" splitType="Stretch">
