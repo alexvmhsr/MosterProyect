@@ -8,12 +8,15 @@ package com.teamj.distribuidas.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,7 +27,7 @@ import javax.persistence.Temporal;
  */
 @Entity
 @Table(name = "FACTURA")
-public class Factura implements Serializable{
+public class Factura implements Serializable {
 
     @Id
     @SequenceGenerator(name = "FACTURA_SEQ1", sequenceName = "FACTURA_SEQ", allocationSize = 1)
@@ -44,9 +47,10 @@ public class Factura implements Serializable{
     @Column(name = "DOC_RECEPTOR")
     private String docReceptor;
 
-    @Column(name = "RAZON_SOCIAL")
+    @Column(name = "RAZON_SOCIAL_EMISOR")
     private String razonSocial;
-    @Column(name = "DIRECCION")
+
+    @Column(name = "DIRECCION_EMISOR")
     private String direccionEmisor;
     @Column(name = "SECUENCIAL")
     private String secuencial;
@@ -59,7 +63,7 @@ public class Factura implements Serializable{
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date fechaAutorizacion;
 
-    @Column(name = "CLAVEACCESO")
+    @Column(name = "CLAVE_ACCESO")
     private String claveAcceso;
 
     @Column(name = "NUMERO_AUTORIZACION")
@@ -73,6 +77,10 @@ public class Factura implements Serializable{
 
     @Column(name = "DESCUENTO")
     private BigDecimal decuento;
+
+    @OneToMany(mappedBy = "factura", targetEntity = Detalle.class,
+            fetch = FetchType.EAGER)
+    private List<Detalle> detalles;
 
     public Integer getId() {
         return id;
@@ -192,6 +200,14 @@ public class Factura implements Serializable{
 
     public void setDecuento(BigDecimal decuento) {
         this.decuento = decuento;
+    }
+
+    public List<Detalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<Detalle> detalles) {
+        this.detalles = detalles;
     }
 
     @Override

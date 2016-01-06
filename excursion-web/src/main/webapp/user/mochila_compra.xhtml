@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/templates/masterTemplate.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                >
+    <ui:define name="title">Mi mochila de Compras</ui:define>
+    <ui:define name="content">
+        <f:metadata>
+            <f:viewAction action="#{mochilaCompraBean.init()}" />
+
+        </f:metadata>
+        <h:form id="main_form" >   
+            <p:panel class="center_inline no_border" >
+                <h1>Mi mochila de Compras</h1>
+                <p:dataTable id="tabla_articulo" class="center_block"
+                             var="detalle" 
+                             value="#{mochilaCompraBean.detalles}" 
+                             selectionMode="single" 
+                             rows="6"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             emptyMessage="No hay articulos para comprar"
+                             selection="#{mochilaCompraBean.detalleSelected}" 
+                             rowKey="#{detalle.id}" 
+                             style="width: 800px;">
+                    <p:ajax event="rowSelect"  update="@form"/>
+
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{detalle.articulo.nombre}" />
+                    </p:column>
+                    <p:column headerText="Precio">
+                        <h:outputText value="#{detalle.articulo.precio}" />
+                    </p:column>
+                    <p:column headerText="Cantidad">
+                        <h:outputText value="#{detalle.cantidad}" >
+                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <p:spacer/>
+                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Proceder A Comprar"  
+                                     icon="fa fa-plus"
+                                     update="agregar_dialog"
+
+                                     oncomplete="PF('agregar_dialog_var').show()">
+                        <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
+
+                    </p:commandButton>                 
+
+
+
+                </p:panelGrid>
+                <p:spacer/>
+
+            </p:panel>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

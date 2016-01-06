@@ -7,6 +7,7 @@ package com.teamj.distribuidas.web;
 
 import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Usuario;
+import com.teamj.distribuidas.servicios.FacturaServicio;
 import com.teamj.distribuidas.servicios.UsuarioServicio;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -33,6 +34,8 @@ public class LoginBean extends CrudBean implements Serializable {
 
     @EJB
     private UsuarioServicio usuarioServicio;
+    @EJB
+    private FacturaServicio facturaServicio;
 
     @ManagedProperty(value = "#{sessionBean}")
     private SessionBean sessionBean;
@@ -160,6 +163,7 @@ public class LoginBean extends CrudBean implements Serializable {
                 u.setPassword(claveUsuarioL);
                 u.setNombreCompleto(nombreCompletoUsuario);
                 if (usuarioServicio.insertar(u)) {
+                    
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro", "El registro se completó correctamente"));
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Registro", "El nombre de usuario ya existe"));
