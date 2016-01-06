@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e1cabfa-0232-43d2-b8a1-952126af4d7d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select ar.NOMBRE_ARTICULO, count(d.ID_ARTICULO) from articulo ar, detalle d, factura f
+where f.id_factura = d.ID_FACTURA and ar.ID_ARTICULO = d.ID_ARTICULO and f.FECHA_EMISION between TO_DATE('01-01-2015','dd/mm/yyyy') and TO_DATE('31-12-2015','dd/mm/yyyy')
+group by ar.NOMBRE_ARTICULO, d.ID_ARTICULO
+order by 2 desc]]>
+	</queryString>
+	<field name="NOMBRE_ARTICULO" class="java.lang.String"/>
+	<field name="COUNT(D.ID_ARTICULO)" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="204" y="24" width="128" height="20" uuid="4326d9f7-c1a1-4789-8855-d31055d909fb"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Stock]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="81" y="15" width="100" height="20" uuid="38aafa67-4754-4c66-864c-ad25bab41711"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="19" y="15" width="51" height="20" uuid="24170efd-ebd4-48eb-9c34-1f5949d0d31c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="89" y="2" width="100" height="20" uuid="92c1504f-e877-4521-a054-f2f95118367a"/>
+				<text><![CDATA[NOMBRE_ARTICULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="2" width="100" height="20" uuid="92d019b2-5338-44c6-ae65-114455a5e624"/>
+				<text><![CDATA[COUNT(D.ID_ARTICULO)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="89" y="27" width="100" height="20" uuid="926c7078-d1cd-4714-b216-0f95f5c78190"/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="27" width="100" height="20" uuid="cbaadcd4-bbf6-4819-9b64-12d96f948dc6"/>
+				<textFieldExpression><![CDATA[$F{COUNT(D.ID_ARTICULO)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -14,9 +14,11 @@
                 
                 <p:spacer/>
                 <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                    <p:commandButton value="Stock" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>
-                    <p:commandButton value="Top Productos" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>
-                    <p:commandButton value="Montos" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>
+                    <p:commandButton value="Stock" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>                    
+                    <p:commandButton value="Montos" action="#{reporteBean.generarReporteMonto()}" icon="icon-report" ajax="false"/>
+                    <p:commandButton value="Top Productos" action="#{reporteBean.generarReporteTop5()}" icon="icon-report" ajax="false"/>
+                    
+                    
                 </p:panelGrid>
                 <p:spacer/>
             </p:panel>
