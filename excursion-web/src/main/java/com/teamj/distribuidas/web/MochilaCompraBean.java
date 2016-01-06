@@ -227,14 +227,14 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
         this.facturaMochila = facturaMochila;
     }
 
-    
     public void init() {
         this.cantidad = 1;
         this.subtotal = new BigDecimal(0);
         this.totalArticulos = 0;
         this.articulo = new Articulo();
         this.facturaMochila = this.facturaServicio.encontrarMochilaFactura(this.sessionBean.getUser().getId());
-        this.detalles = factura.getDetalles();
+
+        this.detalles = facturaMochila.getDetalles();
     }
 
     public void createOrUpdate() {

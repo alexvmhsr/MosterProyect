@@ -38,7 +38,7 @@
                     </p:column>
                     <p:column headerText="Cantidad">
                         <h:outputText value="#{detalle.cantidad}" >
-                            <f:convertDateTime locale="es" pattern="dd/MM/yyyy" />
+                            
                         </h:outputText>
                     </p:column>
                 </p:dataTable>
@@ -46,7 +46,7 @@
                 <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                     <p:commandButton value="Proceder A Comprar"  
                                      icon="fa fa-plus"
-                                     update="agregar_dialog"
+
 
                                      oncomplete="PF('agregar_dialog_var').show()">
                         <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
