@@ -11,7 +11,6 @@ import com.teamj.distribuidas.model.Detalle;
 import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.model.ExcursionArticulo;
 import com.teamj.distribuidas.model.Factura;
-import com.teamj.distribuidas.model.UsuarioExcursion;
 import com.teamj.distribuidas.servicios.ArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
@@ -24,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -76,10 +74,6 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
     private Integer cantidad;
     private Factura facturaMochila;
     private Factura factura;
-
-    private List<UsuarioExcursion> participantes;
-    private UsuarioExcursion participanteSeleccionado;
-
     private BigDecimal subtotal;
     private Integer totalArticulos;
 
@@ -179,22 +173,7 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
         this.sessionBean = sessionBean;
     }
 
-    public void setParticipantes(List<UsuarioExcursion> participantes) {
-        this.participantes = participantes;
-    }
-
-    public void setParticipanteSeleccionado(UsuarioExcursion participanteSeleccionado) {
-        this.participanteSeleccionado = participanteSeleccionado;
-    }
-
-    public UsuarioExcursion getParticipanteSeleccionado() {
-        return participanteSeleccionado;
-    }
-
-    public List<UsuarioExcursion> getParticipantes() {
-        return participantes;
-    }
-
+   
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
@@ -233,8 +212,9 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
         this.totalArticulos = 0;
         this.articulo = new Articulo();
         this.facturaMochila = this.facturaServicio.encontrarMochilaFactura(this.sessionBean.getUser().getId());
-
-        this.detalles = facturaMochila.getDetalles();
+        if (this.facturaMochila != null && facturaMochila.getDetalles() != null) {
+            this.detalles = facturaMochila.getDetalles();
+        }
     }
 
     public void createOrUpdate() {

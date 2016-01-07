@@ -150,6 +150,9 @@ body {
     /*background: #0071BB;*/
 
 }
+.topAligned td{
+    vertical-align: top;
+}
 
 .centeredMenuBar .ui-menu-list {
     /*display: inline-block;*/

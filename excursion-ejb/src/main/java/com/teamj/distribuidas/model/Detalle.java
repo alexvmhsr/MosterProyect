@@ -46,6 +46,10 @@ public class Detalle implements Serializable {
     @Column(name = "DESCUENTO_DETALLE")
     private BigDecimal descuento;
 
+    @Column(name = "ADICIONAL")
+    private String adicional;
+    
+    
     public Detalle() {
     }
 
@@ -88,6 +92,15 @@ public class Detalle implements Serializable {
     public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
+
+    public String getAdicional() {
+        return adicional;
+    }
+
+    public void setAdicional(String adicional) {
+        this.adicional = adicional;
+    }
+    
 
     @Override
     public int hashCode() {

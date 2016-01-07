@@ -15,52 +15,51 @@
 
         </f:metadata>
         <h:form id="main_form" >   
-            <p:panel class="center_inline no_border" >
-                <h1>Mi mochila de Compras</h1>
-                <p:dataTable id="tabla_articulo" class="center_block"
-                             var="detalle" 
-                             value="#{mochilaCompraBean.detalles}" 
-                             selectionMode="single" 
-                             rows="6"
-                             paginator="true"
-                             paginatorPosition="bottom"
-                             emptyMessage="No hay articulos para comprar"
-                             selection="#{mochilaCompraBean.detalleSelected}" 
-                             rowKey="#{detalle.id}" 
-                             style="width: 800px;">
-                    <p:ajax event="rowSelect"  update="@form"/>
 
-                    <p:column headerText="Nombre">
-                        <h:outputText value="#{detalle.articulo.nombre}" />
-                    </p:column>
-                    <p:column headerText="Precio">
-                        <h:outputText value="#{detalle.articulo.precio}" />
-                    </p:column>
-                    <p:column headerText="Cantidad">
-                        <h:outputText value="#{detalle.cantidad}" >
-                            
-                        </h:outputText>
-                    </p:column>
-                </p:dataTable>
-                <p:spacer/>
-                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                    <p:commandButton value="Proceder A Comprar"  
-                                     icon="fa fa-plus"
+            <p:panel class="no_border"  >
+                <h1 class="center_inline">Mi Mochila de Compras</h1>
+                <p:panelGrid columns="2" styleClass="topAligned panel-grid-no-border" style="display:block"> 
+                    <p:dataScroller  value="#{mochilaCompraBean.detalles}" var="detalle" >
+                        <f:facet name="header">
+                            Scroll Down to Load More Cars
+                        </f:facet>
 
+                        <h:panelGrid columns="2" style="width:670px;" >
+                            <p:graphicImage value="../images/mochila.jpg" width="100" height="100" /> 
+                            <p:outputPanel style="text-align: left;">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{detalle.articulo.nombre}" style="font-weight: bold"/>
 
-                                     oncomplete="PF('agregar_dialog_var').show()">
-                        <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
+                                    <h:outputText value="Precio:" />
+                                    <h:outputText value="#{detalle.articulo.precio}" style="font-weight: bold"/>
 
-                    </p:commandButton>                 
+                                    <h:outputText value="Stock:" />
+                                    <h:outputText value="#{detalle.articulo.stock}" style="font-weight: bold;color:#3366ff"/>
 
-
-
+                                    <h:outputText value="Cantidad:" />
+                                    <h:outputText value="#{detalle.cantidad}" style="font-weight: bold"/>
+                                </h:panelGrid>
+                            </p:outputPanel>
+                        </h:panelGrid>
+                        <p:separator/>
+                    </p:dataScroller>
+                    <p:panel header="Resumen" class="no_border" style="width: 230px;" >
+                    jjjj
+                    <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                        <p:commandButton value="Proceder A Comprar"  
+                                         icon="fa fa-thumbs-up">
+                            <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
+                        </p:commandButton>                 
+                    </p:panelGrid>
+                    </p:panel>
+                    
+                   
+                    
                 </p:panelGrid>
-                <p:spacer/>
-
             </p:panel>
-        </h:form>
 
+        </h:form>
     </ui:define>
 </ui:composition>
 
