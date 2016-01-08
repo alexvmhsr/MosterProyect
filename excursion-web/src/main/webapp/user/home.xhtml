@@ -13,18 +13,10 @@
             <p:panel header="Home">
                 <p>
                     <h:outputText
-                        value="Bienvenido, #{sessionBean.user.nombre}!" />
+                        value="Bienvenido" />
                 </p>
-                <p:commandButton value="Logout"
-                                 action="#{sessionBean.logout()}" />
             </p:panel>
-            <p:panel header="Últimas Excursiones">
-                <p>
-                    <h:outputText
-                        value="Bienvenido, #{sessionBean.user.nombre}!" />
-                </p>
-                
-            </p:panel>
+            
         </h:form>
     </ui:define>
 </ui:composition>

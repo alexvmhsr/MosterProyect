@@ -12,17 +12,13 @@
     <ui:define name="content">
         <f:metadata>
             <f:viewAction action="#{mochilaCompraBean.init()}" />
-
         </f:metadata>
         <h:form id="main_form" >   
-
             <p:panel class="no_border"  >
                 <h1 class="center_inline">Mi Mochila de Compras</h1>
                 <p:panelGrid columns="2" styleClass="topAligned panel-grid-no-border" style="display:block"> 
                     <p:dataScroller  value="#{mochilaCompraBean.detalles}" var="detalle" >
-                        <f:facet name="header">
-                            Scroll Down to Load More Cars
-                        </f:facet>
+
 
                         <h:panelGrid columns="2" style="width:670px;" >
                             <p:graphicImage value="../images/mochila.jpg" width="100" height="100" /> 
@@ -45,20 +41,17 @@
                         <p:separator/>
                     </p:dataScroller>
                     <p:panel header="Resumen" class="no_border" style="width: 230px;" >
-                    jjjj
-                    <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                        <p:commandButton value="Proceder A Comprar"  
-                                         icon="fa fa-thumbs-up">
-                            <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
-                        </p:commandButton>                 
-                    </p:panelGrid>
-                    </p:panel>
-                    
-                   
-                    
+                        jjjj
+                        <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                            <p:commandButton value="Proceder A Comprar" 
+                                             action="factura.xhtml?faces-redirect=true"
+                                             icon="fa fa-thumbs-up">
+                                <p:confirm header="Confirmación" message="¿Está seguro de realizar la compra?" icon="ui-icon-alert" />
+                            </p:commandButton>                 
+                        </p:panelGrid>
+                    </p:panel>                 
                 </p:panelGrid>
             </p:panel>
-
         </h:form>
     </ui:define>
 </ui:composition>

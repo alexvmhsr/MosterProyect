@@ -12,6 +12,7 @@ import com.teamj.distribuidas.dao.UsuarioExcursionDAO;
 import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Detalle;
 import com.teamj.distribuidas.model.Factura;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -91,11 +92,19 @@ public class FacturaServicio {
 
         try {
 
+            Detalle temp = null;
+            List<Detalle> tempDetalles = null;
             for (Detalle d : detalles) {
-
-                this.detalleDAO.insert(d);
-                d.getArticulo().setStock(d.getArticulo().getStock() - d.getCantidad());
-                this.articuloDAO.update(d.getArticulo());
+                temp = new Detalle();
+                temp.setArticulo(d.getArticulo());
+                temp.setFactura(d.getFactura());
+                tempDetalles = this.detalleDAO.find(temp);
+                if (tempDetalles != null && tempDetalles.size() == 1) {
+                    tempDetalles.get(0).setCantidad(tempDetalles.get(0).getCantidad() + d.getCantidad());
+                    this.detalleDAO.update(tempDetalles.get(0));
+                } else {
+                    this.detalleDAO.insert(d);
+                }
             }
 
             //this.mochilaDAO.flush();
