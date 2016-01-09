@@ -41,6 +41,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -312,8 +313,11 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
     }
 
-    public String todayDate() {
+    public String todayStringDate() {
         return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+    }
+    public Date today() {
+        return Calendar.getInstance().getTime();
     }
 
     public boolean validateFields() {
@@ -473,6 +477,16 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encuentra el carrito del usuario"));
 
+        }
+    }
+    public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+            Integer cantO=(Integer)event.getOldValue();
+            Integer cantN=(Integer)event.getOldValue();
+            this.cantidad=this.cantidad+cantN-cantO;
         }
     }
 

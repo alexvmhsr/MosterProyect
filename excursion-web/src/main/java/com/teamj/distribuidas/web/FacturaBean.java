@@ -5,6 +5,14 @@
  */
 package com.teamj.distribuidas.web;
 
+import com.lowagie.text.pdf.parser.PdfContentStreamProcessor;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.FdfReader;
+import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfReader;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.parser.Matrix;
 import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Articulo;
 import com.teamj.distribuidas.model.Detalle;
@@ -16,6 +24,9 @@ import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
 import com.teamj.distribuidas.servicios.FacturaServicio;
 import com.teamj.distribuidas.servicios.UsuarioServicio;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -23,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -36,6 +49,8 @@ import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -62,7 +77,7 @@ public class FacturaBean extends CrudBean implements Serializable {
 
     @ManagedProperty(value = "#{sessionBean}")
     private SessionBean sessionBean;
-
+ByteArrayOutputStream out = new ByteArrayOutputStream();
     private String nombre;
     private String descripcion;
     private List<ExcursionArticulo> excursionArticulos;
@@ -77,6 +92,7 @@ public class FacturaBean extends CrudBean implements Serializable {
     private BigDecimal subtotal;
     private Integer totalArticulos;
     private BigDecimal totalFactura;
+    private StreamedContent content;
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
@@ -84,6 +100,14 @@ public class FacturaBean extends CrudBean implements Serializable {
 
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public void setContent(StreamedContent content) {
+        this.content = content;
+    }
+
+    public StreamedContent getContent() {
+        return content;
     }
 
     public void setNombre(String nombre) {
@@ -323,6 +347,22 @@ public class FacturaBean extends CrudBean implements Serializable {
 
         }
 
+    }
+
+    public void procesarFactura(Object document) {
+        Document pdf = (Document) document;
+
+        out = new ByteArrayOutputStream();
+        pdf.open();
+        try {
+            PdfWriter.getInstance(pdf, out);
+            
+        } catch (DocumentException ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
+        //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
     }
 
 }

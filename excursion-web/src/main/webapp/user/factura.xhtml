@@ -34,7 +34,7 @@
                             <p:row>
                                 <p:column headerText="Fecha Emisión" style="text-align:right!important;"/>
                                 <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.fechaEmision}">
-                                    
+
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -103,8 +103,8 @@
                     <p:panel header="Exportar PDF o Excel">
                         <p:commandLink id="pdf" value="PDF" ajax="false">
 
-                            
-                            <pe:exporter type="pdf" target="tabla_factura" fileName="factura_preview"/>
+
+                            <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview" />
 
                         </p:commandLink>
 
@@ -112,15 +112,29 @@
 
                         <p:commandLink id="xls" value="Excel" ajax="false">
 
-                            
-                            <pe:exporter type="xlsx" target="tabla_factura" fileName="factura_preview"/>
+
+                            <pe:exporter type="xlsx" target="tabla_factura" fileName="factura_preview" />
 
                         </p:commandLink>
+
+
                     </p:panel>
 
                 </p:panelGrid>
             </p:panel>
         </h:form>
+        <p:dialog
+            id="dialog"
+            widgetVar="dialog_var"
+            modal="true"  
+
+            draggable="true"
+            resizable="false" 
+            header="Factura">
+            <h:form>
+                <pe:documentViewer height="500" value="#{facturaBean.content}"/>
+            </h:form>
+        </p:dialog>
     </ui:define>
 </ui:composition>
 
