@@ -30,7 +30,7 @@ public class EmailSessionBean implements Serializable{
         email.setHostName("smtp.gmail.com");
         email.setSmtpPort(587);
 
-        email.setAuthenticator(new DefaultAuthenticator("dennysaurio", "paceminterris"));
+        email.setAuthenticator(new DefaultAuthenticator("dennysaurio", "tuclave"));
         // email.setSSLOnConnect(true);
         email.setDebug(true);
 //email.setStartTLSEnabled(true);
