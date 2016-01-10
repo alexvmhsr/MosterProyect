@@ -479,15 +479,6 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
         }
     }
-    public void onCellEdit(CellEditEvent event) {
-        Object oldValue = event.getOldValue();
-        Object newValue = event.getNewValue();
-         
-        if(newValue != null && !newValue.equals(oldValue)) {
-            Integer cantO=(Integer)event.getOldValue();
-            Integer cantN=(Integer)event.getOldValue();
-            this.cantidad=this.cantidad+cantN-cantO;
-        }
-    }
+    
 
 }

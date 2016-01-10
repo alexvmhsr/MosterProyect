@@ -53,6 +53,12 @@
             <version>2.9.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

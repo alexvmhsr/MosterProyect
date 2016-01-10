@@ -215,6 +215,16 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
         if (this.facturaMochila != null && facturaMochila.getDetalles() != null) {
             this.detalles = facturaMochila.getDetalles();
         }
+        this.facturaMochila.setTotal(BigDecimal.ZERO);
+        this.facturaMochila.setSubtotal(BigDecimal.ZERO);
+        if (this.detalles != null) {
+            for (Detalle d : this.detalles) {
+                this.facturaMochila.setTotal(this.facturaMochila.getTotal().add(new BigDecimal(d.getArticulo().getPrecio().floatValue() * (float) d.getCantidad())));
+            }
+        }
+        //iva
+        this.facturaMochila.setSubtotal(this.facturaMochila.getTotal());
+        this.facturaMochila.setTotal(this.facturaMochila.getTotal().add(new BigDecimal(this.facturaMochila.getTotal().floatValue() * 0.12f)));
     }
 
     public void createOrUpdate() {

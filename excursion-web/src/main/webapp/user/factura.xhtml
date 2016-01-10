@@ -102,10 +102,7 @@
 
                     <p:panel header="Exportar PDF o Excel">
                         <p:commandLink id="pdf" value="PDF" ajax="false">
-
-
                             <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview" />
-
                         </p:commandLink>
 
                         <p:spacer height="20"/>
@@ -116,8 +113,7 @@
                             <pe:exporter type="xlsx" target="tabla_factura" fileName="factura_preview" />
 
                         </p:commandLink>
-
-
+                        <p:commandButton value="send email" actionListener="#{facturaBean.send()}" />
                     </p:panel>
 
                 </p:panelGrid>
@@ -127,7 +123,6 @@
             id="dialog"
             widgetVar="dialog_var"
             modal="true"  
-
             draggable="true"
             resizable="false" 
             header="Factura">

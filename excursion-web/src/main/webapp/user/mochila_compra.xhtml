@@ -41,7 +41,20 @@
                         <p:separator/>
                     </p:dataScroller>
                     <p:panel header="Resumen" class="no_border" style="width: 230px;" >
-                        jjjj
+                        <p:panelGrid columns="2" styleClass="center_block">                            
+                            <p:outputLabel  value="Sutotal:" styleClass="negrita" style="float: right;"/>
+                            <p:outputLabel value="#{mochilaCompraBean.facturaMochila.subtotal}" style="float: right;">
+                                <f:convertNumber currencySymbol="$" type="currency" />
+                            </p:outputLabel>
+                            <p:outputLabel  value="IVA (12%):" styleClass="negrita" style="float: right;"/>
+                            <p:outputLabel value="#{mochilaCompraBean.facturaMochila.subtotal*0.12}" style="float: right;">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </p:outputLabel>
+                            <p:outputLabel  value="Total:" styleClass="negrita" style="float: right;"/>
+                            <p:outputLabel value="#{mochilaCompraBean.facturaMochila.total}" style="float: right;">
+                                <f:convertNumber currencySymbol="$" type="currency"/>
+                            </p:outputLabel>
+                        </p:panelGrid>
                         <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                             <p:commandButton value="Proceder A Comprar" 
                                              action="factura.xhtml?faces-redirect=true"

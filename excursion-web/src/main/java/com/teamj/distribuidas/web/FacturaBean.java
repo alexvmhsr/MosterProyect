@@ -5,18 +5,11 @@
  */
 package com.teamj.distribuidas.web;
 
-import com.lowagie.text.pdf.parser.PdfContentStreamProcessor;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.FdfReader;
-import com.lowagie.text.pdf.PdfCopy;
-import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.parser.Matrix;
-import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Articulo;
 import com.teamj.distribuidas.model.Detalle;
-import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.model.ExcursionArticulo;
 import com.teamj.distribuidas.model.Factura;
 import com.teamj.distribuidas.servicios.ArticuloServicio;
@@ -26,10 +19,8 @@ import com.teamj.distribuidas.servicios.FacturaServicio;
 import com.teamj.distribuidas.servicios.UsuarioServicio;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,15 +31,11 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.event.ToggleSelectEvent;
-import org.primefaces.event.UnselectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -75,13 +62,15 @@ public class FacturaBean extends CrudBean implements Serializable {
     @EJB
     private ExcursionArticuloServicio excursionArticuloServicio;
 
+    @ManagedProperty(value = "#{emailSessionBean}")
+    private EmailSessionBean emailSessionBean;
+
     @ManagedProperty(value = "#{sessionBean}")
     private SessionBean sessionBean;
-ByteArrayOutputStream out = new ByteArrayOutputStream();
+
     private String nombre;
     private String descripcion;
-    private List<ExcursionArticulo> excursionArticulos;
-    private List<ExcursionArticulo> excursionArticulosSelected;
+
     private ExcursionArticulo excursionArticulo;
     private Articulo articulo;
     private List<Detalle> detalles;
@@ -116,22 +105,6 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
 
     public String getNombre() {
         return nombre;
-    }
-
-    public List<ExcursionArticulo> getExcursionArticulos() {
-        return excursionArticulos;
-    }
-
-    public void setExcursionArticulos(List<ExcursionArticulo> excursionArticulos) {
-        this.excursionArticulos = excursionArticulos;
-    }
-
-    public List<ExcursionArticulo> getExcursionArticulosSelected() {
-        return excursionArticulosSelected;
-    }
-
-    public void setExcursionArticulosSelected(List<ExcursionArticulo> excursionArticulosSelected) {
-        this.excursionArticulosSelected = excursionArticulosSelected;
     }
 
     public void setExcursionArticulo(ExcursionArticulo excursionArticulo) {
@@ -230,9 +203,18 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
         this.totalFactura = totalFactura;
     }
 
+    public void setEmailSessionBean(EmailSessionBean emailSessionBean) {
+        this.emailSessionBean = emailSessionBean;
+    }
+
+    public EmailSessionBean getEmailSessionBean() {
+        return emailSessionBean;
+    }
+
     public void init() {
         this.cantidad = 1;
         this.subtotal = new BigDecimal(0);
+        this.totalFactura = BigDecimal.ZERO;
         this.totalArticulos = 0;
         this.articulo = new Articulo();
         this.facturaMochila = this.facturaServicio.encontrarMochilaFactura(this.sessionBean.getUser().getId());
@@ -247,6 +229,15 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
         this.factura.setRazonSocial("ExcursionesTOGO");
         this.factura.setSecuencial("000000000000001");
         this.factura.setDetalles(this.detalles);
+        if (this.detalles != null) {
+            for (Detalle d : this.detalles) {
+                this.totalFactura = this.totalFactura.add(new BigDecimal(d.getArticulo().getPrecio().floatValue() * (float) d.getCantidad()));
+            }
+        }
+        //iva
+        this.subtotal = totalFactura;
+        this.totalFactura = this.totalFactura.add(new BigDecimal(this.totalFactura.floatValue() * 0.12f));
+
     }
 
     public void createOrUpdate() {
@@ -275,94 +266,32 @@ ByteArrayOutputStream out = new ByteArrayOutputStream();
         return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
     }
 
-    public void beginExcursionArticuloCreation() {
-
-    }
-
-    public void createOrUpdateArticuloExcursion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        try {
-            if (this.isCreating()) {
-                this.excursionArticulo.getExcursionArticuloPK().setIdArticulo(detalleSelected.getId());
-                this.excursionArticulo.setCantidad(this.cantidad);
-                this.excursionArticuloServicio.insertar(this.excursionArticulo);
-//                this.excursionArticulo.setArticulo(detalleSelected);
-                //            this.excursionArticulo.setExcursion(excursionSelected);
-                this.excursionArticulos.add(0, excursionArticulo);
-                this.cantidad = 1;
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido correctamente agregado"));
-            }
-        } catch (ValidationException e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
-        }
-        RequestContext.getCurrentInstance().execute("PF('exc_art_dialog_var').hide()");
-        this.reset();
-
-    }
-
     public String duracion(Date salida, Date retorno) {
         int days = Days.daysBetween(new LocalDate(salida), new LocalDate(retorno)).getDays();
         return String.valueOf(days);
     }
 
-    public void unselectDisabledRow(UnselectEvent e) {
-        this.subtotal = new BigDecimal(BigInteger.ZERO);
-        this.totalArticulos = 0;
-        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
-
-            this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-            this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
-
-        }
-
-    }
-
-    public void selectDisabledRow(SelectEvent e) {
-        this.subtotal = new BigDecimal(BigInteger.ZERO);
-        this.totalArticulos = 0;
-        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
-            if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
-                this.excursionArticulosSelected.remove(i);
-
-            } else {
-                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
-            }
-
-        }
-
-    }
-
-    public void unselectDisabledRow(ToggleSelectEvent e) {
-        this.subtotal = new BigDecimal(BigInteger.ZERO);
-        this.totalArticulos = 0;
-        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
-            if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
-                this.excursionArticulosSelected.remove(i);
-
-            } else {
-                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
-            }
-
-        }
-
-    }
-
     public void procesarFactura(Object document) {
         Document pdf = (Document) document;
-
-        out = new ByteArrayOutputStream();
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
         pdf.open();
         try {
             PdfWriter.getInstance(pdf, out);
-            
+            if (pdf.isOpen()) {
+                pdf.close();
+            }
+
         } catch (DocumentException ex) {
             Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
         //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
+    }
+
+    public void send() {
+        this.emailSessionBean.sendEmail(this.sessionBean.getUser().getCorreo(), "prueba", "hola","ajaja");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Éxito", "El email ha sido enviado"));
     }
 
 }

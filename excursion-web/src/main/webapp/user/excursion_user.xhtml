@@ -68,7 +68,7 @@
                         <p:dataTable id="tabla_articulo" class="center_inline"
                                      var="excursionarticulo" 
                                      value="#{excursionUserBean.excursionArticulos}" 
-                                     rowStyleClass="#{excursionarticulo.articulo.stock eq 0?'colored':null}"
+                                     rowStyleClass="#{excursionarticulo.articulo.stock le 0?'colored':null}"
                                      rows="6"
                                      paginator="true"
                                      editMode="cell"
@@ -81,7 +81,6 @@
                             <p:ajax event="rowSelectCheckbox" listener="#{excursionUserBean.selectDisabledRow}" update=":main_form"/>
                             <p:ajax event="rowUnselectCheckbox" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
                             <p:ajax event="toggleSelect" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
-                            <p:ajax event="cellEdit" listener="#{excursionUserBean.onCellEdit}" update=":main_form" />
  
                             <p:column selectionMode="multiple" style="width:16px;text-align:center" />
                             <p:column headerText="Nombre" selectRow="false">
@@ -96,23 +95,25 @@
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Estado" selectRow="false">
-                                <h:outputText value="#{excursionarticulo.articulo.stock eq 0?'NO Hay Stock':'En Stock'}" >
+                                <h:outputText value="#{excursionarticulo.articulo.stock le 0?'NO Hay Stock':'En Stock'}" >
 
                                 </h:outputText>
                             </p:column>
-                            <p:column headerText="Cant." width="30" selectRow="false">
+                            <p:column headerText="Stock" selectRow="false">
+                                <h:outputText value="#{excursionarticulo.articulo.stock}" >
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Cant." selectRow="false">
                                 
                                 <p:cellEditor>
                                     <f:facet name="output"><h:outputText value="#{excursionarticulo.cantidad}" /></f:facet>
                                     <f:facet name="input">
-                                        <p:spinner id="minMax" value="#{excursionarticulo.cantidad}" min="0" max="#{excursionarticulo.articulo.stock}" style="width:10px;;" size="2" />
+                                        <p:spinner id="minMax" value="#{excursionarticulo.cantidad}" min="0" max="#{excursionarticulo.articulo.stock}" size="2" />
 
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
-                            <f:facet name="footer">
-                                #{excursionUserBean.totalArticulos} artículo/s seleccionado/s.
-                            </f:facet>
+                            
                         </p:dataTable>
                         <p:spacer/>
 
