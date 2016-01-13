@@ -1,29 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="85dd3870-f118-4499-823a-b133de0afb95">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="47"/>
+	<parameter name="idFactura" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Gaming\\Documents\\NetBeansProjects\\ProyectoSegundoParcial\\excursion-web\\src\\main\\webapp\\reportes\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select ar.nombre_articulo, d.cantidad_detalle, ar.precio_articulo* d.cantidad_detalle
+,f.id_factura, f.doc_receptor, f.fecha_emision, f.secuencial
+from factura f, articulo ar, detalle d
+where f.id_factura=1 and  f.id_factura = d.id_factura and ar.id_articulo=d.id_articulo ]]>
+	</queryString>
+	<field name="NOMBRE_ARTICULO" class="java.lang.String"/>
+	<field name="CANTIDAD_DETALLE" class="java.math.BigDecimal"/>
+	<field name="AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE" class="java.math.BigDecimal"/>
+	<field name="ID_FACTURA" class="java.math.BigDecimal"/>
+	<field name="DOC_RECEPTOR" class="java.lang.String"/>
+	<field name="FECHA_EMISION" class="oracle.sql.TIMESTAMP"/>
+	<field name="SECUENCIAL" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="235" y="29" width="75" height="20" uuid="cabebc90-aadd-442f-8cbd-5ffc76b7954e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURA]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="122" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="11" width="200" height="100" uuid="27a4c9e9-26d6-45bf-8582-1892fecea6eb"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ReportCabezera.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="34" splitType="Stretch">
+			<staticText>
+				<reportElement x="71" y="2" width="100" height="20" uuid="efee7168-0718-4899-9e6f-d9e1ede338c4"/>
+				<text><![CDATA[ARTICULO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="2" width="100" height="20" uuid="f34e258f-7732-47a5-95d0-4cff22af96ef"/>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="439" y="2" width="100" height="20" uuid="041c416c-caca-4957-a493-0ecb67a6c8cc"/>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="199" splitType="Stretch">
+			<textField>
+				<reportElement x="71" y="29" width="100" height="20" uuid="3aa15da3-d939-48ac-8931-8e5428ef0a4c"/>
+				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="261" y="29" width="100" height="20" uuid="1033f74c-303c-41db-98ee-69666c842466"/>
+				<textFieldExpression><![CDATA[$F{CANTIDAD_DETALLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="439" y="29" width="100" height="20" uuid="73b7b37f-d8db-45aa-a838-68d81b782b0f"/>
+				<textFieldExpression><![CDATA[$F{AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
 </jasperReport>

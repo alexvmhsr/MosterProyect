@@ -29,9 +29,19 @@ import net.sf.jasperreports.engine.JasperExportManager;
 public class ReporteBean implements Serializable {
     
     
-    private Date fechaAntes;
-    private Date fechaDespues;
+    private java.util.Date fechaAntes;
+    private java.util.Date fechaDespues;
     private int idFactura;
+    private boolean reporte3=false;
+
+    public boolean isReporte3() {
+        return reporte3;
+    }
+
+    public void setReporte3(boolean reporte3) {
+        this.reporte3 = reporte3;
+    }
+    
     public void generarReporteStock()
     {
         try
@@ -106,10 +116,11 @@ public class ReporteBean implements Serializable {
             
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
             System.out.println("Conexion realizada");
+            System.out.println("fecha antes: "+fechaAntes.toString());
+            System.out.println("fecha Despues: "+fechaDespues.toString());
             Map parametros = new HashMap();
-//            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//            java.util.Date dateA = df.parse("25/12/2015");
-//            java.util.Date dateD = df.parse("01/01/2016");            
+            parametros.put("fechaAntes", fechaAntes);
+            parametros.put("fechaDespues", fechaDespues);
             FacesContext context = FacesContext.getCurrentInstance();
             System.out.println("Dentro del try");
             ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
@@ -137,21 +148,23 @@ public class ReporteBean implements Serializable {
         }
     }
     
-    
+    public void mostrarParametrosReporte3(){
+    this.reporte3=true;
+    }
 
-    public Date getFechaAntes() {
+    public java.util.Date getFechaAntes() {
         return fechaAntes;
     }
 
-    public void setFechaAntes(Date fechaAntes) {
+    public void setFechaAntes(java.util.Date fechaAntes) {
         this.fechaAntes = fechaAntes;
     }
 
-    public Date getFechaDespues() {
+    public java.util.Date getFechaDespues() {
         return fechaDespues;
     }
 
-    public void setFechaDespues(Date fechaDespues) {
+    public void setFechaDespues(java.util.Date fechaDespues) {
         this.fechaDespues = fechaDespues;
     }
 

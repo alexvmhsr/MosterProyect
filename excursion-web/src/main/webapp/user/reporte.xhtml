@@ -11,20 +11,27 @@
         <h:form >
             <p:panel class="center_inline no_border" >
                 <h1>Reportes</h1>
-                
+
                 <p:spacer/>
-                <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
-                    <p:commandButton value="Stock" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>                    
+                <p:panelGrid id="controllers" columns="1" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                    <p:commandButton value="Stock" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>
+
                     <p:commandButton value="Montos" action="#{reporteBean.generarReporteMonto()}" icon="icon-report" ajax="false"/>
-                    <p:commandButton value="Top Productos" action="#{reporteBean.generarReporteTop5()}" icon="icon-report" ajax="false"/>
-                    
-                    
+                    <p:commandButton value="Top 5" actionListener="#{reporteBean.mostrarParametrosReporte3()}" icon="icon-report" update="@form"/>
+
+                    <p:panelGrid columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+
+                        <p:calendar id="dateA" mode="inline" value="#{reporteBean.fechaAntes}" rendered="#{reporteBean.reporte3}"/>
+
+                        <p:calendar id="dateD" mode="inline" value="#{reporteBean.fechaDespues}" rendered="#{reporteBean.reporte3}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="Generar Reporte" action="#{reporteBean.generarReporteTop5()}" rendered="#{reporteBean.reporte3}" icon="icon-report" ajax="false"/>
                 </p:panelGrid>
                 <p:spacer/>
             </p:panel>
-            
-            
+
+
         </h:form>
-        
+
     </ui:define>
 </ui:composition>
