@@ -7,13 +7,17 @@ package com.teamj.distribuidas.web;
 
 import com.teamj.distribuidas.exception.ValidationException;
 import com.teamj.distribuidas.model.Articulo;
+import com.teamj.distribuidas.model.Detalle;
 import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.model.ExcursionArticulo;
 import com.teamj.distribuidas.model.ExcursionArticuloPK;
+import com.teamj.distribuidas.model.Factura;
 import com.teamj.distribuidas.model.UsuarioExcursion;
 import com.teamj.distribuidas.servicios.ArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
+import com.teamj.distribuidas.servicios.FacturaServicio;
+import com.teamj.distribuidas.servicios.UsuarioServicio;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -37,6 +41,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -54,6 +59,12 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
     @EJB
     private ArticuloServicio articuloServicio;
+
+    @EJB
+    private FacturaServicio facturaServicio;
+
+    @EJB
+    private UsuarioServicio usuarioServicio;
 
     @EJB
     private ExcursionArticuloServicio excursionArticuloServicio;
@@ -302,8 +313,11 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
     }
 
-    public String todayDate() {
+    public String todayStringDate() {
         return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
+    }
+    public Date today() {
+        return Calendar.getInstance().getTime();
     }
 
     public boolean validateFields() {
@@ -434,5 +448,37 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         }
 
     }
+
+    public void agregarMochila() {
+
+        Factura f = this.facturaServicio.encontrarMochilaFactura(sessionBean.getUser().getId());
+        if (f == null) {
+            try {
+                this.usuarioServicio.guardarMochilaFactura(sessionBean.getUser().getId());
+            } catch (Exception e) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
+
+            }
+            f = this.facturaServicio.encontrarMochilaFactura(sessionBean.getUser().getId());
+        }
+        if (f != null) {
+            List<Detalle> detalles = new ArrayList<>();
+            Detalle d = null;
+            for (ExcursionArticulo ea : this.excursionArticulosSelected) {
+                d = new Detalle();
+                d.setArticulo(ea.getArticulo());
+                d.setFactura(f);
+                d.setCantidad(ea.getCantidad());
+                d.setDescuento(BigDecimal.ZERO);
+                detalles.add(d);
+            }
+            this.facturaServicio.insertarDetallesMochila(detalles);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Su mochila de compras se ha actualizado"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se encuentra el carrito del usuario"));
+
+        }
+    }
+    
 
 }

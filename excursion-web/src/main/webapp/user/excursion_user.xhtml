@@ -13,23 +13,24 @@
     <ui:define name="content">
         <h:form id="main_form" >   
             <p:panel class="center_inline no_border"  >
-                <h1>Excursiones</h1>
+                <h1>Excursiones Disponibles</h1>
                 <p:dataTable id="tabla_excursion" class="center_block"
                              var="excursion" 
                              value="#{excursionUserBean.excursions}" 
                              selectionMode="single" 
                              rows="6"
                              paginator="true"
+                             rowStyleClass="#{excursion.fechaLimite lt excursionUserBean.today()?'colored':null}"
                              paginatorPosition="bottom"
                              emptyMessage="No hay excursiones"
                              selection="#{excursionUserBean.excursionSelected}" 
                              rowKey="#{excursion.id}" 
                              style="width: 950px;">
                     <p:ajax event="rowSelect"  listener="#{excursionUserBean.loadExcursionSelectedData}"  update=":main_form"/>
-                    <p:column headerText="Nombre">
+                    <p:column headerText="Nombre" filterBy="#{excursion.nombre}" filterMatchMode="contains">
                         <h:outputText value="#{excursion.nombre}" />
                     </p:column>
-                    <p:column headerText="Destino">
+                    <p:column headerText="Destino" filterBy="#{excursion.destino}" filterMatchMode="contains">
                         <h:outputText value="#{excursion.destino}" />
                     </p:column>
                     <p:column headerText="Comprar Hasta">
@@ -67,17 +68,20 @@
                         <p:dataTable id="tabla_articulo" class="center_inline"
                                      var="excursionarticulo" 
                                      value="#{excursionUserBean.excursionArticulos}" 
-                                     rowStyleClass="#{excursionarticulo.articulo.stock eq 0?'colored':null}"
+                                     rowStyleClass="#{excursionarticulo.articulo.stock le 0?'colored':null}"
                                      rows="6"
                                      paginator="true"
+                                     editMode="cell"
+                                     editable="true"
                                      paginatorPosition="bottom"
                                      emptyMessage="No hay artículos asociados a la excursión"
                                      selection="#{excursionUserBean.excursionArticulosSelected}" 
                                      rowKey="#{excursionarticulo.excursionArticuloPK}" 
-                                     style="width: 500px;">
+                                     style="width: 600px;">
                             <p:ajax event="rowSelectCheckbox" listener="#{excursionUserBean.selectDisabledRow}" update=":main_form"/>
                             <p:ajax event="rowUnselectCheckbox" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
                             <p:ajax event="toggleSelect" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
+ 
                             <p:column selectionMode="multiple" style="width:16px;text-align:center" />
                             <p:column headerText="Nombre" selectRow="false">
                                 <h:outputText value="#{excursionarticulo.articulo.nombre}" />
@@ -91,16 +95,25 @@
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Estado" selectRow="false">
-                                <h:outputText value="#{excursionarticulo.articulo.stock eq 0?'NO Hay Stock':'En Stock'}" >
+                                <h:outputText value="#{excursionarticulo.articulo.stock le 0?'NO Hay Stock':'En Stock'}" >
 
                                 </h:outputText>
                             </p:column>
-                            <p:column headerText="Cant." width="30" selectRow="false">
-                                <h:outputText value="#{excursionarticulo.cantidad}" />
+                            <p:column headerText="Stock" selectRow="false">
+                                <h:outputText value="#{excursionarticulo.articulo.stock}" >
+                                </h:outputText>
                             </p:column>
-                            <f:facet name="footer">
-                                #{excursionUserBean.totalArticulos} artículo/s seleccionado/s.
-                            </f:facet>
+                            <p:column headerText="Cant." selectRow="false">
+                                
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{excursionarticulo.cantidad}" /></f:facet>
+                                    <f:facet name="input">
+                                        <p:spinner id="minMax" value="#{excursionarticulo.cantidad}" min="0" max="#{excursionarticulo.articulo.stock}" size="2" />
+
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
                         </p:dataTable>
                         <p:spacer/>
 
@@ -123,9 +136,9 @@
                         <p:commandButton value="Agregar a la mochila"  
                                          icon="fa fa-check-square"
                                          update="@form"
-                                         actionListener="#{excursionUserBean.beginCreation()}" 
+                                         actionListener="#{excursionUserBean.agregarMochila()}" 
                                          oncomplete="PF('agregar_dialog_var').show()"/>                 
-                       
+
                     </p:panelGrid>
                 </p:panelGrid>
                 <p:panelGrid columns="1" styleClass="panel-grid-no-border center_block">

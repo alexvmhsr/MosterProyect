@@ -5,9 +5,13 @@
  */
 package com.teamj.distribuidas.servicios;
 
+import com.teamj.distribuidas.dao.FacturaDAO;
 import com.teamj.distribuidas.dao.UsuarioDAO;
 import com.teamj.distribuidas.exception.ValidationException;
+import com.teamj.distribuidas.model.Factura;
 import com.teamj.distribuidas.model.Usuario;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -24,6 +28,8 @@ public class UsuarioServicio {
 
     @EJB
     private UsuarioDAO usuarioDAO;
+    @EJB
+    private FacturaDAO facturaDAO;
 
     public boolean insertar(Usuario u) throws ValidationException {
         boolean flag = false;
@@ -34,8 +40,9 @@ public class UsuarioServicio {
             try {
                 String codecPassword = DigestUtils.md5Hex(u.getPassword());
                 u.setPassword(codecPassword);
+                u.setActivo("Y");
                 this.usuarioDAO.insert(u);
-                flag = true;
+                flag = guardarMochilaFactura(u.getId());
 
             } catch (Exception e) {
                 throw new ValidationException(e, "Error al crear el nuevo usuario");
@@ -98,4 +105,25 @@ public class UsuarioServicio {
         return flag;
     }
 
+    public boolean guardarMochilaFactura(Integer user_id) throws ValidationException {
+        Factura f = new Factura();
+        f.setDocEmisor("0604133546001");
+        f.setTipoDocEmisor("04");
+        f.setClaveAcceso("xx");
+        f.setFechaEmision(new Date());
+        f.setDireccionEmisor("Quito, Sangolqui");
+        f.setTipoDocReceptor("04");
+        f.setTotal(BigDecimal.ZERO);
+        f.setSubtotal(BigDecimal.ZERO);
+        f.setDocReceptor(user_id.toString());
+        f.setRazonSocial("Excursiones S.A");
+        f.setSecuencial("000000000000000");
+        try {
+            this.facturaDAO.insert(f);
+            return true;
+        } catch (Exception ex) {
+            throw new ValidationException(ex, "Error al crear la factura mochila");
+
+        }
+    }
 }
