@@ -16,36 +16,32 @@
         <h:form id="main_form" >   
             <p:panel class="no_border"  >
                 <h1 class="center_inline">Factura Previa</h1>
-                <p:panelGrid columns="1" styleClass=" panel-grid-no-border" style="display:block"> 
-                    <p:dataTable id="tabla_factura" var="detalle" value="#{facturaBean.factura.detalles}">
-                        <f:facet name="header">
-                            <h:outputText value="Factura"/>
-                        </f:facet>
-
+                <p:panelGrid columns="1" styleClass="center_block panel-grid-no-border" > 
+                    <p:dataTable id="tabla_factura" style="width: 700px;" var="detalle" value="#{facturaBean.factura.detalles}">
                         <p:columnGroup type="header">
                             <p:row>
-                                <p:column headerText="Razon Social" style="text-align:right!important;"/>
-                                <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.razonSocial}"/>
+                                <p:column headerText="Razon Social" style="text-align: right!important;"/>
+                                <p:column colspan="3" headerText="#{facturaBean.factura.razonSocial}" style="text-align:left!important;"/>
                             </p:row>
                             <p:row>
                                 <p:column headerText="Ruc" style="text-align:right!important;"/>
-                                <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.docEmisor}"/>
+                                <p:column colspan="3" headerText="#{facturaBean.factura.docEmisor}" style="text-align:left!important;"/>
                             </p:row>
                             <p:row>
                                 <p:column headerText="Fecha Emisión" style="text-align:right!important;"/>
-                                <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.fechaEmision}">
+                                <p:column colspan="3" headerText="#{facturaBean.getFormatedDate(facturaBean.factura.fechaEmision)}" style="text-align:left!important;">
 
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column headerText="Dirección:" style="text-align:right!important;"/>
-                                <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.direccionEmisor}">
+                                <p:column colspan="3"  headerText="#{facturaBean.factura.direccionEmisor}" style="text-align:left!important;">
 
                                 </p:column>
                             </p:row>
                             <p:row>
                                 <p:column headerText="Secuencial:" style="text-align:right!important;"/>
-                                <p:column colspan="3" style="text-align:left!important;" headerText="#{facturaBean.factura.secuencial}">
+                                <p:column colspan="3"  headerText="#{facturaBean.factura.secuencial}" style="text-align:left!important;">
 
                                 </p:column>
                             </p:row>
@@ -57,21 +53,21 @@
                             </p:row>
                         </p:columnGroup>
 
-                        <p:column>
+                        <p:column >
                             <h:outputText value="#{detalle.articulo.nombre}"/>
                         </p:column>
 
-                        <p:column>
+                        <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.articulo.precio}">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column>
+                        <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.cantidad}"/>
                         </p:column>
 
-                        <p:column>
+                        <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.cantidad*detalle.articulo.precio}">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </h:outputText>
@@ -80,16 +76,17 @@
                         <p:columnGroup type="footer">
                             <p:row>
                                 <p:column colspan="3" style="text-align:right!important;" footerText="Subtotal:"/>
-                                <p:column footerText="#{facturaBean.factura.subtotal}$"/>
+                                <p:column  style="text-align:right!important;" footerText="$ #{facturaBean.getFormatedDecimal(facturaBean.factura.subtotal)}"/>
                             </p:row>
                             <p:row>
                                 <p:column colspan="3" style="text-align:right" footerText="Iva:"/>
-                                <p:column footerText="#{facturaBean.factura.subtotal*0.12}$"/>
+                                <p:column style="text-align:right!important;" footerText="$ #{facturaBean.getFormatedDecimal(facturaBean.factura.subtotal*0.12)}"/>
                             </p:row>
                             <p:row>
                                 <p:column colspan="3" style="text-align:right" footerText="Total:"/>
-                                <p:column footerText="#{facturaBean.factura.total}$"/>
+                                <p:column style="text-align:right!important;" footerText="$ #{facturaBean.getFormatedDecimal(facturaBean.factura.total)}"/>
                             </p:row>
+                            
                         </p:columnGroup>
 
                         <f:facet name="footer">
@@ -98,21 +95,16 @@
 
                     </p:dataTable>
 
-                    <p:spacer height="30"/>
+                    <p:spacer />
 
-                    <p:panel header="Exportar PDF o Excel">
-                        <p:commandLink id="pdf" value="PDF" ajax="false">
-                            <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview" preProcessor="#{facturaBean.procesarFactura}" postProcessor="#{facturaBean.posProcesarFactura}"/>
+                    <p:panel >
+                        <p:commandLink id="pdf" value="Descargar PDF" ajax="false">
+                            <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview"/>
                         </p:commandLink>
 
                         <p:spacer height="20"/>
 
-                        <p:commandLink id="xls" value="Excel" ajax="false">
 
-
-                            <pe:exporter type="xlsx" target="tabla_factura" fileName="factura_preview" />
-
-                        </p:commandLink>
                         <p:commandButton value="send email" actionListener="#{facturaBean.send()}" oncomplete="PF('dialog_var').show()"/>
                     </p:panel>
 

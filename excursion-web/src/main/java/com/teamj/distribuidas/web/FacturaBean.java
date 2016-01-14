@@ -21,10 +21,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -83,6 +85,7 @@ public class FacturaBean extends CrudBean implements Serializable {
     private BigDecimal totalFactura;
     private StreamedContent content;
     private ByteArrayOutputStream out;
+
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
@@ -236,6 +239,7 @@ public class FacturaBean extends CrudBean implements Serializable {
         this.factura.setFechaEmision(new Date());
         this.factura.setRazonSocial("ExcursionesTOGO");
         this.factura.setSecuencial("000000000000001");
+        this.factura.setDireccionEmisor("Sangolqui");
         this.factura.setDetalles(this.detalles);
         if (this.detalles != null) {
             for (Detalle d : this.detalles) {
@@ -243,8 +247,8 @@ public class FacturaBean extends CrudBean implements Serializable {
             }
         }
         //iva
-        this.subtotal = totalFactura;
-        this.totalFactura = this.totalFactura.add(new BigDecimal(this.totalFactura.floatValue() * 0.12f));
+        this.factura.setSubtotal(totalFactura);
+        this.factura.setTotal(this.totalFactura.add(new BigDecimal(this.totalFactura.floatValue() * 0.12f)));
 
     }
 
@@ -279,53 +283,35 @@ public class FacturaBean extends CrudBean implements Serializable {
         return String.valueOf(days);
     }
 
-    public void procesarFactura(Object document) {
-        /**
-         * out = new ByteArrayOutputStream();
-         *  Document pdf = (Document) document;
-        pdf.open();
-        pdf.setPageSize(PageSize.A4);
- 
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String logo = servletContext.getRealPath("") + File.separator + "resources" + File.separator + "demo" + File.separator + "images" + File.separator + "prime_logo.png";
-         
-        pdf.add(Image.getInstance(logo));
-         */
-        Document pdf = (Document) document;
-        out = new ByteArrayOutputStream();
-        //pdf.open();
-        try {
-            PdfWriter.getInstance(pdf, out);
-            
-
-        } catch (DocumentException ex) {
-            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-      //  content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
-        //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
-    }
     public void posProcesarFactura(Object document) {
         /**
-         * out = new ByteArrayOutputStream();
-         *  Document pdf = (Document) document;
-        pdf.open();
-        pdf.setPageSize(PageSize.A4);
- 
-        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String logo = servletContext.getRealPath("") + File.separator + "resources" + File.separator + "demo" + File.separator + "images" + File.separator + "prime_logo.png";
-         
-        pdf.add(Image.getInstance(logo));
+         * out = new ByteArrayOutputStream(); Document pdf = (Document)
+         * document; pdf.open(); pdf.setPageSize(PageSize.A4);
+         *
+         * ServletContext servletContext = (ServletContext)
+         * FacesContext.getCurrentInstance().getExternalContext().getContext();
+         * String logo = servletContext.getRealPath("") + File.separator +
+         * "resources" + File.separator + "demo" + File.separator + "images" +
+         * File.separator + "prime_logo.png";
+         *
+         * pdf.add(Image.getInstance(logo));
          */
-        
 
-     //   content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
+        //   content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
         //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
     }
 
     public void send() {
-        this.emailSessionBean.sendEmail(this.sessionBean.getUser().getCorreo(), "prueba", "hola","ajaja");
+        this.emailSessionBean.sendEmail(this.sessionBean.getUser().getCorreo(), "prueba", "hola", "ajaja");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Éxito", "El email ha sido enviado"));
     }
 
+    public String getFormatedDate(Date d) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        
+        return sdf.format(d);
+    }
+    public String getFormatedDecimal(BigDecimal bd){
+        return bd.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    }
 }
