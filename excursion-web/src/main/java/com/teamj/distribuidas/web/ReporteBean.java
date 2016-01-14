@@ -5,6 +5,8 @@
  */
 package com.teamj.distribuidas.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -20,6 +22,8 @@ import java.util.HashMap;
 import java.util.Map;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 /**
  *
  * @author Gaming
@@ -29,9 +33,34 @@ import net.sf.jasperreports.engine.JasperExportManager;
 public class ReporteBean implements Serializable {
     
     
-    private Date fechaAntes;
-    private Date fechaDespues;
+    private java.util.Date fechaAntes;
+    private java.util.Date fechaDespues;
     private int idFactura;
+    private boolean reporte3=false;
+    private StreamedContent content;
+    private boolean reporteFactura=false;
+    public boolean isReporte3() {
+        return reporte3;
+    }
+
+    public void setReporte3(boolean reporte3) {
+        this.reporte3 = reporte3;
+    }
+    public boolean isReporteFactura() {
+        return reporteFactura;
+    }
+
+    public void setContent(StreamedContent content) {
+        this.content = content;
+    }
+
+    public StreamedContent getContent() {
+        return content;
+    }
+
+    public void setReportefactura(boolean reporteFactura) {
+        this.reporteFactura = reporteFactura;
+    }
     public void generarReporteStock()
     {
         try
@@ -106,10 +135,11 @@ public class ReporteBean implements Serializable {
             
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
             System.out.println("Conexion realizada");
+            System.out.println("fecha antes: "+fechaAntes.toString());
+            System.out.println("fecha Despues: "+fechaDespues.toString());
             Map parametros = new HashMap();
-//            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//            java.util.Date dateA = df.parse("25/12/2015");
-//            java.util.Date dateD = df.parse("01/01/2016");            
+            parametros.put("fechaAntes", fechaAntes);
+            parametros.put("fechaDespues", fechaDespues);
             FacesContext context = FacesContext.getCurrentInstance();
             System.out.println("Dentro del try");
             ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
@@ -137,21 +167,68 @@ public class ReporteBean implements Serializable {
         }
     }
     
-    
+    public void generarFactura()
+    {
+        try
+        {
+            
+            Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
+            System.out.println("Conexion realizada");            
+            Map parametros = new HashMap();
+            parametros.put("idFactura", idFactura);
+            parametros.put("SUBREPORT_DIR", "C:\\Users\\Gaming\\Documents\\NetBeansProjects\\ProyectoSegundoParcial\\excursion-web\\src\\main\\webapp\\reportes\\");
+            FacesContext context = FacesContext.getCurrentInstance();
+            System.out.println("Dentro del try");
+            ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
+            System.out.println("Dentro del servlet");
+            String path = servercontext.getRealPath("/reportes/ReportFactura.jasper");
+            System.out.println(path + "se hizo el cambio");
+            System.out.println("Ruta del archivo");
+            HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
+            System.out.println("Response");
+            response.addHeader("Content-disposition", "attachment;filename=reporte.pdf");
+            System.out.println("Archivo");
+            response.setContentType("application/pdf");
+            System.out.println("Formato PDf");
+            JasperPrint jp = JasperFillManager.fillReport(path, parametros, conn);            
+            System.out.println("Ruta");
+            JasperExportManager.exportReportToPdfStream(jp, response.getOutputStream());
+            
+            System.out.println("exporrtando");
+            context.getApplication().getStateManager().saveView(context);
+            System.out.println("Guardando");
+            
+            //para mostrar en un pdf
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            JasperExportManager.exportReportToPdfStream(jp, out);
+           content=new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()));
 
-    public Date getFechaAntes() {
+            context.responseComplete();
+        }
+        catch(Exception a)
+        {
+            System.out.println(a.toString());
+        }
+    }
+    public void mostrarParametrosReporte3(){
+    this.reporte3=true;
+    }
+    public void mostrarParametrosFactura(){
+    this.reporteFactura=true;
+    }
+    public java.util.Date getFechaAntes() {
         return fechaAntes;
     }
 
-    public void setFechaAntes(Date fechaAntes) {
+    public void setFechaAntes(java.util.Date fechaAntes) {
         this.fechaAntes = fechaAntes;
     }
 
-    public Date getFechaDespues() {
+    public java.util.Date getFechaDespues() {
         return fechaDespues;
     }
 
-    public void setFechaDespues(Date fechaDespues) {
+    public void setFechaDespues(java.util.Date fechaDespues) {
         this.fechaDespues = fechaDespues;
     }
 

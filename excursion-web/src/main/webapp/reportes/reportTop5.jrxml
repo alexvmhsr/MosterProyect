@@ -3,9 +3,15 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="fechaAntes" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaDespues" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select ar.NOMBRE_ARTICULO, count(d.ID_ARTICULO) from articulo ar, detalle d, factura f
-where f.id_factura = d.ID_FACTURA and ar.ID_ARTICULO = d.ID_ARTICULO and f.FECHA_EMISION between TO_DATE('01-01-2015','dd/mm/yyyy') and TO_DATE('31-12-2015','dd/mm/yyyy')
+where f.id_factura = d.ID_FACTURA and ar.ID_ARTICULO = d.ID_ARTICULO and f.FECHA_EMISION between $P{fechaAntes} and $P{fechaDespues}
 group by ar.NOMBRE_ARTICULO, d.ID_ARTICULO
 order by 2 desc]]>
 	</queryString>
