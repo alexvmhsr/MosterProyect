@@ -23,7 +23,7 @@
                         <p:outputLabel for="nombre" value="Nombre:" rendered="#{reporteBean.reporteFactura}"/>
                         <p:inputText id="nombre" maxlength="40" value="#{reporteBean.idFactura}" required="true" requiredMessage="Ingrese un nombre válido" rendered="#{reporteBean.reporteFactura}" />
                     </p:panelGrid>
-                    <p:commandButton value="Generar Reporte" action="#{reporteBean.generarFactura()}" rendered="#{reporteBean.reporteFactura}" icon="icon-report" ajax="false"/>
+                    <h:commandLink value="Generar Factura" action="#{reporteBean.generarFactura()}" target="_blank" rendered="#{reporteBean.reporteFactura}"/>
                     <p:commandButton value="Top 5" actionListener="#{reporteBean.mostrarParametrosReporte3()}" icon="icon-report" update="@form"/>
 
                     <p:panelGrid columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
@@ -35,7 +35,7 @@
                     <p:commandButton value="Generar Reporte" action="#{reporteBean.generarReporteTop5()}" rendered="#{reporteBean.reporte3}" icon="icon-report" ajax="false"/>
                 </p:panelGrid>
                 <p:spacer/>
-                <pe:documentViewer height="500" value="#{reporteBean.content}"/>
+                
             </p:panel>
         </h:form>
 
