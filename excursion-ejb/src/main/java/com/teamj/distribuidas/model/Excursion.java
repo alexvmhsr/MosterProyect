@@ -7,6 +7,7 @@ package com.teamj.distribuidas.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -95,6 +96,11 @@ public class Excursion implements Serializable {
     private List<ExcursionArticulo> excursionArticulos;
 
     public Excursion() {
+       this.excursionArticulos=new ArrayList<>();
+       this.usuarioExcursiones=new ArrayList<>();
+       this.archivos=new ArrayList<>();
+       this.comentarios=new ArrayList<>();
+       this.itinerarios=new ArrayList<>();
     }
 
     public Integer getId() {

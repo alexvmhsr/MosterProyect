@@ -149,7 +149,7 @@ public class ReporteBean implements Serializable {
             System.out.println("Ruta del archivo");
             HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
             System.out.println("Response");
-            response.addHeader("Content-disposition", "attachment;filename=reporte.pdf");
+            response.addHeader("Content-disposition", "inline;filename=reporte.pdf");
             System.out.println("Archivo");
             response.setContentType("application/pdf");
             System.out.println("Formato PDf");
@@ -175,8 +175,8 @@ public class ReporteBean implements Serializable {
             Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE", "excursion", "excursion");
             System.out.println("Conexion realizada");            
             Map parametros = new HashMap();
-            parametros.put("idFactura", idFactura);
-            parametros.put("SUBREPORT_DIR", "C:\\Users\\Gaming\\Documents\\NetBeansProjects\\ProyectoSegundoParcial\\excursion-web\\src\\main\\webapp\\reportes\\");
+            parametros.put("idFactura", 41);
+            parametros.put("SUBREPORT_DIR", "C:\\Users\\Dennys\\Documents\\NetBeansProjects\\excursion\\excursion-web\\src\\main\\webapp\\reportes\\");
             FacesContext context = FacesContext.getCurrentInstance();
             System.out.println("Dentro del try");
             ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
@@ -186,7 +186,7 @@ public class ReporteBean implements Serializable {
             System.out.println("Ruta del archivo");
             HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
             System.out.println("Response");
-            response.addHeader("Content-disposition", "attachment;filename=reporte.pdf");
+            response.addHeader("Content-disposition", "inline;filename=\"reporte.pdf\"");
             System.out.println("Archivo");
             response.setContentType("application/pdf");
             System.out.println("Formato PDf");
@@ -199,9 +199,9 @@ public class ReporteBean implements Serializable {
             System.out.println("Guardando");
             
             //para mostrar en un pdf
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            JasperExportManager.exportReportToPdfStream(jp, out);
-           content=new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()));
+            //ByteArrayOutputStream out = new ByteArrayOutputStream();
+            //JasperExportManager.exportReportToPdfStream(jp, out);
+           //content=new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()));
 
             context.responseComplete();
         }

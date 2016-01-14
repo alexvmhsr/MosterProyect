@@ -27,7 +27,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
@@ -38,7 +38,7 @@ import org.primefaces.event.SelectEvent;
  * @author Gaming
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ExcursionBean extends CrudBean implements Serializable {
 
     @EJB
@@ -219,6 +219,11 @@ public class ExcursionBean extends CrudBean implements Serializable {
 
         excursionServicio.eliminar(excursionSelected.getId());
         this.excursions.remove(excursionSelected);
+        this.excursionSelected = null;
+        this.excursionArticuloSelected = null;
+        this.excursionArticulos.clear();
+        //    this.
+        this.participantes.clear();
 
     }
 
@@ -254,8 +259,12 @@ public class ExcursionBean extends CrudBean implements Serializable {
         if (validateFields()) {
             if (this.isCreating()) {
                 excursionServicio.insertar(this.excursion, this.sessionBean.getUser());
-                this.excursions.add(0, excursion);
+                //Excursion e = this.excursionServicio.obtenerPorId(excursion.getId());
+                //if (e != null) {
+                // this.excursions.add(0, this.excursion); por el momento
+                this.excursions = this.excursionServicio.obtenerTodas();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La excursión ha sido creada correctamente"));
+                //}
             } else {
                 excursionServicio.actualizar(this.excursion);
                 try {
@@ -263,8 +272,10 @@ public class ExcursionBean extends CrudBean implements Serializable {
                 } catch (IllegalAccessException | InvocationTargetException ex) {
                     Logger.getLogger(ExcursionBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
+            this.excursionArticuloSelected = null;
+            this.excursionSelected = null;
+
             RequestContext.getCurrentInstance().execute("PF('agregar_dialog_var').hide()");
             this.reset();
         }
@@ -286,6 +297,12 @@ public class ExcursionBean extends CrudBean implements Serializable {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Las fechas no son consecuentes en el tiempo", "La fecha límite debe ser menor a la fecha fecha de salida, y la de salida menor a la de retorno"));
                 return false;
+            }
+            if (this.excursion.getMaxAsistentes() < this.excursion.getMinAsistentes()) {
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Validación de asistentes falló", "El número de asistentes máximo debe ser mayor al número de asistentes mínimo"));
+                return false;
+
             }
         }
         return true;
@@ -311,6 +328,11 @@ public class ExcursionBean extends CrudBean implements Serializable {
         // this.excursionArticulos = this.excursionSelected.getExcursionArticulos();
         this.excursionArticulos = ((Excursion) event.getObject()).getExcursionArticulos();
         this.participantes = ((Excursion) event.getObject()).getUsuarioExcursiones();
+        for (int i = (excursionArticulos.size() - 1); i >= 0; i--) {
+            if (excursionArticulos.get(i).getArticulo().getNombre().startsWith("Derecho a")) {
+                excursionArticulos.remove(i);
+            }
+        }
         // FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
@@ -328,13 +350,38 @@ public class ExcursionBean extends CrudBean implements Serializable {
     public void createOrUpdateArticuloExcursion() {
         FacesContext context = FacesContext.getCurrentInstance();
         try {
+
             if (this.isCreating()) {
+                boolean isNew = true;
+                int oldQuantity = 0;
+                for (ExcursionArticulo ea : this.excursionSelected.getExcursionArticulos()) {
+                    if (ea.getArticulo().equals(articuloSelected)) {
+                        oldQuantity = ea.getCantidad();
+                        isNew = false;
+                        break;
+                    }
+                }
                 this.excursionArticulo.getExcursionArticuloPK().setIdArticulo(articuloSelected.getId());
-                this.excursionArticulo.setCantidad(this.cantidad);
-                this.excursionArticuloServicio.insertar(this.excursionArticulo);
+                if (isNew) {
+                    this.excursionArticulo.setCantidad(this.cantidad);
+                    this.excursionArticuloServicio.insertar(this.excursionArticulo);
+                } else {
+                    this.excursionArticulo.setCantidad(this.cantidad + oldQuantity);
+                    this.excursionArticuloServicio.actualizar(this.excursionArticulo);
+
+                }
                 this.excursionArticulo.setArticulo(articuloSelected);
                 this.excursionArticulo.setExcursion(excursionSelected);
-                this.excursionArticulos.add(0, excursionArticulo);
+                if (isNew) {
+                    this.excursionArticulos.add(0, excursionArticulo);
+                } else {
+                    for (ExcursionArticulo ea : this.excursionArticulos) {
+                        if (ea.getArticulo().equals(articuloSelected)) {
+                            ea.setCantidad(ea.getCantidad() + this.cantidad);
+                            break;
+                        }
+                    }
+                }
                 this.cantidad = 1;
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido correctamente agregado"));
             }
@@ -351,7 +398,6 @@ public class ExcursionBean extends CrudBean implements Serializable {
         this.excursionArticulos.remove(excursionArticuloSelected);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido eliminado correctamente "));
-
     }
 
 }

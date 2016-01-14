@@ -13,7 +13,7 @@
     <ui:define name="content">
         <h:form id="main_form" >   
             <p:panel class="center_inline no_border"  >
-                <h1>Excursiones Disponibles</h1>
+                <h1>Excursiones y Artículos Disponibles</h1>
                 <p:dataTable id="tabla_excursion" class="center_block"
                              var="excursion" 
                              value="#{excursionUserBean.excursions}" 
@@ -33,27 +33,30 @@
                     <p:column headerText="Destino" filterBy="#{excursion.destino}" filterMatchMode="contains">
                         <h:outputText value="#{excursion.destino}" />
                     </p:column>
-                    <p:column headerText="Comprar Hasta">
+                    <p:column headerText="Comprar Hasta" width="80">
                         <h:outputText value="#{excursion.fechaLimite}" >
                             <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Duración (días)">
+                    <p:column headerText="Dur.(días)" width="30">
                         <h:outputText value="#{excursionUserBean.duracion(excursion.fechaSalida,excursion.fechaRetorno)}" >
-
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Fecha Salida">
+                    <p:column headerText="Cupo" width="30">
+                        <h:outputText value="#{excursion.maxAsistentes-fn:length(excursion.usuarioExcursiones)}" >
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Fecha Salida" width="80">
                         <h:outputText value="#{excursion.fechaSalida}" >
                             <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Fecha Retorno">
+                    <p:column headerText="Fecha Retorno" width="80">
                         <h:outputText value="#{excursion.fechaRetorno}" >
                             <f:convertDateTime locale="es" pattern="dd/MMM/yyyy" />
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Costo">
+                    <p:column headerText="Costo" width="60">
                         <h:outputText value="#{excursion.costo}" >
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </h:outputText>
@@ -63,7 +66,7 @@
                     </f:facet>
                 </p:dataTable>
                 <p:spacer/>
-                <p:panelGrid id="details"  columns="2"  class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                <p:panelGrid id="details" rendered="#{excursionUserBean.excursionSelected ne null}" columns="2"  class="center_block" styleClass="no_border center_block panel-grid-no-border">
                     <p:panel header="Artículos Necesarios">
                         <p:dataTable id="tabla_articulo" class="center_inline"
                                      var="excursionarticulo" 
@@ -71,8 +74,6 @@
                                      rowStyleClass="#{excursionarticulo.articulo.stock le 0?'colored':null}"
                                      rows="6"
                                      paginator="true"
-                                     editMode="cell"
-                                     editable="true"
                                      paginatorPosition="bottom"
                                      emptyMessage="No hay artículos asociados a la excursión"
                                      selection="#{excursionUserBean.excursionArticulosSelected}" 
@@ -81,7 +82,7 @@
                             <p:ajax event="rowSelectCheckbox" listener="#{excursionUserBean.selectDisabledRow}" update=":main_form"/>
                             <p:ajax event="rowUnselectCheckbox" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
                             <p:ajax event="toggleSelect" listener="#{excursionUserBean.unselectDisabledRow}" update=":main_form"/>
- 
+
                             <p:column selectionMode="multiple" style="width:16px;text-align:center" />
                             <p:column headerText="Nombre" selectRow="false">
                                 <h:outputText value="#{excursionarticulo.articulo.nombre}" />
@@ -89,43 +90,42 @@
                             <p:column headerText="Descripción" selectRow="false">
                                 <h:outputText value="#{excursionarticulo.articulo.descripcion}" />
                             </p:column>
-                            <p:column headerText="Precio" selectRow="false">
-                                <h:outputText value="#{excursionarticulo.articulo.precio}" >
-                                    <f:convertNumber currencySymbol="$" type="currency" />
-                                </h:outputText>
-                            </p:column>
                             <p:column headerText="Estado" selectRow="false">
                                 <h:outputText value="#{excursionarticulo.articulo.stock le 0?'NO Hay Stock':'En Stock'}" >
 
                                 </h:outputText>
                             </p:column>
-                            <p:column headerText="Stock" selectRow="false">
+                            <p:column headerText="Stock" selectRow="false" width="40">
                                 <h:outputText value="#{excursionarticulo.articulo.stock}" >
                                 </h:outputText>
                             </p:column>
-                            <p:column headerText="Cant." selectRow="false">
-                                
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{excursionarticulo.cantidad}" /></f:facet>
-                                    <f:facet name="input">
-                                        <p:spinner id="minMax" value="#{excursionarticulo.cantidad}" min="0" max="#{excursionarticulo.articulo.stock}" size="2" />
-
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column headerText="Precio" selectRow="false">
+                                <h:outputText value="#{excursionarticulo.articulo.precio}" >
+                                    <f:convertNumber currencySymbol="$" type="currency" />
+                                </h:outputText>
                             </p:column>
-                            
+                            <p:column headerText="Cant." width="50" selectRow="false">       
+
+                                <h:outputText value="#{excursionarticulo.cantidad}" />
+
+                            </p:column>
                         </p:dataTable>
                         <p:spacer/>
-
                     </p:panel>
                     <p:panelGrid id="subtotal" columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
 
                         <h3>Sub Total:</h3>
                         <p:spacer/>
                         <p:outputLabel  value="Derecho a Excursion:" styleClass="negrita"/>
-                        <p:outputLabel value="#{excursionUserBean.excursion.costo}">
+                        <p:outputLabel value="#{excursionUserBean.derechoExcursionSeleccionada}" rendered="#{!((excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today()) or (excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0))}">
                             <f:convertNumber currencySymbol="$" type="currency"/>
                         </p:outputLabel>
+                        <p:outputLabel  value="No aplicable" styleClass="colored" rendered="#{(excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today()) or (excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0)}"/>
+                        <p:outputLabel  value="Razón:" styleClass="negrita" rendered="#{(excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today()) or (excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0) }"/>
+                        <p:outputLabel  value="#{(excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today())?'La fecha límite para aplicar ha caducado':((excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0))?'No hay cupos':'Desconocido'}" 
+                                        styleClass="colored" 
+                                        rendered="#{(excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today()) or (excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0)}"/>
+
                         <p:outputLabel  value="Artículos:" styleClass="negrita"/>
                         <p:outputLabel value="#{excursionUserBean.subtotal}">
                             <f:convertNumber currencySymbol="$" type="currency"/>
@@ -135,8 +135,10 @@
                     <p:panelGrid id="controllers" columns="3" class="center_block" styleClass="no_border center_block panel-grid-no-border">
                         <p:commandButton value="Agregar a la mochila"  
                                          icon="fa fa-check-square"
-                                         update="@form"
+                                         update="@form" disabled="#{fn:length(excursionUserBean.excursionArticulosSelected) eq 0}"
+
                                          actionListener="#{excursionUserBean.agregarMochila()}" 
+
                                          oncomplete="PF('agregar_dialog_var').show()"/>                 
 
                     </p:panelGrid>
@@ -185,12 +187,9 @@
                                          value="#{excursionUserBean.excursion.observaciones}"
                                          maxlength="1000" counterTemplate="{0} caracteres restantes." autoResize="false" />
                     </p:panelGrid>
-
                 </p:panelGrid>
-
             </p:panel>
             <p:spacer/>
-
         </h:form>
     </ui:define>
 </ui:composition>

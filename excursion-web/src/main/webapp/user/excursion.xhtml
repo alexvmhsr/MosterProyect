@@ -150,7 +150,7 @@
                 <p:panelGrid columns="1" styleClass="panel-grid-no-border">
                     <p:panelGrid columns="4" styleClass="panel-grid-no-border" >
                         <p:outputLabel for="nombre" value="Nombre:"/>
-                        <p:inputText id="nombre" maxlength="200" value="#{excursionBean.excursion.nombre}" required="true" >
+                        <p:inputText id="nombre" validatorMessage="El nombre debe tener mínimo 6 caracteres" maxlength="200" value="#{excursionBean.excursion.nombre}" required="true" >
                             <f:validateLength minimum="6" maximum="200" />
                         </p:inputText>
                         <p:outputLabel for="destino" value="Destino:"/>
@@ -164,13 +164,13 @@
                         <p:calendar id="fecha_salida" value="#{excursionBean.excursion.fechaSalida}" locale="es"  pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" required="true" >
                         </p:calendar>
                         <p:outputLabel for="min_asistentes" value="Asistentes (mín):"/>
-                        <pe:inputNumber id="min_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.minAsistentes}" required="true" >
+                        <pe:inputNumber id="min_asistentes" minValue="0" maxValue="1000001" value="#{excursionBean.excursion.minAsistentes}" required="true" >
                         </pe:inputNumber>
                         <p:outputLabel for="fecha_retorno" value="Fecha Retorno:"/>
                         <p:calendar id="fecha_retorno"  value="#{excursionBean.excursion.fechaRetorno}" locale="es" pages="3" mask="false" pattern="dd/MM/yyyy HH:mm" mindate="#{excursionBean.todayDate()}" required="true" >
                         </p:calendar>
                         <p:outputLabel for="max_asistentes" value="Asistentes (max):"/>
-                        <pe:inputNumber  id="max_asistentes" minValue="2" maxValue="1000001" value="#{excursionBean.excursion.maxAsistentes}" required="true">
+                        <pe:inputNumber  id="max_asistentes" minValue="0" maxValue="1000001" value="#{excursionBean.excursion.maxAsistentes}" required="true">
 
                         </pe:inputNumber>
                         <p:outputLabel for="objetivo" value="Objetivo:"/>
@@ -196,7 +196,7 @@
                   modal="true"  
                   draggable="true"
                   resizable="false" 
-                  header="#{excursionBean.modifying eq true ?'Modificar Artículo de Escursión':'Nuevo Artículo de Escursión'}" >
+                  header="#{excursionBean.modifying eq true ?'Modificar Artículo de Excursión':'Nuevo Artículo de Excursión'}" >
             <h:form id="exc_art_form">
                 <p:panelGrid columns="1" styleClass="panel-grid-no-border">
                     <p:dataTable id="tabla_articulo" class="center_block"

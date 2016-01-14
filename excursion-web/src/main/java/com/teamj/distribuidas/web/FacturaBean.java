@@ -82,9 +82,17 @@ public class FacturaBean extends CrudBean implements Serializable {
     private Integer totalArticulos;
     private BigDecimal totalFactura;
     private StreamedContent content;
-
+    private ByteArrayOutputStream out;
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public void setOut(ByteArrayOutputStream out) {
+        this.out = out;
+    }
+
+    public ByteArrayOutputStream getOut() {
+        return out;
     }
 
     public String getDescripcion() {
@@ -272,20 +280,46 @@ public class FacturaBean extends CrudBean implements Serializable {
     }
 
     public void procesarFactura(Object document) {
-        Document pdf = (Document) document;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        /**
+         * out = new ByteArrayOutputStream();
+         *  Document pdf = (Document) document;
         pdf.open();
+        pdf.setPageSize(PageSize.A4);
+ 
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String logo = servletContext.getRealPath("") + File.separator + "resources" + File.separator + "demo" + File.separator + "images" + File.separator + "prime_logo.png";
+         
+        pdf.add(Image.getInstance(logo));
+         */
+        Document pdf = (Document) document;
+        out = new ByteArrayOutputStream();
+        //pdf.open();
         try {
             PdfWriter.getInstance(pdf, out);
-            if (pdf.isOpen()) {
-                pdf.close();
-            }
+            
 
         } catch (DocumentException ex) {
             Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
+      //  content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
+        //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
+    }
+    public void posProcesarFactura(Object document) {
+        /**
+         * out = new ByteArrayOutputStream();
+         *  Document pdf = (Document) document;
+        pdf.open();
+        pdf.setPageSize(PageSize.A4);
+ 
+        ServletContext servletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String logo = servletContext.getRealPath("") + File.separator + "resources" + File.separator + "demo" + File.separator + "images" + File.separator + "prime_logo.png";
+         
+        pdf.add(Image.getInstance(logo));
+         */
+        
+
+     //   content = new DefaultStreamedContent(new ByteArrayInputStream(out.toByteArray()), "application/pdf");
         //RequestContext.getCurrentInstance().execute("PF('dialog_var').show()");
     }
 
