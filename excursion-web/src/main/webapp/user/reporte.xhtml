@@ -5,6 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:ui="http://java.sun.com/jsf/facelets" >
     <ui:define name="title">Reportes</ui:define>
     <ui:define name="content">
@@ -17,6 +18,12 @@
                     <p:commandButton value="Stock" action="#{reporteBean.generarReporteStock()}" icon="icon-report" ajax="false"/>
 
                     <p:commandButton value="Montos" action="#{reporteBean.generarReporteMonto()}" icon="icon-report" ajax="false"/>
+                    <p:commandButton value="Factura" action="#{reporteBean.mostrarParametrosFactura()}" icon="icon-report" update="@form"/>  
+                    <p:panelGrid columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
+                        <p:outputLabel for="nombre" value="Nombre:" rendered="#{reporteBean.reporteFactura}"/>
+                        <p:inputText id="nombre" maxlength="40" value="#{reporteBean.idFactura}" required="true" requiredMessage="Ingrese un nombre válido" rendered="#{reporteBean.reporteFactura}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Generar Reporte" action="#{reporteBean.generarFactura()}" rendered="#{reporteBean.reporteFactura}" icon="icon-report" ajax="false"/>
                     <p:commandButton value="Top 5" actionListener="#{reporteBean.mostrarParametrosReporte3()}" icon="icon-report" update="@form"/>
 
                     <p:panelGrid columns="2" class="center_block" styleClass="no_border center_block panel-grid-no-border">
@@ -28,9 +35,8 @@
                     <p:commandButton value="Generar Reporte" action="#{reporteBean.generarReporteTop5()}" rendered="#{reporteBean.reporte3}" icon="icon-report" ajax="false"/>
                 </p:panelGrid>
                 <p:spacer/>
+                <pe:documentViewer height="500" value="#{reporteBean.content}"/>
             </p:panel>
-
-
         </h:form>
 
     </ui:define>
