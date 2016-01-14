@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportCabezera" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="87a9b2c1-9642-4dd3-8164-c7666f3d07f0">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportCabezera" pageWidth="555" pageHeight="100" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="87a9b2c1-9642-4dd3-8164-c7666f3d07f0">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -28,50 +28,50 @@ where id_factura=$P{idFactura}]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch"/>
-	</title>
 	<pageHeader>
-		<band height="68" splitType="Stretch">
+		<band height="127" splitType="Stretch">
 			<staticText>
-				<reportElement x="171" y="20" width="100" height="20" uuid="97814d00-07e4-45f2-add4-795cfac8246a"/>
+				<reportElement x="6" y="26" width="78" height="20" uuid="97814d00-07e4-45f2-add4-795cfac8246a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="171" y="40" width="100" height="20" uuid="44b10c44-6c04-4774-abce-bb869a81ee2d"/>
+				<reportElement x="6" y="46" width="78" height="20" uuid="44b10c44-6c04-4774-abce-bb869a81ee2d"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[CEDULA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="171" y="0" width="100" height="20" uuid="b6adf7c2-ea90-4561-a544-f0e148e71ac4"/>
+				<reportElement x="6" y="6" width="78" height="20" uuid="b6adf7c2-ea90-4561-a544-f0e148e71ac4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[EMPRESA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="271" y="0" width="100" height="20" uuid="0c6e53c0-c911-4ed2-bcbc-ce403c3c7ad5"/>
+				<reportElement x="84" y="26" width="78" height="20" uuid="0c6e53c0-c911-4ed2-bcbc-ce403c3c7ad5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{ID_FACTURA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="271" y="20" width="100" height="20" uuid="6b9d06e4-8847-45cb-bf86-da4c163d0c3a"/>
+				<reportElement x="84" y="46" width="78" height="20" uuid="6b9d06e4-8847-45cb-bf86-da4c163d0c3a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{DOC_RECEPTOR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="271" y="40" width="100" height="20" uuid="16e54527-ba16-42c9-9dd6-dd2f1fbd0e58"/>
+				<reportElement x="84" y="6" width="78" height="20" uuid="16e54527-ba16-42c9-9dd6-dd2f1fbd0e58"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{RAZON_SOCIAL_EMISOR}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="19" splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="42" splitType="Stretch"/>
-	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="54" splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band height="42" splitType="Stretch"/>
-	</summary>
 </jasperReport>

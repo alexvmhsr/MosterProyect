@@ -23,61 +23,87 @@ order by 2 desc]]>
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="204" y="24" width="128" height="20" uuid="4326d9f7-c1a1-4789-8855-d31055d909fb"/>
+				<reportElement x="192" y="24" width="170" height="20" uuid="4326d9f7-c1a1-4789-8855-d31055d909fb"/>
 				<textElement>
 					<font size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte de Stock]]></text>
+				<text><![CDATA[Reporte Top Productos]]></text>
 			</staticText>
+			<image>
+				<reportElement x="19" y="24" width="103" height="50" uuid="f3a4f572-8187-44e4-ae3c-982403aa95e1"/>
+				<imageExpression><![CDATA["C:\\Users\\Gaming\\Desktop\\assets\\Logo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="03a2001c-790f-4ea5-9e55-8512f918de09"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="81" y="15" width="100" height="20" uuid="38aafa67-4754-4c66-864c-ad25bab41711"/>
+				<reportElement x="81" y="9" width="100" height="20" uuid="38aafa67-4754-4c66-864c-ad25bab41711"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="19" y="15" width="51" height="20" uuid="24170efd-ebd4-48eb-9c34-1f5949d0d31c"/>
+				<reportElement x="19" y="9" width="51" height="20" uuid="24170efd-ebd4-48eb-9c34-1f5949d0d31c"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<staticText>
-				<reportElement x="89" y="2" width="100" height="20" uuid="92c1504f-e877-4521-a054-f2f95118367a"/>
-				<text><![CDATA[NOMBRE_ARTICULO]]></text>
+				<reportElement x="89" y="5" width="100" height="20" uuid="92c1504f-e877-4521-a054-f2f95118367a"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="360" y="2" width="100" height="20" uuid="92d019b2-5338-44c6-ae65-114455a5e624"/>
-				<text><![CDATA[COUNT(D.ID_ARTICULO)]]></text>
+				<reportElement x="360" y="5" width="100" height="20" uuid="92d019b2-5338-44c6-ae65-114455a5e624"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VENDIDO]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="31" splitType="Stretch">
 			<textField>
-				<reportElement x="89" y="27" width="100" height="20" uuid="926c7078-d1cd-4714-b216-0f95f5c78190"/>
+				<reportElement x="89" y="0" width="100" height="20" uuid="926c7078-d1cd-4714-b216-0f95f5c78190"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="360" y="27" width="100" height="20" uuid="cbaadcd4-bbf6-4819-9b64-12d96f948dc6"/>
+				<reportElement x="360" y="0" width="100" height="20" uuid="cbaadcd4-bbf6-4819-9b64-12d96f948dc6"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{COUNT(D.ID_ARTICULO)}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="7b6fa6a4-a96f-4f3a-8d0c-8269195fe6b9"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="53" width="555" height="1" uuid="9c993874-a5f4-4e7b-93f3-e5474175c3ed"/>
+			</line>
+		</band>
 	</pageFooter>
 	<summary>
 		<band height="42" splitType="Stretch"/>

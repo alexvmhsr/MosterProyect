@@ -18,12 +18,19 @@ where stock < 6]]>
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="199" y="22" width="128" height="20" uuid="c3424fa4-6b59-436b-a039-fd264c6ccd68"/>
-				<textElement>
+				<reportElement x="213" y="22" width="128" height="20" uuid="c3424fa4-6b59-436b-a039-fd264c6ccd68"/>
+				<textElement textAlignment="Justified">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Reporte de Stock]]></text>
 			</staticText>
+			<image>
+				<reportElement x="37" y="22" width="103" height="50" uuid="5b9e3435-8bbe-4a38-b12d-3c15afb77b89"/>
+				<imageExpression><![CDATA["C:\\Users\\Gaming\\Desktop\\assets\\Logo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="5bceb942-5dd4-442a-8330-b6d9a5d4a610"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
@@ -31,58 +38,70 @@ where stock < 6]]>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="99" y="6" width="100" height="20" uuid="48b49d51-cadb-46f4-bf89-7658d82b2702"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="37" y="6" width="51" height="20" uuid="cd843f34-30c3-4b1f-8463-f59cd9fa1b7f"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FECHA]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="28" splitType="Stretch">
+		<band height="26" splitType="Stretch">
 			<staticText>
 				<reportElement x="37" y="2" width="100" height="20" uuid="bc99053d-f410-4cfe-bc05-8ba1819f2830"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CODIGO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="245" y="2" width="100" height="20" uuid="1baa3962-51ef-4877-82e8-dcadc6b0984d"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOMBRE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="460" y="2" width="100" height="20" uuid="f8a199a2-a7b4-4b96-8d8b-abd8b4ea20cd"/>
+				<reportElement x="447" y="2" width="100" height="20" uuid="f8a199a2-a7b4-4b96-8d8b-abd8b4ea20cd"/>
 				<textElement>
-					<font isBold="true"/>
+					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[STOCK]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<textField>
 				<reportElement x="37" y="7" width="100" height="20" uuid="4fcb8779-afa2-4fa9-b3ae-a44a570f624a"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{ID_ARTICULO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="245" y="7" width="100" height="20" uuid="aadd99c0-b9a9-4fdf-b01e-3637e1219919"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="7" width="100" height="20" uuid="8768f916-84a4-4964-8982-2bd592f1d7b9"/>
+				<reportElement x="442" y="7" width="100" height="20" uuid="8768f916-84a4-4964-8982-2bd592f1d7b9"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{STOCK}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="81087326-05e1-48dd-b49c-bc7744f6e517"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
@@ -92,6 +111,10 @@ where stock < 6]]>
 		<band height="54" splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="17db6abf-7b27-4320-a0e9-86b322598734"/>
+			</line>
+		</band>
 	</summary>
 </jasperReport>
