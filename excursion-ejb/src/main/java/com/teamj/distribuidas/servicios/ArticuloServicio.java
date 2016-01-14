@@ -27,6 +27,11 @@ public class ArticuloServicio {
 
         return excursionDAO.findAll();
     }
+//    public List<Articulo> obtenerTodasActivas() {
+//
+//        //query.setParameter("date", new java.util.Date(), TemporalType.DATE);
+//        //return excursionDAO.getEm().createQuery("SELECT e FROM Excursion e WHERE e.fechaLimite > 'Canada'");
+//    }
 
     public void insertar(Articulo m) {
         try {

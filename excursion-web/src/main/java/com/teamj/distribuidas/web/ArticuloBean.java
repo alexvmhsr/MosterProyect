@@ -17,6 +17,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.primefaces.context.RequestContext;
@@ -26,7 +27,7 @@ import org.primefaces.context.RequestContext;
  * @author Gaming
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ArticuloBean extends CrudBean implements Serializable {
 
     @EJB
@@ -81,8 +82,12 @@ public class ArticuloBean extends CrudBean implements Serializable {
     @PostConstruct
     public void init() {
         articulos = articuloServicio.obtenerTodas();
+        for (int i = (articulos.size() - 1); i >= 0; i--) {
+            if (articulos.get(i).getNombre().startsWith("Derecho a")) {
+                articulos.remove(i);
+            }
+        }
         this.articulo = new Articulo();
-
     }
 
     public void beginCreation() {
@@ -110,15 +115,13 @@ public class ArticuloBean extends CrudBean implements Serializable {
 
     }
 
-   
-
     public void createOrUpdate() {
         if (this.isCreating()) {
             articuloServicio.insertar(this.articulo);
             this.articulos.add(0, articulo);
         } else {
             try {
-            articuloServicio.actualizar(this.articulo);
+                articuloServicio.actualizar(this.articulo);
                 BeanUtils.copyProperties(this.articuloSelected, this.articulo);
             } catch (IllegalAccessException | InvocationTargetException ex) {
                 Logger.getLogger(ArticuloBean.class.getName()).log(Level.SEVERE, null, ex);

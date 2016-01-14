@@ -27,7 +27,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -41,7 +41,7 @@ import org.primefaces.event.UnselectEvent;
  * @author Gaming
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class MochilaCompraBean extends CrudBean implements Serializable {
 
     @EJB
@@ -173,7 +173,6 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
         this.sessionBean = sessionBean;
     }
 
-   
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
@@ -325,6 +324,14 @@ public class MochilaCompraBean extends CrudBean implements Serializable {
 
         }
 
+    }
+
+    public void actualizarCantidad(Detalle d) {
+        this.facturaServicio.actualizarDetalle(d);
+    }
+
+    public void eliminarDetalle(Detalle d) {
+        this.facturaServicio.eliminarDetalle(d);
     }
 
 }

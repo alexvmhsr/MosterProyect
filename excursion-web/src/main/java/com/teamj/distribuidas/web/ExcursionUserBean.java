@@ -5,14 +5,10 @@
  */
 package com.teamj.distribuidas.web;
 
-import com.teamj.distribuidas.exception.ValidationException;
-import com.teamj.distribuidas.model.Articulo;
 import com.teamj.distribuidas.model.Detalle;
 import com.teamj.distribuidas.model.Excursion;
 import com.teamj.distribuidas.model.ExcursionArticulo;
-import com.teamj.distribuidas.model.ExcursionArticuloPK;
 import com.teamj.distribuidas.model.Factura;
-import com.teamj.distribuidas.model.UsuarioExcursion;
 import com.teamj.distribuidas.servicios.ArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionArticuloServicio;
 import com.teamj.distribuidas.servicios.ExcursionServicio;
@@ -34,14 +30,12 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import org.apache.commons.beanutils.BeanUtils;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CellEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleSelectEvent;
 import org.primefaces.event.UnselectEvent;
@@ -51,7 +45,7 @@ import org.primefaces.event.UnselectEvent;
  * @author Gaming
  */
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class ExcursionUserBean extends CrudBean implements Serializable {
 
     @EJB
@@ -81,15 +75,10 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
     private List<ExcursionArticulo> excursionArticulos;
     private List<ExcursionArticulo> excursionArticulosSelected;
     private ExcursionArticulo excursionArticulo;
-    private Articulo articulo;
-    private List<Articulo> articulos;
-    private Articulo articuloSelected;
+
     private Integer cantidad;
-
-    private List<UsuarioExcursion> participantes;
-    private UsuarioExcursion participanteSeleccionado;
-
     private BigDecimal subtotal;
+    private BigDecimal derechoExcursionSeleccionada;
     private Integer totalArticulos;
 
     public void setDescripcion(String descripcion) {
@@ -98,6 +87,14 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
     public String getDescripcion() {
         return descripcion;
+    }
+
+    public void setDerechoExcursionSeleccionada(BigDecimal derechoExcursionSeleccionada) {
+        this.derechoExcursionSeleccionada = derechoExcursionSeleccionada;
+    }
+
+    public BigDecimal getDerechoExcursionSeleccionada() {
+        return derechoExcursionSeleccionada;
     }
 
     public void setNombre(String nombre) {
@@ -156,30 +153,6 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         return excursionArticulo;
     }
 
-    public void setArticulo(Articulo articulo) {
-        this.articulo = articulo;
-    }
-
-    public Articulo getArticulo() {
-        return articulo;
-    }
-
-    public void setArticulos(List<Articulo> articulos) {
-        this.articulos = articulos;
-    }
-
-    public List<Articulo> getArticulos() {
-        return articulos;
-    }
-
-    public void setArticuloSelected(Articulo articuloSelected) {
-        this.articuloSelected = articuloSelected;
-    }
-
-    public Articulo getArticuloSelected() {
-        return articuloSelected;
-    }
-
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
@@ -202,22 +175,6 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
     public void setSessionBean(SessionBean sessionBean) {
         this.sessionBean = sessionBean;
-    }
-
-    public void setParticipantes(List<UsuarioExcursion> participantes) {
-        this.participantes = participantes;
-    }
-
-    public void setParticipanteSeleccionado(UsuarioExcursion participanteSeleccionado) {
-        this.participanteSeleccionado = participanteSeleccionado;
-    }
-
-    public UsuarioExcursion getParticipanteSeleccionado() {
-        return participanteSeleccionado;
-    }
-
-    public List<UsuarioExcursion> getParticipantes() {
-        return participantes;
     }
 
     public void setSubtotal(BigDecimal subtotal) {
@@ -243,12 +200,10 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         this.cantidad = 1;
         this.subtotal = new BigDecimal(0);
         this.totalArticulos = 0;
-        this.articulo = new Articulo();
-        this.articulos = articuloServicio.obtenerTodas();
+        this.derechoExcursionSeleccionada = BigDecimal.ZERO;
         this.excursionArticulos = new ArrayList<>();
-        this.participantes = new ArrayList<>();
-        this.excursionSelected = new Excursion();
 
+        // this.excursionSelected = new Excursion();
     }
 
     public void beginCreation() {
@@ -316,6 +271,7 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
     public String todayStringDate() {
         return new SimpleDateFormat("dd/MM/yyyy").format(Calendar.getInstance().getTime());
     }
+
     public Date today() {
         return Calendar.getInstance().getTime();
     }
@@ -352,9 +308,7 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
     }
 
     public void loadExcursionSelectedData(SelectEvent event) {
-        // this.excursionArticulos = this.excursionSelected.getExcursionArticulos();
         this.excursionArticulos = ((Excursion) event.getObject()).getExcursionArticulos();
-        this.participantes = ((Excursion) event.getObject()).getUsuarioExcursiones();
         try {
             BeanUtils.copyProperties(this.excursion, this.excursionSelected);
             // FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -363,41 +317,10 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         }
         this.totalArticulos = 0;
         this.subtotal = new BigDecimal(BigInteger.ZERO);
+        this.derechoExcursionSeleccionada = BigDecimal.ZERO;
         if (this.excursionArticulosSelected != null) {
             this.excursionArticulosSelected.clear();
         }
-    }
-
-    public void beginExcursionArticuloCreation() {
-        this.excursionArticulo = new ExcursionArticulo();
-        ExcursionArticuloPK excursionArticuloPK = new ExcursionArticuloPK();
-        excursionArticuloPK.setIdExcursion(this.excursionSelected.getId());
-
-        this.excursionArticulo.setExcursionArticuloPK(excursionArticuloPK);
-        //this.excursionArticulo.setExcursion(excursionSelected);
-        this.articulo = new Articulo();
-        this.beginCreate();
-    }
-
-    public void createOrUpdateArticuloExcursion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        try {
-            if (this.isCreating()) {
-                this.excursionArticulo.getExcursionArticuloPK().setIdArticulo(articuloSelected.getId());
-                this.excursionArticulo.setCantidad(this.cantidad);
-                this.excursionArticuloServicio.insertar(this.excursionArticulo);
-                this.excursionArticulo.setArticulo(articuloSelected);
-                this.excursionArticulo.setExcursion(excursionSelected);
-                this.excursionArticulos.add(0, excursionArticulo);
-                this.cantidad = 1;
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El artículo ha sido correctamente agregado"));
-            }
-        } catch (ValidationException e) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
-        }
-        RequestContext.getCurrentInstance().execute("PF('exc_art_dialog_var').hide()");
-        this.reset();
-
     }
 
     public String duracion(Date salida, Date retorno) {
@@ -406,27 +329,39 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
     }
 
     public void unselectDisabledRow(UnselectEvent e) {
-        this.subtotal = new BigDecimal(BigInteger.ZERO);
-        this.totalArticulos = 0;
-        for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
-
-            this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-            this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
-
+//        this.subtotal = new BigDecimal(BigInteger.ZERO);
+        ExcursionArticulo ea = (ExcursionArticulo) e.getObject();
+        if (ea.getArticulo().getDescripcion() != null && ea.getArticulo().getDescripcion().equals(String.valueOf(excursionSelected.getId()))) {
+            this.derechoExcursionSeleccionada = BigDecimal.ZERO;
+        } else {
+            this.subtotal = this.subtotal.add(ea.getArticulo().getPrecio().multiply(new BigDecimal(ea.getCantidad())).negate());
         }
-
     }
 
     public void selectDisabledRow(SelectEvent e) {
         this.subtotal = new BigDecimal(BigInteger.ZERO);
         this.totalArticulos = 0;
+        //(excursionUserBean.excursionSelected.fechaLimite le excursionUserBean.today()) or (excursionUserBean.excursionSelected.maxAsistentes-fn:length(excursionUserBean.excursionSelected.usuarioExcursiones) le 0)
         for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
             if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
                 this.excursionArticulosSelected.remove(i);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,"No hay stock del artículo",""));
+
+            } else if ((this.excursionSelected.getFechaLimite().before(today())
+                    || (this.excursionSelected.getMaxAsistentes() - this.excursionSelected.getUsuarioExcursiones().size() <= 0))
+                    && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion() != null
+                    && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion().equals(String.valueOf(this.excursionSelected.getId()))) {
+                this.excursionArticulosSelected.remove(i);
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "La fecha límite para inscripción de la excursión ha caducado",""));
 
             } else {
-                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+                if (this.excursionArticulosSelected.get(i).getArticulo().getDescripcion() != null
+                        && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion().equals(String.valueOf(this.excursionSelected.getId()))) {
+                    this.derechoExcursionSeleccionada = this.excursionArticulosSelected.get(i).getArticulo().getPrecio();
+                } else {
+                    this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
+                    this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+                }
             }
 
         }
@@ -439,10 +374,22 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
         for (int i = excursionArticulosSelected.size() - 1; i >= 0; i--) {
             if (excursionArticulosSelected.get(i).getArticulo().getStock() == 0) {
                 this.excursionArticulosSelected.remove(i);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "No hay stock del artículo",""));
 
+            } else if ((this.excursionSelected.getFechaLimite().before(today())
+                    || (this.excursionSelected.getMaxAsistentes() - this.excursionSelected.getUsuarioExcursiones().size() <= 0))
+                    && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion() != null
+                    && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion().equals(String.valueOf(this.excursionSelected.getId()))) {
+                this.excursionArticulosSelected.remove(i);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,  "La fecha límite para inscripción de la excursión ha caducado",""));
             } else {
-                this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
-                this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+                if (this.excursionArticulosSelected.get(i).getArticulo().getDescripcion() != null
+                        && this.excursionArticulosSelected.get(i).getArticulo().getDescripcion().equals(String.valueOf(this.excursionSelected.getId()))) {
+                    this.derechoExcursionSeleccionada = this.excursionArticulosSelected.get(i).getArticulo().getPrecio();
+                } else {
+                    this.totalArticulos += excursionArticulosSelected.get(i).getCantidad();
+                    this.subtotal = this.subtotal.add(excursionArticulosSelected.get(i).getArticulo().getPrecio().multiply(new BigDecimal(excursionArticulosSelected.get(i).getCantidad())));
+                }
             }
 
         }
@@ -457,7 +404,6 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
                 this.usuarioServicio.guardarMochilaFactura(sessionBean.getUser().getId());
             } catch (Exception e) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", e.getMessage()));
-
             }
             f = this.facturaServicio.encontrarMochilaFactura(sessionBean.getUser().getId());
         }
@@ -479,6 +425,5 @@ public class ExcursionUserBean extends CrudBean implements Serializable {
 
         }
     }
-    
 
 }

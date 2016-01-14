@@ -102,7 +102,7 @@
 
                     <p:panel header="Exportar PDF o Excel">
                         <p:commandLink id="pdf" value="PDF" ajax="false">
-                            <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview" />
+                            <pe:exporter type="pdf" target="tabla_factura"  fileName="factura_preview" preProcessor="#{facturaBean.procesarFactura}" postProcessor="#{facturaBean.posProcesarFactura}"/>
                         </p:commandLink>
 
                         <p:spacer height="20"/>
@@ -113,7 +113,7 @@
                             <pe:exporter type="xlsx" target="tabla_factura" fileName="factura_preview" />
 
                         </p:commandLink>
-                        <p:commandButton value="send email" actionListener="#{facturaBean.send()}" />
+                        <p:commandButton value="send email" actionListener="#{facturaBean.send()}" oncomplete="PF('dialog_var').show()"/>
                     </p:panel>
 
                 </p:panelGrid>

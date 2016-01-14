@@ -112,7 +112,30 @@ public class FacturaServicio {
             throw new ValidationException(ex, "Error al crear la factura");
         }
     }
-//TODO
+
+    public void actualizarDetalle(Detalle detalle) throws ValidationException {
+
+        try {
+
+            this.detalleDAO.update(detalle);
+
+            //this.mochilaDAO.flush();
+        } catch (Exception ex) {
+            throw new ValidationException(ex, "Error al crear la factura");
+        }
+    }
+    public void eliminarDetalle(Detalle detalle) throws ValidationException {
+
+        try {
+
+            this.detalleDAO.remove(detalle);
+
+            //this.mochilaDAO.flush();
+        } catch (Exception ex) {
+            throw new ValidationException(ex, "Error al actualizar la factura");
+        }
+    }
+    //TODO
 
     public List<Detalle> obtenerDetallesMochilaCompra(Integer user_id) {
         Factura f = new Factura();
