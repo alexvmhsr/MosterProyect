@@ -17,24 +17,34 @@ where f.id_factura=5 and  f.id_factura = d.id_factura and ar.id_articulo=d.id_ar
 	<field name="NOMBRE_ARTICULO" class="java.lang.String"/>
 	<field name="CANTIDAD_DETALLE" class="java.math.BigDecimal"/>
 	<field name="AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE" class="java.math.BigDecimal"/>
+	<variable name="AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE_1" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="77" splitType="Stretch">
 			<staticText>
-				<reportElement x="235" y="29" width="75" height="20" uuid="cabebc90-aadd-442f-8cbd-5ffc76b7954e"/>
-				<textElement>
+				<reportElement x="240" y="5" width="75" height="20" uuid="cabebc90-aadd-442f-8cbd-5ffc76b7954e"/>
+				<textElement textAlignment="Center">
 					<font size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FACTURA]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="e4eb92fe-6f9f-4743-b20c-984f4f9223aa"/>
+			</line>
+			<image>
+				<reportElement x="17" y="5" width="198" height="56" uuid="987a609d-b339-4526-8979-87654185d705"/>
+				<imageExpression><![CDATA["C:\\Users\\Gaming\\Desktop\\assets\\Logo.png"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="122" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="11" width="555" height="100" uuid="27a4c9e9-26d6-45bf-8582-1892fecea6eb"/>
+				<reportElement x="155" y="0" width="245" height="37" uuid="27a4c9e9-26d6-45bf-8582-1892fecea6eb"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -47,44 +57,98 @@ where f.id_factura=5 and  f.id_factura = d.id_factura and ar.id_articulo=d.id_ar
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="34" splitType="Stretch">
+		<band height="33" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="2" width="100" height="20" uuid="efee7168-0718-4899-9e6f-d9e1ede338c4"/>
+				<reportElement x="115" y="2" width="100" height="20" uuid="efee7168-0718-4899-9e6f-d9e1ede338c4"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[ARTICULO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="100" y="2" width="100" height="20" uuid="f34e258f-7732-47a5-95d0-4cff22af96ef"/>
+				<reportElement x="215" y="2" width="100" height="20" uuid="f34e258f-7732-47a5-95d0-4cff22af96ef"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[CANTIDAD]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="2" width="100" height="20" uuid="041c416c-caca-4957-a493-0ecb67a6c8cc"/>
+				<reportElement x="315" y="2" width="100" height="20" uuid="041c416c-caca-4957-a493-0ecb67a6c8cc"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
 				<text><![CDATA[VALOR]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="67" splitType="Stretch">
+		<band height="28" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="9" width="100" height="20" uuid="3aa15da3-d939-48ac-8931-8e5428ef0a4c"/>
+				<reportElement x="115" y="7" width="100" height="20" uuid="3aa15da3-d939-48ac-8931-8e5428ef0a4c"/>
 				<textFieldExpression><![CDATA[$F{NOMBRE_ARTICULO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="100" y="9" width="100" height="20" uuid="1033f74c-303c-41db-98ee-69666c842466"/>
+				<reportElement x="215" y="7" width="100" height="20" uuid="1033f74c-303c-41db-98ee-69666c842466"/>
 				<textFieldExpression><![CDATA[$F{CANTIDAD_DETALLE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="200" y="9" width="100" height="20" uuid="73b7b37f-d8db-45aa-a838-68d81b782b0f"/>
+				<reportElement x="315" y="7" width="100" height="20" uuid="73b7b37f-d8db-45aa-a838-68d81b782b0f"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="66d7b60f-2212-4c74-928c-d5422e25914d"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="315" y="0" width="100" height="20" uuid="6889b449-9574-49c7-9e8d-fb60956c5157"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{AR.PRECIO_ARTICULO*D.CANTIDAD_DETALLE_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="259" y="0" width="56" height="20" uuid="7aac75a5-efb0-4f72-8d47-97298a0a839f"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="56" height="20" uuid="b8877a82-e048-44ce-a727-26cfdc69e7ad"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="115" y="22" width="130" height="20" uuid="e9e9d3b5-d12e-4190-bc5c-126da4f342ab"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefono: 0983139728]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="22" width="130" height="20" uuid="3430a98c-e35e-4d8e-892d-0b0efe469b78"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion: Sangolqui]]></text>
+			</staticText>
+		</band>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band height="42" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="0" width="555" height="1" uuid="413474dd-99b4-488c-9b93-960b95cb3a69"/>
+			</line>
+		</band>
 	</summary>
 </jasperReport>

@@ -35,7 +35,7 @@
                     <p:commandButton value="Generar Reporte" action="#{reporteBean.generarReporteTop5()}" rendered="#{reporteBean.reporte3}" icon="icon-report" ajax="false"/>
                 </p:panelGrid>
                 <p:spacer/>
-                <pe:documentViewer height="500" value="#{reporteBean.content}"/>
+                <pe:documentViewer height="500" value="#{reporteBean.content}" rendered="false"/>
             </p:panel>
         </h:form>
 
