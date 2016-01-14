@@ -15,7 +15,7 @@
         </f:metadata>
         <h:form id="main_form" >   
             <p:panel class="no_border"  >
-                <h1 class="center_inline">Factura Previa</h1>
+                <h1 class="center_inline">Factura</h1>
                 <p:panelGrid columns="1" styleClass="center_block panel-grid-no-border" > 
                     <p:dataTable id="tabla_factura" style="width: 700px;" var="detalle" value="#{facturaBean.factura.detalles}">
                         <p:columnGroup type="header">
@@ -36,7 +36,6 @@
                             <p:row>
                                 <p:column headerText="Dirección:" style="text-align:right!important;"/>
                                 <p:column colspan="3"  headerText="#{facturaBean.factura.direccionEmisor}" style="text-align:left!important;">
-
                                 </p:column>
                             </p:row>
                             <p:row>
@@ -52,27 +51,22 @@
                                 <p:column headerText="Precio T."/>
                             </p:row>
                         </p:columnGroup>
-
                         <p:column >
                             <h:outputText value="#{detalle.articulo.nombre}"/>
                         </p:column>
-
                         <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.articulo.precio}">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </h:outputText>
                         </p:column>
-
                         <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.cantidad}"/>
                         </p:column>
-
                         <p:column style="text-align:right!important;">
                             <h:outputText value="#{detalle.cantidad*detalle.articulo.precio}">
                                 <f:convertNumber currencySymbol="$" type="currency" />
                             </h:outputText>
                         </p:column>
-
                         <p:columnGroup type="footer">
                             <p:row>
                                 <p:column colspan="3" style="text-align:right!important;" footerText="Subtotal:"/>
@@ -86,7 +80,6 @@
                                 <p:column colspan="3" style="text-align:right" footerText="Total:"/>
                                 <p:column style="text-align:right!important;" footerText="$ #{facturaBean.getFormatedDecimal(facturaBean.factura.total)}"/>
                             </p:row>
-                            
                         </p:columnGroup>
 
                         <f:facet name="footer">
@@ -110,18 +103,10 @@
 
                 </p:panelGrid>
             </p:panel>
+            <p:spacer/>
         </h:form>
-        <p:dialog
-            id="dialog"
-            widgetVar="dialog_var"
-            modal="true"  
-            draggable="true"
-            resizable="false" 
-            header="Factura">
-            <h:form>
-                <pe:documentViewer height="500" value="#{facturaBean.content}"/>
-            </h:form>
-        </p:dialog>
+        
+        
     </ui:define>
 </ui:composition>
 
