@@ -37,7 +37,7 @@ where f.id_factura=5 and  f.id_factura = d.id_factura and ar.id_articulo=d.id_ar
 			</line>
 			<image>
 				<reportElement x="17" y="5" width="198" height="56" uuid="987a609d-b339-4526-8979-87654185d705"/>
-				<imageExpression><![CDATA["C:\\Users\\Gaming\\Desktop\\assets\\Logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["Logo.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

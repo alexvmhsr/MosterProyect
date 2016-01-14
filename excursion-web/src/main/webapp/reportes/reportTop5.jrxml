@@ -31,7 +31,7 @@ order by 2 desc]]>
 			</staticText>
 			<image>
 				<reportElement x="19" y="24" width="103" height="50" uuid="f3a4f572-8187-44e4-ae3c-982403aa95e1"/>
-				<imageExpression><![CDATA["C:\\Users\\Gaming\\Desktop\\assets\\Logo.png"]]></imageExpression>
+				<imageExpression><![CDATA["Logo.png"]]></imageExpression>
 			</image>
 			<line>
 				<reportElement x="0" y="0" width="555" height="1" uuid="03a2001c-790f-4ea5-9e55-8512f918de09"/>

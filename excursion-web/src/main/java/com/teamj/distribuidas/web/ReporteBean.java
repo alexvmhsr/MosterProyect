@@ -176,7 +176,7 @@ public class ReporteBean implements Serializable {
             System.out.println("Conexion realizada");            
             Map parametros = new HashMap();
             parametros.put("idFactura", 41);
-            parametros.put("SUBREPORT_DIR", "C:\\Users\\Dennys\\Documents\\NetBeansProjects\\excursion\\excursion-web\\src\\main\\webapp\\reportes\\");
+            parametros.put("SUBREPORT_DIR", "C:\\Users\\Gaming\\Documents\\NetBeansProjects\\ProyectoSegundoParcial\\excursion-web\\src\\main\\webapp\\reportes\\");
             FacesContext context = FacesContext.getCurrentInstance();
             System.out.println("Dentro del try");
             ServletContext servercontext = (ServletContext) context.getExternalContext().getContext();
