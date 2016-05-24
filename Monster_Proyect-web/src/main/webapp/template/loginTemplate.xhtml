@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <!-- load other css, js and resources -->	
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet"/>
+            <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/img/favicon.ico"/>
+        </h:head>
+
+        <h:body styleClass="body" id="main_forn">
+
+            <ui:insert name="content">Content</ui:insert>     
+
+            <p:spacer height="100px;"/>
+            
+            <div class="footer" style="bottom: 0 !important;">
+
+          
+                <div class="footer-right">
+                    <p:outputLabel style="font-size: small" value="Redes Sociales"/>
+                    <ul>
+                        <li><a class="fb" href="https://www.facebook.com/Pablo.Castiel"></a></li>
+                        <li><a class="twitt" href="#"></a></li>
+                        <li><a class="google" href="#"></a></li>
+                        <li><a class="drib" href="#"></a></li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="copyright">
+                    <p:outputLabel style="font-size: small" value="Universidad de las Fuerzas Armadas - ESPE"/>
+                </div>
+
+            </div>   
+        </h:body>
+
+
+    </f:view>
+</html>

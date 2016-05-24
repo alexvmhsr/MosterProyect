@@ -1,0 +1,325 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>MONSTER</title>
+
+            <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+            <!-- Bootstrap Core CSS -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
+            <!-- Custom CSS -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel='stylesheet' type='text/css' />
+            <!-- font CSS -->
+            <link rel="icon" href="#{facesContext.externalContext.requestContextPath}/resources/favicon.ico" type="image/x-icon" />
+            <!-- font-awesome icons -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/font-awesome.css" rel="stylesheet"/> 
+            <!-- //font-awesome icons -->
+            <!-- chart -->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/Chart.js"></script>
+            <!-- //chart -->
+            <!-- js-->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery-1.11.1.min.js"></script>
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/modernizr.custom.js"></script>
+            <!--webfonts-->
+
+            <!--animate-->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/animate.css" rel="stylesheet" type="text/css" media="all"/>
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/wow.min.js"></script>
+            <script>
+                new WOW().init();
+            </script>
+            <!--//end-animate-->
+            <!-- Metis Menu -->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/metisMenu.min.js"></script>
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/custom.js"></script>
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/custom.css" rel="stylesheet"/>
+        </h:head>
+        <h:body class="cbp-spmenu-push">
+            <div class="main-content">
+                <!--left-fixed -navigation-->
+                
+                    <div class="sidebar" role="navigation">
+                        <div class="navbar-collapse">
+                            <nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right dev-page-sidebar mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar" id="cbp-spmenu-s1">
+                                <div class="scrollbar scrollbar1">
+                                    <ul class="nav" id="side-menu">
+                                        <li>
+                                            <p:link outcome="404.xhtml" class="active"><i class="fa fa-dashboard nav_icon"></i> Dashboart</p:link>           
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-cogs nav_icon"></i>Administrar <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Personal</p:link>     
+                                                 
+                                                </li>
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Perfiles</p:link>     
+                                                   
+                                                </li>
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Usuarios Web</p:link>     
+                                                    
+                                                </li>
+                                            </ul>
+                                            <!-- /nav-second-level -->
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-book nav_icon"></i>Inventario <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Activos</p:link>     
+                                                 
+                                                </li>
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Facturas</p:link>     
+                                                   
+                                                </li>
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Garantias</p:link>     
+                                                    
+                                                </li>
+                                                <li>
+                                                    <p:link outcome="404.xhtml" > Toma Física</p:link>     
+                                                    
+                                                </li>
+                                            </ul>
+                                            <!-- /nav-second-level -->
+                                        </li>
+                                        <li>
+                                            <a href="widgets.html"><i class="fa fa-truck nav_icon"></i>Proveedores</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#"><i class="fa fa-check-square-o nav_icon"></i>Ubicación<span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <a href="inputs.html">Inputs</a>
+                                                </li>
+                                                <li>
+                                                    <a href="validation.html">Form Validation</a>
+                                                </li>
+                                            </ul>
+                                            <!-- //nav-second-level -->
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <a href="inbox.html">Inbox</a>
+                                                </li>
+                                                <li>
+                                                    <a href="compose.html">Compose email</a>
+                                                </li>
+                                            </ul>
+                                            <!-- //nav-second-level -->
+                                        </li>
+                                        <li>
+                                            <a href="maps.html"><i class="fa fa-location-arrow nav_icon"></i>Maps</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-file-text-o nav_icon"></i>Pages<span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <a href="login.html">Login</a>
+                                                </li>
+                                                <li>
+                                                    <a href="signup.html">SignUp</a>
+                                                </li>
+                                                <li>
+                                                    <a href="blank-page.html">Blank Page</a>
+                                                </li>
+                                            </ul>
+                                            <!-- //nav-second-level -->
+                                        </li>
+                                        <li>
+                                            <a href="charts.html" class="chart-nav"><i class="fa fa-bar-chart nav_icon"></i>Charts</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="chart-nav"><i class="fa fa-list-ul nav_icon"></i>Extras<span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level collapse">
+                                                <li>
+                                                    <a href="tables.html">Tables</a>
+                                                </li>
+                                                <li>                                                
+                                                    <p:link outcome="404.xhtml">404 Page</p:link>
+                                                </li>
+                                            </ul>
+                                            <!-- //nav-second-level -->
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- //sidebar-collapse -->
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- //sidebar-collapse -->
+
+
+                    <div class="sticky-header header-section">
+                        <div class="header-left">
+                            <!--logo -->
+                            <div class="logo">
+                                <a href="index.xhtml">
+                                    <ul>	
+                                        <li><img src="#{facesContext.externalContext.requestContextPath}/resources/images/logo1.png" alt="" /></li>
+                                        <li><h1>MONSTER</h1></li>
+                                        <div class="clearfix"> </div>
+                                    </ul>
+                                </a>
+                            </div>
+                            <!--//logo-->
+
+                        </div>
+
+
+                        <div class="header-right">
+                            <div class="profile_details">		
+                                <ul>
+                                    <li class="dropdown profile_details_drop">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <div class="profile_img">	
+                                                <span class="prfil-img"><img src="#{facesContext.externalContext.requestContextPath}/resources/images/a.png" /> </span> 
+                                                <div class="clearfix"></div>	
+                                            </div>	
+                                        </a>
+                                        <ul class="dropdown-menu drp-mnu">
+                                            <li> <a href="#"><i class="fa fa-cog"></i> Settings</a> </li> 
+                                            <li> <a href="#"><i class="fa fa-user"></i> Profile</a> </li> 
+                                            <li> <a href="#"><i class="fa fa-sign-out"></i> Logout</a> </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <button id="showLeftPush"><i class="fa fa-bars"></i></button>
+                            <div class="clearfix"> </div>
+                        </div>
+                        <div class="clearfix"> </div>	
+                    </div>
+          
+
+                <!-- main content start-->
+                <div id="page-wrapper">
+                    <div class="main-page">
+
+                        <!-- Aqui va el codigo -->
+                        <ui:insert name="principal"/>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- Classie -->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/classie.js"></script>
+            <script>
+                        var menuLeft = document.getElementById('cbp-spmenu-s1'),
+                        showLeftPush = document.getElementById('showLeftPush'),
+                body = document.body;
+
+                    showLeftPush.onclick = function () {
+                    classie.toggle(this, 'active');
+                    classie.toggle(body, 'cbp-spmenu-push-toright');
+                    classie.toggle(menuLeft, 'cbp-spmenu-open');
+                disableOther('showLeftPush');
+                };
+
+
+                    function disableOther(button) {
+                        if (button !== 'showLeftPush') {
+                    classie.toggle(showLeftPush, 'disabled');
+                }
+    }
+            </script>
+            <!-- Bootstrap Core JavaScript --> 
+
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/dev-loaders.js"></script>
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/dev-layout-default.js"></script>
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.marquee.js"></script>
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap.min.css" rel="stylesheet"/>
+
+            <!-- candlestick -->
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.jqcandlestick.min.js"></script>
+            <link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/jqcandlestick.css" />
+            <!-- //candlestick -->
+
+            <!--max-plugin-->
+            <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/plugins.js"></script>
+            <!--//max-plugin-->
+
+            <!--scrolling js-->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.nicescroll.js"></script>
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/scripts.js"></script>
+            <!--//scrolling js-->
+
+            <!-- real-time-updates -->
+            <script language="javascript" type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.flot.js"></script>
+            <!-- //real-time-updates -->
+            <!-- error-graph -->
+            <script language="javascript" type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.flot.errorbars.js"></script>
+            <script language="javascript" type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.flot.navigate.js"></script>
+            <!-- //error-graph -->
+            <!-- Skills-graph -->		
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/Chart.Core.js"></script>
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/Chart.Doughnut.js"></script>
+
+            <!-- //Skills-graph -->
+            <!-- status -->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery.fn.gantt.js"></script>
+            <!-- //status -->
+
+
+            <script type="text/javascript">
+                //<![CDATA[
+                    function manejarLogin(xhr, status, args) {
+                        if (!args.validationFailed && args.estaLogeado) {
+                            setTimeout(function () {
+                        window.location = args.view;
+                    }, 500);
+                }
+                }
+    //]]>
+            </script>
+
+            <script type="text/javascript">
+                    PrimeFaces.locales['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: 'Anterior',
+                    nextText: 'Siguiente',
+                    currentText: 'Fecha actual',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                    dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                allDayText: 'Todo el día'
+    };
+            </script>
+            <style type="text/css">
+                .value {
+                    text-align: center;
+                    width: 700px;
+                    margin: 40px;
+                }
+            </style>
+
+        </h:body>
+    </f:view>
+</html>
+

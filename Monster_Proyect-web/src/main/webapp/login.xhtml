@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>Login</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+            <!-- Bootstrap Core CSS -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/bootstrap.css" rel='stylesheet' type='text/css' />
+            <!-- Custom CSS -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel='stylesheet' type='text/css' />
+            <!-- font CSS -->
+            <link rel="icon" href="#{facesContext.externalContext.requestContextPath}/resources/favicon.ico" type="image/x-icon"/> >
+            <!-- font-awesome icons -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/font-awesome.css" rel="stylesheet"/> 
+            <!-- //font-awesome icons -->
+            <!-- js -->
+            <script src="#{facesContext.externalContext.requestContextPath}/resources/js/jquery-1.11.1.min.js"></script>
+            <!-- //js -->
+            <link href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" rel="stylesheet"/>
+            <link rel="shortcut icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/img/favicon.ico"/>
+            
+        </h:head>
+        <h:body class="login-bg">
+            <div class="login-body">
+                <div class="login-heading">
+                    <h1>Login</h1>
+                </div>
+                <div class="login-info">
+                    <h:form>
+                        <p:inputText class="login-info-input" id="email" placeholder="Email" required="true"/>
+                        <p:password id="password" class="login-info-input" placeholder="Password" required="true"/>
+                        
+                        <p:commandButton class="login-info-buton" type="submit"  value="Login" icon="fa fa-sign-in"/>
+                        
+
+                        <h2>Redes Sociales</h2>
+                        <div class="login-icons">
+                            <ul>
+                                <li><a href="https://www.facebook.com/Pablo.Castiel" class="facebook"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" class="google"><i class="fa fa-google-plus"></i></a></li>
+                                
+                            </ul>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+            <div class="go-back login-go-back">
+                <p:link outcome="index.xhtml">Ir a Casa</p:link>
+            </div>
+            <div class="copyright login-copyright">
+                <p>Pablo Villamar - Marco Palacios. Universidad de las Fuerzas Armadas.</p>    
+            </div>
+        </h:body>
+    </f:view>
+</html>
